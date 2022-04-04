@@ -1,0 +1,39 @@
+{
+  "name": "movie_recommendation_system_vue",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "@element-plus/icons": "^0.0.11",
+    "@element-plus/icons-vue": "^1.1.4",
+    "animate.css": "^4.1.1",
+    "babel-polyfill": "^6.26.0",
+    "core-js": "^3.8.3",
+    "element-plus": "^2.1.4",
+    "vue": "^3.2.13",
+    "vue-cropper": "^0.5.8",
+    "vue-image-crop-upload": "^3.0.3",
+    "vue-router": "^4.0.3",
+    "vuex": "^4.0.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-plugin-vuex": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "less": "^4.1.2",
+    "less-loader": "^10.2.0",
+    "sass-loader": "^12.6.0",
+    "stylus": "^0.56.0",
+    "stylus-loader": "^6.2.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ]
+}
