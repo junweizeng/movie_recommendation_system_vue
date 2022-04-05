@@ -49,10 +49,11 @@ import AvatarEdit from "@/components/personal/AvatarEdit";
 import {Avatar} from "@element-plus/icons-vue";
 import PersonalInfo from "@/components/personal/PersonalInfo";
 import MovieCard from "@/components/classification/MovieCards";
+import MovieStrip from "@/components/basic/MovieStrip";
 
 export default {
   name: "PersonalView",
-  components: {MovieCard, Avatar, AvatarEdit, PersonalInfo},
+  components: {MovieCard, Avatar, AvatarEdit, PersonalInfo, MovieStrip},
   setup() {
     let avatarUrl = ref('https://ts1.cn.mm.bing.net/th?id=OIP-C.ZeQ5h5qmFJdYmGKtrR-I9gAAAA&w=204&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.25&pid=3.1&rm=2')
 
@@ -87,8 +88,8 @@ export default {
 // 标签页
 .demo-tabs /deep/ .el-tabs__content {
   padding: 32px;
-  color: #b2c8ec;
-  font-size: 32px;
+  //color: #b2c8ec;
+  //font-size: 32px;
   font-weight: 600;
 }
 
