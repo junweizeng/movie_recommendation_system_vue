@@ -25,11 +25,17 @@ export default {
   margin: 1rem 0;
 }
 
-/* 响应式布局 - 当屏幕小于 1200 像素宽时，让两列堆叠而不是并排 */
 @media screen and (max-width: 1200px) {
   .classification-master {
     padding-left: 0;
     padding-right: 0;
+  }
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1400px) {
+  .classification-master {
+    padding-left: 10%;
+    padding-right: 10%;
   }
 }
 </style>
