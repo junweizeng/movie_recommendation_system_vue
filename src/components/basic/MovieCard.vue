@@ -2,7 +2,7 @@
   <div class="card">
     <a href="/movie/info">
       <div class="image-div">
-        <el-image lazy :src="movie.src" class="image">
+        <el-image :src="movie.src" class="image">
           <template #error>
             <picture-rounded class="image-error"></picture-rounded>
           </template>
