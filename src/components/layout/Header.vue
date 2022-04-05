@@ -7,7 +7,7 @@
     </div>
 
     <div @click="handleMainMenu" class="menu-icon">
-      <div ref="moreRef"><more color="white"></more></div>
+      <div ref="moreRef"><menu-icon :color="`${iconColor}`"></menu-icon></div>
     </div>
 
     <!-- 小屏时显示这个菜单 -->
@@ -105,11 +105,11 @@
 <script>
 import {reactive, ref, watch} from "vue";
 import {useRouter} from 'vue-router'
-import {More, MoreFilled} from "@element-plus/icons";
+import {More, MoreFilled, Menu as MenuIcon} from "@element-plus/icons";
 
 export default {
   name: "Header",
-  components: {MoreFilled, More},
+  components: {MoreFilled, More, MenuIcon},
   setup() {
     const router = useRouter()
     let isLogin = ref(false);
@@ -117,6 +117,7 @@ export default {
     let mainMenuRef = ref(null);
     let moreRef = ref(null);
     let moreFilledRef = ref(null);
+    let iconColor = ref('white')
     let user = reactive({
       nickname: 'Vanish丶'
     })
@@ -132,6 +133,14 @@ export default {
     let handleMainMenu = () => {
       isShowMenu.value = !isShowMenu.value;
     }
+
+    watch(isShowMenu, (newValue, oldValue) => {
+      if (newValue === true) {
+        iconColor.value = '#a99f9f';
+      } else {
+        iconColor.value = 'white'
+      }
+    })
 
     // 登录
     let handleLogin = () => {
@@ -150,6 +159,7 @@ export default {
       isShowMenu,
       mainMenuRef,
       moreFilledRef,
+      iconColor,
       moreRef,
       user,
       show,
@@ -174,6 +184,8 @@ export default {
 
 /*系统logo图片和字体样式*/
 .logo {
+  display: flex;
+  align-items: center;
   height: 50px;
 
   img {
