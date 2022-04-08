@@ -12,11 +12,11 @@
       <div class="movie-name line-limit-length">{{ movie.name }}</div>
 
       <el-rate
-          v-model="movie.score"
+          v-model="score"
           disabled
           show-score
           text-color="#ff9900"
-          :score-template="`${movie.score}`"
+          :score-template="`${ movie.score }`"
       />
 
       <el-row>
@@ -59,9 +59,10 @@ export default {
       type: Object,
     }
   },
-  setup() {
-    let score = ref(3);
+  setup(props) {
+    let score = ref(props.movie.score / 2.0);
     return {
+      props,
       score
     }
   }
@@ -74,6 +75,17 @@ export default {
   display: flex;
   border-width: 0;
   border-radius: 0.5rem;
+  border-color: #f2f2f6;
+}
+
+.movie-strip-master:hover {
+  border-style:solid;
+  border-color: #b0d2e5;
+  border-radius: 0.5rem;
+  border-width: 1px;
+  box-shadow: 0.5rem 1rem 1rem #b0d2e5;
+  transition: all 0.5s;
+  background-image: linear-gradient(to right, #b0d2e5, #da9797);
 }
 
 .image {

@@ -1,6 +1,11 @@
 <template>
   <div class="card">
-    <a href="/movie/info">
+    <router-link :to="{
+      name: 'movieInfo',
+      params: {
+        id: movie.id
+      }
+    }" replace>
       <div class="image-div">
         <el-image :src="movie.src" class="image">
           <template #error>
@@ -13,7 +18,7 @@
         <el-tooltip
             class="box-item"
             effect="light"
-            :content="`${movie.name}`"
+            :content="`${ movie.name }`"
             placement="top"
         >
           <div class="line-limit-length">{{ movie.name }}</div>
@@ -21,21 +26,22 @@
 
         <div class="rate">
           <el-rate
-              v-model="movie.score"
+              v-model="score"
               disabled
               show-score
               size="small"
               text-color="#ff9900"
-              :score-template="`${movie.score}`"
+              :score-template="`${ movie.score }`"
           />
         </div>
       </div>
-    </a>
+    </router-link>
   </div>
 </template>
 
 <script>
 import {PictureFilled, PictureRounded} from "@element-plus/icons-vue";
+import {ref} from "vue";
 
 export default {
   name: "MovieCard",
@@ -46,9 +52,11 @@ export default {
     }
   },
   setup(props) {
-    console.log(props)
+    let score = ref(props.movie.score / 2.0)
+
     return {
       props,
+      score
     }
   }
 }
@@ -66,6 +74,15 @@ export default {
   max-height: 25rem;
   min-height: 25rem;
   width: 13.8rem;
+}
+
+.card:hover {
+  border-style:solid;
+  border-color: #f2f2f6;
+  border-radius: 0.5rem;
+  border-width: 1px;
+  box-shadow: 0 10px 20px #dcdbdb;
+  transition: all 0.2s;
 }
 
 .image-div {

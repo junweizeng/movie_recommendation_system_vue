@@ -13,43 +13,48 @@
           <div class="movie-info-top-right">
             <!-- 电影名 -->
             <div class="movie-name">
-              {{movie.name}}
+              {{ movie.name }}
             </div>
+
             <!-- 基本信息 + 评分 -->
             <el-row>
               <el-col :span="8">
                 <div class="each">
                   <span>导演：</span>
-                  <span>{{ movie.director }}</span>
+                  <span>{{ movie.directors }}</span>
                 </div>
                 <div class="each">
                   <span>类型：</span>
-                  <span>{{ movie.type }}</span>
+                  <span>{{ movie.types }}</span>
                 </div>
                 <div class="each">
                   <span>制片国家/地区：</span>
-                  <span>{{ movie.region }}</span>
+                  <span>{{ movie.regions }}</span>
                 </div>
                 <div class="each">
                   <span>语言：</span>
-                  <span>{{ movie.language }}</span>
+                  <span>{{ movie.languages }}</span>
                 </div>
               </el-col>
 
               <el-col :span="16">
                 <div class="rate">
                   <el-rate
-                      v-model="movie.score"
-                      :max="5"
-                      size="large"
+                      v-model="score"
                       disabled
                       show-score
-                      colors="['#5cb87a', '#e6a23c', '#f56c6c']"
+                      size="small"
+                      text-color="#ff9900"
+                      :score-template="`${ movie.score }`"
                   />
                 </div>
-                <div class="rate" v-for="(p,index) in percentages" :key="index">
-                  <el-progress :percentage="p.percentage" :color="p.color" />
-                </div>
+                <el-row class="rate" v-for="(p,index) in percentages" :key="index">
+                  <el-col :span="5" :style="`color: ${p.color}; text-align: center;`">{{ p.text }}</el-col>
+                  <el-col :span="19">
+                      <el-progress :percentage="p.percentage" :color="p.color" />
+                  </el-col>
+
+                </el-row>
               </el-col>
             </el-row>
             <!-- 主演 + 电影简介 展现形式1 -->
@@ -115,48 +120,91 @@
 </template>
 
 <script>
-import {reactive, ref} from "vue";
+import {onMounted, ref} from "vue";
+import request from "@/utils/request";
+import {useRouter} from "vue-router";
 
 export default {
   name: 'MovieInfo',
   setup() {
-    let actorsDialogVisible = ref(false)
-    let introductionDialogVisible = ref(false)
+    const router = useRouter();
+    let actorsDialogVisible = ref(false);
+    let introductionDialogVisible = ref(false);
 
-    let movie = reactive({
-      name: '肖申克的救赎 The Shawshank Redemption (1994)',
-      director: '弗兰克·德拉邦特',
-      type: '剧情 / 犯罪',
-      region: '美国',
-      language: '英语',
-      actors: '蒂姆·罗宾斯 / 摩根·弗里曼 / 鲍勃·冈顿 / 威廉姆·赛德勒' +
-          ' / 克兰西·布朗 / 吉尔·贝罗斯 / 马克·罗斯顿 / 詹姆斯·惠特摩 /' +
-          ' 杰弗里·德曼 / 拉里·布兰登伯格 / 尼尔·吉恩托利 / 布赖恩·利比 /' +
-          ' 大卫·普罗瓦尔 / 约瑟夫·劳格诺 / 祖德·塞克利拉 / 保罗·麦克兰尼 /' +
-          ' 芮妮·布莱恩 / 阿方索·弗里曼 / V·J·福斯特 / 弗兰克·梅德拉诺 / ' +
-          '马克·迈尔斯 / 尼尔·萨默斯 / 耐德·巴拉米 / 布赖恩·戴拉特 / 唐·麦克马纳斯',
-      introduction: '布鲁斯·韦恩（罗伯特·帕丁森 饰）化身蝙蝠侠于哥谭市行侠仗义两年后，' +
-          '罪犯皆闻风丧胆，他也因此深入接触到哥谭市的阴暗面。他潜行于哥谭市腐败的政要名流关系网中' +
-          '，身边仅有的几个值得信赖的盟友——管家阿尔弗雷德·潘尼沃斯（安迪·瑟金斯 饰）与詹姆斯·' +
-          '戈登警长（杰弗里·怀特 饰）。这位独行的“义警侠探”在哥谭市民心中已成为“复仇”二字最当仁不让的代名词。',
-      score: 4,
+    // let movie = reactive({
+    //   name: '肖申克的救赎 The Shawshank Redemption (1994)',
+    //   directors: '弗兰克·德拉邦特',
+    //   types: '剧情 / 犯罪',
+    //   regions: '美国',
+    //   languages: '英语',
+    //   actors: '蒂姆·罗宾斯 / 摩根·弗里曼 / 鲍勃·冈顿 / 威廉姆·赛德勒' +
+    //       ' / 克兰西·布朗 / 吉尔·贝罗斯 / 马克·罗斯顿 / 詹姆斯·惠特摩 /' +
+    //       ' 杰弗里·德曼 / 拉里·布兰登伯格 / 尼尔·吉恩托利 / 布赖恩·利比 /' +
+    //       ' 大卫·普罗瓦尔 / 约瑟夫·劳格诺 / 祖德·塞克利拉 / 保罗·麦克兰尼 /' +
+    //       ' 芮妮·布莱恩 / 阿方索·弗里曼 / V·J·福斯特 / 弗兰克·梅德拉诺 / ' +
+    //       '马克·迈尔斯 / 尼尔·萨默斯 / 耐德·巴拉米 / 布赖恩·戴拉特 / 唐·麦克马纳斯',
+    //   introduction: '布鲁斯·韦恩（罗伯特·帕丁森 饰）化身蝙蝠侠于哥谭市行侠仗义两年后，' +
+    //       '罪犯皆闻风丧胆，他也因此深入接触到哥谭市的阴暗面。他潜行于哥谭市腐败的政要名流关系网中' +
+    //       '，身边仅有的几个值得信赖的盟友——管家阿尔弗雷德·潘尼沃斯（安迪·瑟金斯 饰）与詹姆斯·' +
+    //       '戈登警长（杰弗里·怀特 饰）。这位独行的“义警侠探”在哥谭市民心中已成为“复仇”二字最当仁不让的代名词。',
+    //   score: 4,
+    // })
+
+    let movie = ref({
+      actors: '',
+      alias: '',
+      did: '',
+      directors: '',
+      five: '',
+      four: '',
+      id: '',
+      imdb: '',
+      introduction: '',
+      languages: '',
+      name: '',
+      num: '',
+      one: '',
+      pic: '',
+      regions: '',
+      releaseDate: '',
+      runtime: '',
+      score: '',
+      three: '',
+      two: '',
+      types: '',
+      writers: '',
+      year: '',
+    });
+    let score = ref(0);
+    let percentages = ref([]);
+
+    // 初始化界面前，请求电影信息
+    request.get('/movie/info', {
+      params: {
+        id: router.currentRoute.value.params.id
+      }
+    }).then(res => {
+      movie.value = res.data;
+      score.value = movie.value.score / 2.0;
+      percentages.value = [
+        { color: '#f56c6c', percentage: movie.value.five, text: '5星' },
+        { color: '#e6a23c', percentage: movie.value.four, text: '4星' },
+        { color: '#5cb87a', percentage: movie.value.three, text: '3星' },
+        { color: '#1989fa', percentage: movie.value.two, text: '2星' },
+        { color: '#6f7ad3', percentage: movie.value.one, text: '1星' },
+      ]
+    }).catch(err => {
+      console.log(err)
     })
-
-    let percentages = reactive([
-      { color: '#f56c6c', percentage: 40 },
-      { color: '#e6a23c', percentage: 20 },
-      { color: '#5cb87a', percentage: 50 },
-      { color: '#1989fa', percentage: 70 },
-      { color: '#6f7ad3', percentage: 10 },
-    ])
 
     return {
       actorsDialogVisible,
       introductionDialogVisible,
       movie,
+      score,
       percentages,
     }
-  }
+  },
 }
 </script>
 
@@ -203,9 +251,10 @@ export default {
 }
 
 .movie-info-top-right .rate {
+  font-size: 0.7rem;
   margin-left: 2rem;
   margin-top: 5px;
-  width: 60%;
+  width: 30%;
 }
 
 .movie-info-top-right .actors-and-introduction {
@@ -216,6 +265,10 @@ export default {
 .movie-info-top-right .introduction {
   margin-left: 2rem;
   width: 50%;
+}
+
+/deep/ .el-rate__text {
+  color: #ff9900;
 }
 
 /************** 主演 和 简介 样式2 **************/
@@ -243,6 +296,9 @@ export default {
   .movie-info-top-left .image {
     margin-top: 20%;
   }
+  .movie-info-top-right .rate {
+    width: 60%;
+  }
 }
 
 @media screen and (min-width: 800px) and (max-width: 1200px) {
@@ -257,6 +313,9 @@ export default {
   }
   .movie-info-top .background {
     height: 100%;
+  }
+  .movie-info-top-right .rate {
+    width: 50%;
   }
 }
 
