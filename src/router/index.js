@@ -17,7 +17,7 @@ const routes = [
         component: () => import('../views/AboutView.vue')
       },
       {
-        path: 'movie/info',
+        path: 'movie/info/:id',
         name: 'movieInfo',
         component: () => import('../views/MovieInfoView.vue')
       },
@@ -48,6 +48,19 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes
+})
+
+/**
+ * 全局后置守卫：
+ * 1. 每次路由跳转后，页面回到顶部。
+ */
+router.afterEach((to, from, next) => {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+
+  // 兼容IE
+  window.scrollTo(0, 0);
+  next();
 })
 
 export default router
