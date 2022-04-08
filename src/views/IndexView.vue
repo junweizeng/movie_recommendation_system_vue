@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <MyHeader/>
+    <Header />
 
     <el-main style="padding: 0">
       <router-view/>
@@ -14,12 +14,11 @@
 </template>
 
 <script>
-import MyHeader from "@/components/layout/Header";
 import Header from "@/components/layout/MovieHeader";
 import Footer from "../components/layout/MovieFooter"
 
 export default {
   name: "IndexView",
-  components: { Header, Footer, MyHeader },
+  components: { Header, Footer },
 }
 </script>

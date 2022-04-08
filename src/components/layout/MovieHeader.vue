@@ -1,163 +1,349 @@
 <template>
-  <div class="header">
-    <div style="height: 70px;width: 100%">
-      <div class="header-logo">
-        <img style="width: 50px; height: 50px; float: left" src="../../assets/logo.png" alt="logo"/>
-        <div class="header-logo-text">电影推荐系统</div>
-      </div>
+  <!-- 导航栏 -->
+  <div class="navbar">
+    <div class="logo">
+      <img src="../../assets/logo.png" alt="logo"/>
+      <span class="title">电影推荐系统</span>
+    </div>
 
-      <div class="header-links">
-        <el-link @click="show('home')" class="header-link" :underline="false">首页</el-link>
-        <el-link @click="show('classification')" class="header-link" :underline="false">电影</el-link>
-        <el-link @click="show('about')" class="header-link" :underline="false">关于</el-link>
-      </div>
+    <div @click="handleMainMenu" class="menu-icon">
+      <div ref="moreRef"><menu-icon :color="`${iconColor}`"></menu-icon></div>
+    </div>
 
-      <div class="header-search">
+    <!-- 小屏时显示这个菜单 -->
+    <transition
+        name="animate__animated animate__bounce"
+        appear
+        enter-active-class="animate__fadeInLeft"
+        leave-active-class="animate__fadeOut">
+      <div
+          v-if="isShowMenu"
+          ref="mainMenuRef"
+          class="menu">
+        <el-link @click="show('home')" :underline="false">首页</el-link>
+        <el-link @click="show('classification')" :underline="false">电影</el-link>
+        <el-link @click="show('about')" :underline="false">关于</el-link>
+
+        <span class="search-div">
+          <el-autocomplete
+              style="border-radius: 30px;"
+              v-model="state"
+              :fetch-suggestions="querySearchAsync"
+              placeholder="请输入电影名"
+              @select="handleSelect"
+          />
+        </span>
+      </div>
+    </transition>
+
+    <!-- 大屏时显示这个菜单 -->
+    <div class="big-menu">
+      <el-link @click="show('home')" :underline="false">首页</el-link>
+      <el-link @click="show('classification')" :underline="false">电影</el-link>
+      <el-link @click="show('about')" :underline="false">关于</el-link>
+
+      <span class="search-div">
         <el-autocomplete
-            style="width: 250px"
+            style="border-radius: 30px;"
             v-model="state"
             :fetch-suggestions="querySearchAsync"
             placeholder="请输入电影名"
             @select="handleSelect"
         />
-      </div>
-
-      <el-link v-if="!isLogin"
-               @click="handleLogin"
-               class="header-link"
-               :underline="false"
-               style="float: right;padding-top: 23px;padding-right: 50px">
-        登录
-      </el-link>
-
-      <el-dropdown v-if="isLogin" style="float: right;padding-right: 10px; padding-top: 23px">
-        <el-button type="text">
-          <div class="header-name">{{ this.user.nickname }}
-            <i class="el-icon-caret-bottom"></i>
-          </div>
-<!--          <img alt="" style="width: 45px;height: 45px;border-radius: 50%" src="../../assets/logo.png">-->
-          <el-avatar @error="errorHandler">
-            <img
-              src="../../assets/logo.png"
-            />
-          </el-avatar>
-        </el-button>
-
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item>
-              <el-link :underline="false" @click="show('personalInfo')" style="padding-right: 7px">
-                <i style="font-size: 15px; padding-right: 3px" class="el-icon-shopping-cart-2"></i>我的主页
-              </el-link>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <el-link :underline="false" href="/me/order" style="padding-right: 7px">
-                <i style="font-size: 15px; padding-right: 3px" class="el-icon-s-order"></i>我的喜欢
-              </el-link>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <el-link :underline="false" href="/me/setting" style="padding-right: 7px">
-                <i style="font-size: 15px; padding-right: 3px" class="el-icon-user-solid"></i>个人设置
-              </el-link>
-            </el-dropdown-item>
-            <el-dropdown-item divided>
-              <el-button type="text" @click="handleLogout" :underline="false">
-                <i style="font-size: 15px; padding-right: 3px" class="el-icon-switch-button"></i>退出登录
-              </el-button>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
+      </span>
     </div>
+
+
+    <el-link
+        class="login-link"
+        v-if="!isLogin"
+        @click="handleLogin"
+        :underline="false">
+      登录
+    </el-link>
+
+    <el-dropdown class="login-dropdown" v-if="isLogin">
+      <el-button type="text">
+        <div class="login-name">{{ user.nickname }}
+          <i class="el-icon-caret-bottom"></i>
+        </div>
+        <el-avatar @error="errorHandler">
+          <img
+              src="../../assets/logo.png"
+          />
+        </el-avatar>
+      </el-button>
+
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item>
+            <el-link :underline="false" @click="show('personalInfo')" style="padding-right: 7px">
+              <i style="padding-right: 3px"></i>我的主页
+            </el-link>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <el-link :underline="false" href="/me/order" style="padding-right: 7px">
+              <i style="padding-right: 3px"></i>我的喜欢
+            </el-link>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <el-link :underline="false" href="/me/setting" style="padding-right: 7px">
+              <i style="padding-right: 3px"></i>个人设置
+            </el-link>
+          </el-dropdown-item>
+          <el-dropdown-item divided>
+            <el-button type="text" @click="handleLogout" :underline="false">
+              <i style="padding-right: 3px"></i>退出登录
+            </el-button>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
   </div>
 </template>
 
 <script>
-  const errorHandler = () => true
+import {reactive, ref, watch} from "vue";
+import {useRouter} from 'vue-router'
+import {More, MoreFilled, Menu as MenuIcon} from "@element-plus/icons";
 
-  export default {
-    name: "MovieHeader",
-    data() {
-      return {
-        isLogin: false,
-        user: {
-          nickname: 'Vanish丶'
-        }
+export default {
+  name: "MovieHeader",
+  components: {MoreFilled, More, MenuIcon},
+  setup() {
+    const router = useRouter()
+    let isLogin = ref(false);
+    let isShowMenu = ref(false);
+    let mainMenuRef = ref(null);
+    let moreRef = ref(null);
+    let moreFilledRef = ref(null);
+    let iconColor = ref('white')
+    let user = reactive({
+      nickname: 'Vanish丶'
+    })
+
+    // 展示名为name的页面
+    let show = (name) => {
+      router.push({
+        name: name
+      })
+      isShowMenu.value = false;
+    }
+
+    let handleMainMenu = () => {
+      isShowMenu.value = !isShowMenu.value;
+    }
+
+    watch(isShowMenu, (newValue, oldValue) => {
+      if (newValue === true) {
+        iconColor.value = '#a99f9f';
+      } else {
+        iconColor.value = 'white'
       }
-    },
-    methods: {
-      show(name) {
-        this.$router.push({
-          name: name
-        })
-      },
-      handleLogin() {
-        // this.$router.push({
-        //   name: 'login',
-        // })
-        this.isLogin = true
-      },
-      handleLogout() {
-        this.isLogin = false
-      }
+    })
+
+    // 登录
+    let handleLogin = () => {
+      isLogin.value = true
+    }
+
+    // 登出
+    let handleLogout = () => {
+      isLogin.value = false
+    }
+
+    const errorHandler = () => true
+
+    return {
+      isLogin,
+      isShowMenu,
+      mainMenuRef,
+      moreFilledRef,
+      iconColor,
+      moreRef,
+      user,
+      show,
+      handleMainMenu,
+      handleLogin,
+      handleLogout,
+      errorHandler
     }
   }
+}
 </script>
 
-<style scoped>
-.header {
-  height: 70px;
-  background: #FFFFFF;
-  box-shadow: 0 3px 12px 0 rgb(0 0 0/10%);
-  border: 1px solid #EBEEF5;
-}
-
-.header-logo {
-  padding-top: 10px;
+<style lang="less" scoped>
+/* 设置顶部导航栏样式 */
+.navbar {
+  height: 50px;
   padding-left: 10%;
-  float: left;
-  letter-spacing: 2px;
+  padding-right: 10%;
+  display: flex;
+  background-color: #333;
 }
 
-.header-logo-text {
-  font-size: 30px;
-  padding-top: 3px;
-  font-weight: bolder;
-  padding-left: 15px;
-  float: left;
+/*系统logo图片和字体样式*/
+.logo {
+  display: flex;
+  align-items: center;
+  height: 50px;
+
+  img {
+    padding-top: 5px;
+    width: 40px;
+    height: 40px;
+  }
+  .title {
+    color: #dddddd;
+    font-size: 30px;
+  }
 }
 
-.header-search {
-  float: left;
+.menu-icon {
+  display: none;
+}
+
+.big-menu {
+  display: flex;
+}
+
+.menu {
+  display: none;
+}
+
+/* 设置导航条链接演示 */
+.navbar a {
+  font-size: 20px;
+  color: white;
+
+  padding: 12px 20px;
+  text-decoration: none;
+  text-align: center;
+}
+
+/* 更改鼠标悬停时的颜色 */
+.navbar a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/*搜索框样式*/
+.search-div {
   width: 300px;
-  border-radius: 20px;
-  padding-top: 16px;
+  padding-top: 10px;
+  text-align: center;
 }
 
-.header-links {
-  float: left;
-  padding-left: 50px;
-  padding-top: 23px;
+/*登录样式*/
+.login-link {
+  margin-left: auto;  /*右对齐*/
 }
 
-.header-link {
-  letter-spacing: 2px;
-  font-size: 17px;
-  padding-right: 40px;
+/*登录成功抽屉样式*/
+.login-dropdown {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: auto;
+
+  /*登录用户名样式*/
+  .login-name {
+    font-weight: bolder;
+    font-size: 15px;
+    letter-spacing: 2px;
+  }
 }
 
-.header-name {
-  color: #000000;
-  float: right;
-  padding-top: 15px;
-  padding-left: 15px;
-  font-weight: bolder;
-  font-size: 15px;
-  letter-spacing: 2px;
+/* 响应式布局 - 当屏幕小于 700 像素宽 */
+@media screen and (max-width: 720px) {
+  .navbar {
+    z-index: 999;
+    padding: 0 1rem;
+  }
+
+  .menu-icon {
+    order: 1;
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    position: relative;
+    margin: auto 0;
+  }
+
+  .big-menu {
+    display: none;
+  }
+
+  .menu {
+    order: 5;
+    position: absolute;
+    left: 0;
+    top: 50px;
+    width: 100%;
+    z-index: 500;
+    background-color: #333;
+    flex-direction: column;
+    display: flex;
+
+    .search-div {
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 10px;
+    }
+  }
+
+  .logo {
+    position: absolute;
+    left: 45%;
+
+    .title {
+      display: none;
+    }
+  }
+
+  .login-link, .login-dropdown {
+    order: 3;
+  }
+
+  .menu-enter-active {
+    animation: show-menu 0.5s linear;
+  }
+
+  .menu-leave-active {
+    animation: show-menu 0.5s reverse;
+  }
+
+  @keyframes show-menu {
+    from {
+      z-index: -100;
+      transform: translateY(-100%);
+    }
+
+    to {
+      z-index: 500;
+      transform: translateY(0%);
+    }
+  }
 }
 
->>> .el-input__inner {
-  border-radius: 20px;
-  height: 40px;
+/* 响应式布局 - 当屏幕为（700px < 屏幕像素 < 1200px)宽 时，系统名消失，并且左右内边距变为0 */
+@media screen and (min-width: 720px) and  (max-width: 1200px) {
+  /* 左右内边距变为0 */
+  .navbar {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* logo名消失 */
+  .logo .title {
+    display: none;
+  }
+
+  .big-menu {
+    display: flex;
+  }
+
+  .menu {
+    display: none;
+  }
 }
 </style>
