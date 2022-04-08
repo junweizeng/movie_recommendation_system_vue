@@ -8,13 +8,21 @@
     </el-button>
     <div>
       <span class="each-tag">类型：</span>
-      <el-radio-group v-for="(t,index) in types" :key="index"  v-model="type" size="small">
+      <el-radio-group
+          v-for="(t,index) in types"
+          :key="index"
+          v-model="type"
+          size="small">
         <el-radio-button class="each" :label="t" />
       </el-radio-group>
     </div>
     <div>
       <span class="each-tag">地区：</span>
-      <el-radio-group v-for="(r,index) in regions" :key="index"  v-model="region" size="small">
+      <el-radio-group
+          v-for="(r,index) in regions"
+          :key="index"
+          v-model="region"
+          size="small">
         <el-radio-button class="each" :label="r" />
       </el-radio-group>
     </div>
@@ -25,6 +33,7 @@
 
 import { RefreshRight } from "@element-plus/icons-vue";
 import {reactive, ref, watch} from "vue";
+import emitter from "@/utils/eventBus";
 
 export default {
   name: "MovieTags",
@@ -46,15 +55,26 @@ export default {
       '澳大利亚','爱尔兰','瑞典','巴西','丹麦'
     ])
 
-    // 方法
+    /**
+     * 重置type和region按钮，使其重新回到‘全部’标签上。
+     */
     function refreshSelect() {
       type.value = types[0]
       region.value = regions[0]
     }
 
-    // 监视type和region的变化
+    /**
+     * 监视type和region的变化
+     */
     watch([type,region],(newValue,oldValue)=>{
-      console.log('type或region变化了',newValue,oldValue)
+      /**
+       * 全局事件总线
+       * 当type和region发生变化时，事件触发，更新MovieCards的搜索结果。
+       */
+      emitter.emit('handleTypeOrRegionChange', {
+        type: newValue[0],
+        region: newValue[1]
+      })
     })
 
     return {

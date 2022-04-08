@@ -19,7 +19,7 @@
     <!-- 电影卡片显示 -->
     <div v-show="isCard" class="movie-cards">
       <template
-          v-for="movie in currentMovies"
+          v-for="movie in movies"
           :key="movie.id">
         <movie-card class="card" :movie="movie"></movie-card>
       </template>
@@ -28,7 +28,7 @@
     <!-- 电影长条显示 -->
     <div v-show="!isCard"  class="movie-strips">
       <template
-          v-for="movie in currentMovies"
+          v-for="movie in movies"
           :key="movie.id">
         <movie-strip class="strip" :movie="movie"></movie-strip>
 
@@ -36,12 +36,12 @@
     </div>
 
     <!-- 分页 样式1-->
-    <div v-show="movies.length > 10" class="pagination-style-first">
+    <div v-show="total > 12" class="pagination-style-first">
       <el-pagination
           style="justify-content: center"
           v-model:currentPage="currentPage"
           v-model:page-size="pageSize"
-          v-model:total="movies.length"
+          v-model:total="total"
           pager-count="5"
           background
           layout="total, prev, pager, next, jumper"
@@ -49,12 +49,12 @@
     </div>
 
     <!-- 分页 样式2 -->
-    <div v-show="movies.length > 10"  class="pagination-style-second">
+    <div v-show="total > 12"  class="pagination-style-second">
       <el-pagination
           style="justify-content: center"
           v-model:currentPage="currentPage"
           v-model:page-size="pageSize"
-          v-model:total="movies.length"
+          v-model:total="total"
           pager-count="5"
           small
           background
@@ -67,8 +67,10 @@
 <script>
 import {PictureRounded, Menu as IconMenu, Grid as IconGrid, List as IconList} from "@element-plus/icons-vue";
 import MovieCard from "@/components/basic/MovieCard";
-import {reactive, ref, toRefs, watch} from "vue";
+import {onBeforeUnmount, reactive, ref, toRefs, watch} from "vue";
 import MovieStrip from "@/components/basic/MovieStrip";
+import request from "@/utils/request";
+import emitter from "@/utils/eventBus";
 
 export default {
   // 这里用来纪念一下困扰我多天的低级错误，把MovieCard.vue 和 MovieCards.vue的name都写成了MovieCard，导致递归堆栈溢出问题！！！
@@ -82,50 +84,99 @@ export default {
     MovieStrip
   },
   setup() {
-    let movies = reactive([
-      {id:'001',name:'战狼',src:'https://img0.baidu.com/it/u=2535847271,500295178&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=666',score:3.7,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
-      {id:'002',name:'中国医生',src:'https://img1.baidu.com/it/u=246487087,4260921059&fm=253&fmt=auto&app=138&f=JPEG?w=357&h=500',score:5,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
-      {id:'003',name:'我是传奇',src:'https://img1.baidu.com/it/u=556028526,3717333338&fm=253&fmt=auto&app=138&f=JPEG?w=339&h=500',score:4.7,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
-      {id:'004',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
-      {id:'005',name:'这个名字很长，用来测试页面11111111111111111',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
-      {id:'006',name:'八佰',src:'https://img1.baidu.com/it/u83581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
-      {id:'007',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
-      {id:'008',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
-      {id:'009',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
-      {id:'010',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
-      {id:'011',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
-      {id:'012',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
-      {id:'013',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
-      {id:'014',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
-      {id:'015',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
-      {id:'016',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
-      {id:'017',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
-      {id:'018',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
-      {id:'019',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
-      {id:'020',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'}
-    ])
+    // let movies = reactive([
+    //   {id:'001',name:'战狼',src:'https://img0.baidu.com/it/u=2535847271,500295178&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=666',score:3.7,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
+    //   {id:'002',name:'中国医生',src:'https://img1.baidu.com/it/u=246487087,4260921059&fm=253&fmt=auto&app=138&f=JPEG?w=357&h=500',score:5,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
+    //   {id:'003',name:'我是传奇',src:'https://img1.baidu.com/it/u=556028526,3717333338&fm=253&fmt=auto&app=138&f=JPEG?w=339&h=500',score:4.7,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
+    //   {id:'004',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
+    //   {id:'005',name:'这个名字很长，用来测试页面11111111111111111',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
+    //   {id:'006',name:'八佰',src:'https://img1.baidu.com/it/u83581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
+    //   {id:'007',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
+    //   {id:'008',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
+    //   {id:'009',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
+    //   {id:'010',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
+    //   {id:'011',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
+    //   {id:'012',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
+    //   {id:'013',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
+    //   {id:'014',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
+    //   {id:'015',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
+    //   {id:'016',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
+    //   {id:'017',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
+    //   {id:'018',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
+    //   {id:'019',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'},
+    //   {id:'020',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4,directors:'张艺谋',actors:'莱昂纳多·迪卡普里奥 / 凯特·温丝莱特 / 比利·赞恩 / 凯西·贝茨 / 弗兰西丝·费舍',regions:'中国大陆',types:'剧情'}
+    // ])
 
-    // 分页
-    let currentPage = ref(1);
-    let pageSize = ref(12);
-    let total = ref(movies.length);
+    // 分页结果，电影列表
+    let movies = reactive([])
 
-    let currentMovies = reactive(movies.slice(0, pageSize.value))
+    // 分页查询需要用到的一些数据
+    let currentPage = ref(1); // 当前页码
+    let pageSize = ref(12);   // 每页电影数量
+    let total = ref(movies.length); // 总电影数
+    let type = ref('全部');    // 电影类型
+    let region = ref('全部');  // 电影地区
+    let searchKey = ref('');  // 搜索结果
 
+    /**
+     * 向服务器请求电影数据
+     */
+    let getMovies = () => {
+      request.get('/movie', {
+        params: {
+          'currentPage': currentPage.value,
+          'pageSize': pageSize.value,
+          'type': type.value,
+          'region': region.value,
+          'search': searchKey.value,
+        }
+      }).then(res => {
+        console.log('hello', currentPage.value, pageSize.value)
+        let len = movies.length
+        while (len -- ) {
+          movies.pop()
+        }
+        movies.push(...res.data.records)
+        total.value = res.data.total
+      }).catch(err => {
+        console.log(err)
+      })
+    }
+
+    // 初始化页面时，获取电影信息列表
+    getMovies()
+
+    /**
+     * 监听`当前页码`变化
+     * 若页码发生变化，重新请求电影数据，随后页面发生变化。
+     */
     watch(currentPage, (newValue, oldValue) => {
-      let ps = pageSize.value
-      let begin = (newValue - 1) * ps
-      let end = newValue * ps
-      let len = currentMovies.length
-      while (len -- ) {
-        currentMovies.pop()
-      }
-      currentMovies.push(...movies.slice(begin, end))
-      console.log('currentMovies', currentMovies)
+      // 页面回到顶部
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+      // 兼容IE
+      window.scrollTo(0, 0);
+
+      getMovies()
     });
 
+    /**
+     * 监听`每页电影数量`变化
+     * 若发生变化，重新请求电影数据，随后页面发生变化。
+     */
     watch(pageSize, (newValue, oldValue) => {
       console.log('page-size', newValue)
+    })
+
+    /**
+     * 全局事件总线
+     * 监听MovieTags.vue中的type和region的变化
+     */
+    emitter.on('handleTypeOrRegionChange', data => {
+      type.value = data.type;
+      region.value = data.region;
+      currentPage.value = 1;
+      getMovies();
     })
 
     // 电影 卡片 or 长条 开关值，true为卡片，false为长条
@@ -142,16 +193,20 @@ export default {
       }
     }
 
+    onBeforeUnmount(() => {
+      console.log('关闭事件监听。。。。。')
+      emitter.off('handleTypeOrRegionChange');
+    })
 
     return {
       pageSize,
       currentPage,
       total,
       movies,
-      currentMovies,
       isCard,
       listColor,
       gridColor,
+      getMovies,
       handleSwitch,
     }
   },
@@ -186,6 +241,7 @@ export default {
 /* 电影长条样式 */
 .movie-strips {
   margin-left: 3rem;
+  margin-right: 3rem;
 
   .strip {
     margin-top: 0.3rem;
