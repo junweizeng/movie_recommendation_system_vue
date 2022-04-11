@@ -144,7 +144,7 @@ export default {
 
     // 登录
     let handleLogin = () => {
-      isLogin.value = true
+      router.push('/login');
     }
 
     // 登出

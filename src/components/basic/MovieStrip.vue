@@ -85,7 +85,8 @@ export default {
   border-width: 1px;
   box-shadow: 0.5rem 1rem 1rem #b0d2e5;
   transition: all 0.5s;
-  background-image: linear-gradient(to right, #b0d2e5, #da9797);
+  //background-image: linear-gradient(to right, #b0d2e5, #da9797);
+  background-image: linear-gradient(to right, #b2fefa, #0ed2f7);
 }
 
 .image {

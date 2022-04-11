@@ -71,6 +71,7 @@ import {onBeforeUnmount, reactive, ref, toRefs, watch} from "vue";
 import MovieStrip from "@/components/basic/MovieStrip";
 import request from "@/utils/request";
 import emitter from "@/utils/eventBus";
+import {ElMessage} from "element-plus";
 
 export default {
   // 这里用来纪念一下困扰我多天的低级错误，把MovieCard.vue 和 MovieCards.vue的name都写成了MovieCard，导致递归堆栈溢出问题！！！
@@ -139,7 +140,11 @@ export default {
         movies.push(...res.data.records)
         total.value = res.data.total
       }).catch(err => {
-        console.log(err)
+        ElMessage({
+          type: "error",
+          message: err,
+          showClose: true,
+        })
       })
     }
 

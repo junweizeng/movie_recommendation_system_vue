@@ -123,6 +123,7 @@
 import {onMounted, ref} from "vue";
 import request from "@/utils/request";
 import {useRouter} from "vue-router";
+import {ElMessage} from "element-plus";
 
 export default {
   name: 'MovieInfo',
@@ -184,17 +185,30 @@ export default {
         id: router.currentRoute.value.params.id
       }
     }).then(res => {
-      movie.value = res.data;
-      score.value = movie.value.score / 2.0;
-      percentages.value = [
-        { color: '#f56c6c', percentage: movie.value.five, text: '5星' },
-        { color: '#e6a23c', percentage: movie.value.four, text: '4星' },
-        { color: '#5cb87a', percentage: movie.value.three, text: '3星' },
-        { color: '#1989fa', percentage: movie.value.two, text: '2星' },
-        { color: '#6f7ad3', percentage: movie.value.one, text: '1星' },
-      ]
+      if (res.code === 200) {
+        movie.value = res.data;
+        score.value = movie.value.score / 2.0;
+        percentages.value = [
+          { color: '#f56c6c', percentage: movie.value.five, text: '5星' },
+          { color: '#e6a23c', percentage: movie.value.four, text: '4星' },
+          { color: '#5cb87a', percentage: movie.value.three, text: '3星' },
+          { color: '#1989fa', percentage: movie.value.two, text: '2星' },
+          { color: '#6f7ad3', percentage: movie.value.one, text: '1星' },
+        ]
+      } else {
+        console.log('response为：', res)
+        ElMessage({
+          type: "error",
+          message: res.msg,
+          showClose: true
+        })
+      }
     }).catch(err => {
-      console.log(err)
+      ElMessage({
+        type: "error",
+        msg: err,
+        showClose: true
+      })
     })
 
     return {

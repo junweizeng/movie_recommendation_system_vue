@@ -1,99 +1,225 @@
 <template>
-  <div class="login">
-    <div class="login-form">
-      <div class="login-form-header">
-        <img style="width: 75px; height: 75px;float: left;padding-right: 40px;" src="../assets/logo.png"
-             alt=""/>
-        <div class="login-form-text">电影推荐系统 - 注册</div>
+
+  <div class="login-form my-border" @keyup.enter="postRegister">
+
+    <div class="login-form-header">
+      <router-link to="/home">
+        <img style="width: 75px; height: 75px; float: left; padding-right: 40px;" src="../assets/logo.png" alt="logo"/>
+      </router-link>
+
+      <div class="login-form-text">电影推荐系统 - 登录</div>
+    </div>
+
+    <el-form ref="registerFormRef" :model="registerForm" :rules="rules">
+      <el-form-item label="账 号" prop="username">
+        <el-input
+            class="login-form-input"
+            placeholder="账 号"
+            v-model="registerForm.username"
+            autofocus
+            autocomplete="off"
+        >
+          <template #prefix>
+            <el-icon class="el-input__icon"><icon-user/></el-icon>
+          </template>
+        </el-input>
+      </el-form-item>
+
+      <el-form-item label="密 码" prop="password">
+        <el-input
+            class="login-form-input"
+            placeholder="密 码"
+            v-model="registerForm.password"
+            show-password
+        >
+          <template #prefix>
+            <el-icon class="el-input__icon"><icon-lock/></el-icon>
+          </template>
+        </el-input>
+      </el-form-item>
+
+      <el-form-item label="确 认" prop="checkPass">
+        <el-input
+            class="login-form-input"
+            placeholder="密 码 确 认"
+            v-model="registerForm.checkPass"
+            show-password
+        >
+          <template #prefix>
+            <el-icon class="el-input__icon"><icon-lock/></el-icon>
+          </template>
+        </el-input>
+      </el-form-item>
+
+      <div style="padding-top: 10px">
+        <el-checkbox v-model="agree">我已同意"电影推荐系统"用户注册协议!</el-checkbox>
       </div>
-      <div style="color: #91949c;font-weight: bolder">
-        <p>Username</p>
-        <el-input class="login-form-input" v-model="username" placeholder="账 号"></el-input>
-        <p>Password</p>
-        <el-input class="login-form-input" placeholder="密 码" v-model="password" show-password></el-input>
-        <p>Check Password</p>
-        <el-input class="login-form-input" placeholder="确 认 密 码" v-model="checkPassword"
-                  show-password></el-input>
-        <div style="padding-top: 10px">
-          <el-checkbox v-model="agree">我已同意"电影推荐系统"用户注册协议!</el-checkbox>
-        </div>
-        <el-button @click="postLogin" class="login-form-button" type="primary">SIGN UP</el-button>
-      </div>
-      <div class="login-form-footer">
-        <el-link href="/login" style="font-weight: bolder;font-size: 16px;color: #91949c;"
-                 :underline="false">
-          我有账号 去登录
-          <i style="font-weight: bolder;font-size: 15px" class="el-icon-right"></i>
-        </el-link>
-      </div>
+
+      <el-form-item>
+        <el-button @click="postRegister" class="login-form-button" type="primary">注 册</el-button>
+      </el-form-item>
+    </el-form>
+
+    <div class="login-form-footer">
+      <el-link href="/login" style="font-weight: bolder;font-size: 16px;color: #91949c;" :underline="false">
+        我有账号 去登录
+        <i style="font-weight: bolder; font-size: 15px" class="el-icon-right"></i>
+      </el-link>
     </div>
   </div>
+
 </template>
 
 <script>
-  export default {
-    name: 'RegisterView',
-    data() {
-      return {
-        username: '',
-        password: '',
-        checkPassword: '',
-        agree: false,
-      }
-    },
-    methods: {
-      postLogin() {
-        if (this.username.length < 6) {
-          this.$message({
-            message: '请输入不少于6位的用户名',
-            type: 'warning'
-          });
-          return
-        }
-        if (this.agree === false) {
-          this.$message({
-            message: '请勾选 我已同意"电影推荐系统"用户注册协议!',
-            type: 'warning'
-          });
-          return
-        }
-        if (this.password !== this.checkPassword) {
-          this.$message({
-            message: '您两次输入的密码不同!',
-            type: 'warning'
-          });
-          return
-        }
-        const LoginData = {
-          username: this.username,
-          password: this.password,
-          remember: this.remember
-        };
-        console.log(LoginData);
-        Register(LoginData).then(res => {
-          if (res.success) {
-            this.$router.push("/login")
-          }
-        })
+import {Lock as IconLock, User as IconUser} from "@element-plus/icons";
+import {reactive, ref, unref} from "vue";
+import request from "@/utils/request";
+import {useRouter} from "vue-router";
+import { ElMessage } from 'element-plus'
+import {FormInstance} from "element-plus";
+
+export default {
+  name: 'login',
+  components: {
+    IconUser,
+    IconLock,
+  },
+  setup() {
+    let router = useRouter()
+    let remember = ref(false)
+    const registerFormRef = ref('')
+
+    const registerForm = reactive({
+      username: '',
+      password: '',
+      checkPass: '',
+    })
+
+    const validateUser = (rule, value, callback) => {
+      const reg = /^[a-zA-Z0-9]+$/
+      if (value === '') {
+        callback(new Error('请输入账号'))
+      } else if (value.length < 4 || value.length > 20) {
+        callback(new Error('长度在4到20个字符'))
+      } else if (!reg.test(value)) {
+        callback(new Error('只允许填写数字、字母'))
+      } else {
+        callback()
       }
     }
+    const validateUserChange = (rule, value, callback) => {
+      const reg = /^[a-zA-Z0-9]+$/
+      if (!reg.test(value)) {
+        callback(new Error('只允许填写数字、字母'))
+      } else {
+        callback()
+      }
+    }
+    const validatePassBlur = (rule, value, callback) => {
+      const reg = /^[a-zA-Z0-9_!.@]+$/
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else if (value.length < 4 || value.length > 20) {
+        callback(new Error('长度在4到20个字符'))
+      } else if (!reg.test(value)) {
+        callback(new Error('只允许填写数字、字母、符号(_、!、.、@)'))
+      } else {
+        callback()
+      }
+    }
+    const validatePassChange = (rule, value, callback) => {
+      const reg = /^[a-zA-Z0-9_!.@]+$/
+      if (!reg.test(value)) {
+        callback(new Error('只允许填写数字、字母、符号(_、!、.、@)'))
+      } else {
+        callback()
+      }
+    }
+    const validatePassAgainBlur = (rule, value, callback) => {
+      const reg = /^[a-zA-Z0-9_!.@]+$/
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value.length < 4 || value.length > 20) {
+        callback(new Error('长度在4到20个字符'))
+      } else if (!reg.test(value)) {
+        callback(new Error('只允许填写数字、字母、符号(_、!、.、@)'))
+      } else if (value !== registerForm.password) {
+        callback(new Error("两次密码输入不一致"))
+      } else {
+        callback()
+      }
+    }
+    const rules = reactive({
+      username: [
+        { required: true, validator: validateUser, trigger: 'blur' },
+        { validator: validateUserChange, trigger: 'change' }
+      ],
+      password: [
+        { required: true, validator: validatePassBlur, trigger: 'blur' },
+        { validator: validatePassChange, trigger: 'change' }
+      ],
+      checkPass: [
+        { required: true, validator: validatePassAgainBlur, trigger: 'blur' },
+        { validator: validatePassChange, trigger: 'change' }
+      ]
+    })
+
+    const postRegister = async () => {
+      const form = unref(registerFormRef)
+      if (!form) {
+        return
+      }
+      try {
+        await form.validate()
+        request.post("/user/register", registerForm).then(res => {
+          if (res.code === 200) {
+            ElMessage({
+              type: "success",
+              message: res.msg,
+              showClose: true,
+            })
+            // 注册成功之后，进行页面跳转
+            router.replace("/login")
+          } else {
+            ElMessage({
+              type: "error",
+              message: res.msg,
+              showClose: true,
+            })
+          }
+        }).catch(err => {
+          ElMessage({
+            type: "error",
+            message: err,
+            showClose: true,
+          })
+        })
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    return {
+      remember,
+      registerFormRef,
+      registerForm,
+      rules,
+      postRegister,
+    }
   }
+}
 </script>
 
 <style scoped>
 
-.login {
-  width: 100%;
-  height: 100%;
-  background: #FFFFFF;
-}
-
 .login-form {
-  width: 500px;
+  width: 28rem;
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -60%);
+  padding: 2rem;
+  margin-top: 1rem;
   letter-spacing: 2px;
 }
 
@@ -106,7 +232,7 @@
 .login-form-text {
   color: #000000;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 1.8rem;
   padding-top: 15px;
 }
 
@@ -122,19 +248,19 @@
   letter-spacing: 2px;
   height: 60px;
   background: #5a84fd;
-  box-shadow: 0 5px 30px rgb(0 66 8);
+  /*box-shadow: 0 5px 30px rgb(0 66 8);*/
   margin-top: 35px;
 }
 
 .login-form-footer {
   font-weight: bolder;
   color: #91949c;
-  padding-top: 40px;
+  padding-top: 1.5rem;
   text-align: center;
 }
 
 >>> .el-input__inner {
-  height: 48px;
+  height: 3rem;
 }
 
 .el-checkbox {
@@ -143,4 +269,12 @@
   font-size: 15px;
 }
 
+/deep/ .el-form-item__label {
+  color: #91949c;
+  font-weight: bold;
+}
+
+/deep/ .el-form-item {
+  align-items: baseline;
+}
 </style>
