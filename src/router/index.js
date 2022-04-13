@@ -61,7 +61,7 @@ router.afterEach((to, from, next) => {
 
   // 兼容IE
   window.scrollTo(0, 0);
-  next();
+  // next();
 })
 
 export default router
