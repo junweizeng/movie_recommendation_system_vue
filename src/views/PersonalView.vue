@@ -14,7 +14,12 @@
             <span>动态</span>
           </span>
         </template>
-        Route
+
+        <comment-strip>
+          <template v-slot:movieInfo>
+            <movie-strip></movie-strip>
+          </template>
+        </comment-strip>
       </el-tab-pane>
 
       <!-- 我看过的 -->
@@ -50,10 +55,18 @@ import {Avatar} from "@element-plus/icons-vue";
 import PersonalInfo from "@/components/personal/PersonalInfo";
 import MovieCard from "@/components/classification/MovieCards";
 import MovieStrip from "@/components/basic/MovieStrip";
+import CommentStrip from "@/components/basic/CommentStrip";
 
 export default {
   name: "PersonalView",
-  components: {MovieCard, Avatar, AvatarEdit, PersonalInfo, MovieStrip},
+  components: {
+    MovieCard,
+    Avatar,
+    AvatarEdit,
+    PersonalInfo,
+    MovieStrip,
+    CommentStrip,
+  },
   setup() {
     let avatarUrl = ref('https://ts1.cn.mm.bing.net/th?id=OIP-C.ZeQ5h5qmFJdYmGKtrR-I9gAAAA&w=204&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.25&pid=3.1&rm=2')
 

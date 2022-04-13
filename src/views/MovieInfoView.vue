@@ -22,9 +22,33 @@
             <el-icon><film /></el-icon>
             <span>评论</span>
           </span>
-
           </template>
-          <personal-info/>
+
+          <el-button @click="handleEditDialogVisible" circle>
+            <template #icon>
+              <el-icon><edit/></el-icon>
+            </template>
+          </el-button>
+
+          <el-dialog v-model="isEditDialogVisible" title="编辑短评" draggable>
+            <div>
+              <el-rate
+                  v-model="editInfo.score"
+                  :texts="['2', '4', '6', '8', '10']"
+                  text-color="#008000"
+                  show-text
+              />
+              <el-input v-model="editInfo.comment" type="textarea" />
+            </div>
+
+            <template #footer>
+
+                <el-button @click="handleEditDialogVisible">取 消</el-button>
+                <el-button type="primary" @click="handleSubmitComment">提 交</el-button>
+
+            </template>
+          </el-dialog>
+
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -39,15 +63,35 @@ import MovieList from "@/components/home/MovieList";
 import {reactive, ref} from "vue";
 import movieRequest from "@/api/movie";
 import {useRouter} from "vue-router";
-import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
+import {ErrorMessage, SuccessMessage, WarningMessage} from "@/utils/myMessage";
+import {Edit} from "@element-plus/icons";
 
 export default {
   name: 'MovieInfoView',
-  components: { MovieInfo, MovieComments, MovieList },
+  components: {Edit, MovieInfo, MovieComments, MovieList },
   setup() {
     const router = useRouter()
     let tag = ref('喜欢这部电影的人也喜欢')
     let movies = reactive([])
+    let editInfo = reactive({
+      score: 0,
+      comment: '',
+    })
+
+    let isEditDialogVisible = ref(false)
+    let handleEditDialogVisible = () => {
+      isEditDialogVisible.value = !isEditDialogVisible.value
+      console.log(isEditDialogVisible.value)
+    }
+    let handleSubmitComment = () => {
+      if (editInfo.score === 0) {
+        WarningMessage('不可以给电影打0分 (┬┬﹏┬┬)')
+      } else {
+        // TODO 向服务器发送提交请求
+
+        isEditDialogVisible.value = false
+      }
+    }
 
     movieRequest.getRecommendedMovieByMovieId(
         router.currentRoute.value.params.id
@@ -64,9 +108,15 @@ export default {
       console.log('MovieInfo err', err)
     })
 
+
+
     return {
       tag,
-      movies
+      movies,
+      editInfo,
+      isEditDialogVisible,
+      handleEditDialogVisible,
+      handleSubmitComment,
     }
   },
 }
@@ -84,11 +134,19 @@ export default {
   margin-right: 5%;
 }
 
+/deep/ .el-dialog {
+  width: 40%
+}
+
 /* 响应式布局 - 当屏幕小于 1200 像素宽 */
 @media screen and (max-width: 1200px) {
   .list-and-comments {
     margin-left: 5%;
     margin-right: 5%;
+  }
+
+  /deep/ .el-dialog {
+    width: 60%
   }
 }
 /* 响应式布局 - 当屏幕 小于 800像素 宽 */
@@ -96,6 +154,10 @@ export default {
   .list-and-comments {
     margin-left: 0;
     margin-right: 0;
+  }
+
+  /deep/ .el-dialog {
+    width: 80%
   }
 }
 </style>
