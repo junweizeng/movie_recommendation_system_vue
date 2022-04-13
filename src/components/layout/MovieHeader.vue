@@ -67,10 +67,9 @@
         <div class="login-name">
           {{ user.nickname }}
         </div>
-        <el-avatar @error="errorHandler">
-          <img
-              src="../../assets/logo.png"
-          />
+        <el-avatar :src="user.avatar" @error="errorHandler">
+          <!-- 当图片加载错误时，将加载这里面的图片 -->
+          <img src="../../assets/default_avatar.png"/>
         </el-avatar>
       </el-button>
 
@@ -106,9 +105,6 @@
 import {reactive, ref, watch} from "vue";
 import {useRouter} from 'vue-router'
 import {More, MoreFilled, Menu as MenuIcon} from "@element-plus/icons";
-import request from "@/utils/request";
-import {ElMessage} from "element-plus";
-import UserRequest from "@/api/user";
 import userRequest from "@/api/user";
 import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
 

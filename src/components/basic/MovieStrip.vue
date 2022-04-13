@@ -1,7 +1,7 @@
 <template>
   <div class="movie-strip-master">
     <div class="image-div">
-      <el-image :src="movie.src" class="image">
+      <el-image :src="movie.pic" class="image">
         <template #error>
           <picture-rounded class="image-error"></picture-rounded>
         </template>
@@ -64,6 +64,16 @@ export default {
   props: {
     movie: {
       type: Object,
+      default: {
+        id: -1,
+        name: 'Default Movie',
+        pic: '',
+        score: 0,
+        directors: 'directors',
+        actors: 'actors',
+        regions: 'regions',
+        types: 'types',
+      }
     }
   },
   setup(props) {
