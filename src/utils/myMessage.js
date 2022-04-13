@@ -15,3 +15,19 @@ export function ErrorMessage(msg) {
         showClose: true
     })
 }
+
+export function InfoMessage(msg) {
+    return ElMessage({
+        type: 'info',
+        message: msg,
+        showClose: true
+    })
+}
+
+export function WarningMessage(msg) {
+    return ElMessage({
+        type: 'warning',
+        message: msg,
+        showClose: true
+    })
+}
