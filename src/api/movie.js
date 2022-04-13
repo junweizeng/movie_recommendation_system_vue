@@ -42,6 +42,18 @@ const movieRequest = {
                 'id': movieId
             }
         })
+    },
+    getRecommendedMovieByMovieId: (movieId) => {
+        return request({
+            url: '/movie/recommend',
+            method: 'get',
+            headers: {
+                isNeedToken: false
+            },
+            params: {
+                'id': movieId
+            }
+        })
     }
 }
 

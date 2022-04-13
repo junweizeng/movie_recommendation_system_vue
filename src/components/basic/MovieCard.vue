@@ -1,11 +1,6 @@
 <template>
   <div class="card">
-    <router-link :to="{
-      name: 'movieInfo',
-      params: {
-        id: movie.id
-      }
-    }">
+    <a :href="`/movie/info/${movie.id}`">
       <div class="image-div">
         <el-image :src="movie.src" class="image">
           <template #error>
@@ -35,7 +30,7 @@
           />
         </div>
       </div>
-    </router-link>
+    </a>
   </div>
 </template>
 

@@ -3,11 +3,30 @@
     <movie-info/>
 
     <div class="list-and-comments my-border">
-      <movie-list class="list" :tag="tag"/>
-      <movie-list class="list" :tag="tag"/>
-      <movie-list class="list" :tag="tag"/>
-      <movie-list class="list" :tag="tag"/>
-      <movie-list class="list" :tag="tag"/>
+
+
+      <el-tabs type="border-card" class="demo-tabs">
+        <el-tab-pane>
+          <template #label>
+          <span class="tab-labels">
+            <el-icon><chat-round /></el-icon>
+            <span>推荐</span>
+          </span>
+          </template>
+          <movie-list v-if="movies.length" class="list" :tag="tag" :movies="movies" />
+        </el-tab-pane>
+
+        <el-tab-pane>
+          <template #label>
+          <span class="tab-labels">
+            <el-icon><film /></el-icon>
+            <span>评论</span>
+          </span>
+
+          </template>
+          <personal-info/>
+        </el-tab-pane>
+      </el-tabs>
     </div>
 
   </div>
@@ -17,15 +36,39 @@
 import MovieInfo from "@/components/movie/MovieInfo";
 import MovieComments from "@/components/movie/MovieComments";
 import MovieList from "@/components/home/MovieList";
+import {reactive, ref} from "vue";
+import movieRequest from "@/api/movie";
+import {useRouter} from "vue-router";
+import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
 
 export default {
   name: 'MovieInfoView',
-  data() {
+  components: { MovieInfo, MovieComments, MovieList },
+  setup() {
+    const router = useRouter()
+    let tag = ref('喜欢这部电影的人也喜欢')
+    let movies = reactive([])
+
+    movieRequest.getRecommendedMovieByMovieId(
+        router.currentRoute.value.params.id
+    ).then(res => {
+      if (res.code === 200) {
+        let moviesRes = res.data.movies
+        for (let i = 0; i < moviesRes.length; ++ i) {
+          movies.push(moviesRes[i])
+        }
+      } else {
+        ErrorMessage(res.msg)
+      }
+    }).catch(err => {
+      console.log('MovieInfo err', err)
+    })
+
     return {
-      tag: '喜欢这部电影的人也喜欢',
+      tag,
+      movies
     }
   },
-  components: { MovieInfo, MovieComments, MovieList }
 }
 </script>
 

@@ -220,6 +220,8 @@ export default {
   padding-right: 10%;
   display: flex;
   background-color: #333;
+  //background-color: transparent;
+  //border-color:transparent;
 }
 
 /*系统logo图片和字体样式*/
