@@ -64,8 +64,8 @@
 
     <el-dropdown class="login-dropdown" v-if="isLogin">
       <el-button type="text">
-        <div class="login-name">{{ user.nickname }}
-          <i class="el-icon-caret-bottom"></i>
+        <div class="login-name">
+          {{ user.nickname }}
         </div>
         <el-avatar @error="errorHandler">
           <img
@@ -106,20 +106,28 @@
 import {reactive, ref, watch} from "vue";
 import {useRouter} from 'vue-router'
 import {More, MoreFilled, Menu as MenuIcon} from "@element-plus/icons";
+import request from "@/utils/request";
+import {ElMessage} from "element-plus";
+import UserRequest from "@/api/user";
+import userRequest from "@/api/user";
+import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
 
 export default {
   name: "MovieHeader",
   components: {MoreFilled, More, MenuIcon},
   setup() {
     const router = useRouter()
-    let isLogin = ref(false);
+    let isLogin = ref(false)
     let isShowMenu = ref(false);
     let mainMenuRef = ref(null);
     let moreRef = ref(null);
     let moreFilledRef = ref(null);
     let iconColor = ref('white')
     let user = reactive({
-      nickname: 'Vanish丶'
+      id: 0,
+      nickname: '123',
+      avatar: '',
+      sex: '',
     })
 
     // 展示名为name的页面
@@ -149,8 +157,40 @@ export default {
 
     // 登出
     let handleLogout = () => {
-      isLogin.value = false
+      userRequest.logout().then(res => {
+        if (res.code === 200) {
+          SuccessMessage(res.msg)
+          // 用户注销时将缓存中的token和userInfo删除
+          localStorage.removeItem('token')
+          localStorage.removeItem('userInfo')
+          isLogin.value = false
+        } else {
+          ErrorMessage(res.msg)
+        }
+      }).catch(err => {
+        ErrorMessage(err)
+      })
     }
+
+    /**
+     * 每次初始化界面是判断token是否过期，如果没有过期，则显示登录基本信息
+     */
+    userRequest.judge().then(res => {
+      if (res.code === 200) {
+        isLogin.value = true
+        let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+        user.nickname = userInfo.nickname
+        user.id  = userInfo.id
+        user.avatar = userInfo.avatar
+        user.sex = userInfo.sex
+      } else {
+        isLogin.value = false
+        ErrorMessage(res.msg)
+      }
+    }).catch(err => {
+      console.log(err)
+      console.error(err)
+    })
 
     const errorHandler = () => true
 

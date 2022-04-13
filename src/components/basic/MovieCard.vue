@@ -5,7 +5,7 @@
       params: {
         id: movie.id
       }
-    }" replace>
+    }">
       <div class="image-div">
         <el-image :src="movie.src" class="image">
           <template #error>

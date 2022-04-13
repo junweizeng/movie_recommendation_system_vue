@@ -124,6 +124,8 @@ import {onMounted, ref} from "vue";
 import request from "@/utils/request";
 import {useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
+import movieRequest from "@/api/movie";
+import {ErrorMessage} from "@/utils/myMessage";
 
 export default {
   name: 'MovieInfo',
@@ -131,26 +133,6 @@ export default {
     const router = useRouter();
     let actorsDialogVisible = ref(false);
     let introductionDialogVisible = ref(false);
-
-    // let movie = reactive({
-    //   name: '肖申克的救赎 The Shawshank Redemption (1994)',
-    //   directors: '弗兰克·德拉邦特',
-    //   types: '剧情 / 犯罪',
-    //   regions: '美国',
-    //   languages: '英语',
-    //   actors: '蒂姆·罗宾斯 / 摩根·弗里曼 / 鲍勃·冈顿 / 威廉姆·赛德勒' +
-    //       ' / 克兰西·布朗 / 吉尔·贝罗斯 / 马克·罗斯顿 / 詹姆斯·惠特摩 /' +
-    //       ' 杰弗里·德曼 / 拉里·布兰登伯格 / 尼尔·吉恩托利 / 布赖恩·利比 /' +
-    //       ' 大卫·普罗瓦尔 / 约瑟夫·劳格诺 / 祖德·塞克利拉 / 保罗·麦克兰尼 /' +
-    //       ' 芮妮·布莱恩 / 阿方索·弗里曼 / V·J·福斯特 / 弗兰克·梅德拉诺 / ' +
-    //       '马克·迈尔斯 / 尼尔·萨默斯 / 耐德·巴拉米 / 布赖恩·戴拉特 / 唐·麦克马纳斯',
-    //   introduction: '布鲁斯·韦恩（罗伯特·帕丁森 饰）化身蝙蝠侠于哥谭市行侠仗义两年后，' +
-    //       '罪犯皆闻风丧胆，他也因此深入接触到哥谭市的阴暗面。他潜行于哥谭市腐败的政要名流关系网中' +
-    //       '，身边仅有的几个值得信赖的盟友——管家阿尔弗雷德·潘尼沃斯（安迪·瑟金斯 饰）与詹姆斯·' +
-    //       '戈登警长（杰弗里·怀特 饰）。这位独行的“义警侠探”在哥谭市民心中已成为“复仇”二字最当仁不让的代名词。',
-    //   score: 4,
-    // })
-
     let movie = ref({
       actors: '',
       alias: '',
@@ -180,11 +162,9 @@ export default {
     let percentages = ref([]);
 
     // 初始化界面前，请求电影信息
-    request.get('/movie/info', {
-      params: {
-        id: router.currentRoute.value.params.id
-      }
-    }).then(res => {
+    movieRequest.getMovieInfo(
+        router.currentRoute.value.params.id
+    ).then(res => {
       if (res.code === 200) {
         movie.value = res.data;
         score.value = movie.value.score / 2.0;
@@ -196,19 +176,10 @@ export default {
           { color: '#6f7ad3', percentage: movie.value.one, text: '1星' },
         ]
       } else {
-        console.log('response为：', res)
-        ElMessage({
-          type: "error",
-          message: res.msg,
-          showClose: true
-        })
+        ErrorMessage(res.msg)
       }
     }).catch(err => {
-      ElMessage({
-        type: "error",
-        msg: err,
-        showClose: true
-      })
+      ErrorMessage(err)
     })
 
     return {

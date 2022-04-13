@@ -9,7 +9,14 @@
     </div>
 
     <div class="info">
-      <div class="movie-name line-limit-length">{{ movie.name }}</div>
+      <router-link :to="{
+        name: 'movieInfo',
+        params: {
+          id: movie.id
+        }
+      }">
+        <div class="movie-name line-limit-length">{{ movie.name }}</div>
+      </router-link>
 
       <el-rate
           v-model="score"
@@ -85,14 +92,24 @@ export default {
   border-width: 1px;
   box-shadow: 0.5rem 1rem 1rem #b0d2e5;
   transition: all 0.5s;
-  //background-image: linear-gradient(to right, #b0d2e5, #da9797);
-  background-image: linear-gradient(to right, #b2fefa, #0ed2f7);
+  background-image: linear-gradient(to right, #b0d2e5, #da9797);
+  //background-image: linear-gradient(to right, #b2fefa, #0ed2f7);
 }
 
 .image {
   border-radius: 0.5rem;
   height: 14rem;
   width: 9.47rem;
+  background-color: #f5f7fa;
+}
+
+.image-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  width: 2rem;
+  height: 100%;
 }
 
 .info {
@@ -111,6 +128,15 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;    /*文本不换行，这样超出一行的部分被截取，显示...*/
 }
+
+/*未访问：蓝色、无下划线*/
+a:link {color: black; text-decoration:none;}
+/*激活：红色*/
+a:active {color: black; }
+/*已访问：紫色、无下划线*/
+a:visited {color:black;text-decoration:none;}
+/*鼠标移近：红色、下划线*/
+a:hover {color: red; text-decoration:none;}
 
 @media screen and (max-width: 400px) {
   .line-limit-length {

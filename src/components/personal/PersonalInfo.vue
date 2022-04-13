@@ -11,7 +11,7 @@
     <div class="types">
       <span class="like">类型喜好：</span>
       <el-tag
-          v-for="(type, index) in user.types"
+          v-for="(type, index) in types"
           :key="index"
           class="each-type"
           type="info"
@@ -24,7 +24,7 @@
     <div class="regions">
       <span class="like">地区喜好：</span>
       <el-tag
-          v-for="(region, index) in user.regions"
+          v-for="(region, index) in regions"
           :key="index"
           class="each-region"
           type="info"
@@ -41,22 +41,56 @@
 </template>
 
 <script>
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
 import {Edit} from "@element-plus/icons";
+import userRequest from "@/api/user";
+import {ErrorMessage} from "@/utils/myMessage";
 
 export default {
   name: "PersonalInfo",
   components: {Edit},
   setup() {
     let user = reactive({
-      nickname: 'Vanish丶',
-      sex: '男',
-      types: ['科幻','剧情','动作'],
-      regions: ['中国大陆','美国'],
+      id: -1,
+      nickname: '',
+      sex: '保密',
+      avatar: '',
+    })
+    let types = ref([])
+    let regions = ref([])
+
+    /**
+     * 每次初始化界面是判断token是否过期，如果没有过期，则显示登录基本信息
+     */
+    userRequest.judge().then(res => {
+      if (res.code === 200) {
+        let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+        user.nickname = userInfo.nickname
+        user.id  = userInfo.id
+        user.avatar = userInfo.avatar
+        user.sex = userInfo.sex
+
+        userRequest.getTypesAndRegions(
+            userInfo.id
+        ).then(res => {
+          console.log(res)
+          types.value = res.data.types
+          regions.value = res.data.regions
+        }).catch(err => {
+          console.error(err)
+        })
+      } else {
+        ErrorMessage(res.msg)
+      }
+    }).catch(err => {
+      console.log(err)
+      console.error(err)
     })
 
     return {
       user,
+      types,
+      regions
     }
   }
 }

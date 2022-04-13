@@ -51,9 +51,9 @@
         </el-input>
       </el-form-item>
 
-      <div style="padding-top: 10px">
+      <el-form-item prop="agree">
         <el-checkbox v-model="agree">我已同意"电影推荐系统"用户注册协议!</el-checkbox>
-      </div>
+      </el-form-item>
 
       <el-form-item>
         <el-button @click="postRegister" class="login-form-button" type="primary">注 册</el-button>
@@ -73,10 +73,9 @@
 <script>
 import {Lock as IconLock, User as IconUser} from "@element-plus/icons";
 import {reactive, ref, unref} from "vue";
-import request from "@/utils/request";
 import {useRouter} from "vue-router";
-import { ElMessage } from 'element-plus'
-import {FormInstance} from "element-plus";
+import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
+import userRequest from "@/api/user";
 
 export default {
   name: 'login',
@@ -86,7 +85,7 @@ export default {
   },
   setup() {
     let router = useRouter()
-    let remember = ref(false)
+    let agree = ref(false)
     const registerFormRef = ref('')
 
     const registerForm = reactive({
@@ -149,6 +148,14 @@ export default {
         callback()
       }
     }
+    const validateAgreeBlur = (rule, value, callback) => {
+      console.log('niahosdifjosjflksjflksjdlkfds')
+      if (!agree.value) {
+        callback(new Error('您需要同意《注册协议》才能注册'))
+      } else {
+        callback()
+      }
+    }
     const rules = reactive({
       username: [
         { required: true, validator: validateUser, trigger: 'blur' },
@@ -161,6 +168,9 @@ export default {
       checkPass: [
         { required: true, validator: validatePassAgainBlur, trigger: 'blur' },
         { validator: validatePassChange, trigger: 'change' }
+      ],
+      agree: [
+        { required: true, validator: validateAgreeBlur, trigger: 'blur' }
       ]
     })
 
@@ -171,28 +181,16 @@ export default {
       }
       try {
         await form.validate()
-        request.post("/user/register", registerForm).then(res => {
+        userRequest.register(registerForm).then(res => {
           if (res.code === 200) {
-            ElMessage({
-              type: "success",
-              message: res.msg,
-              showClose: true,
-            })
+            SuccessMessage(res.msg)
             // 注册成功之后，进行页面跳转
             router.replace("/login")
           } else {
-            ElMessage({
-              type: "error",
-              message: res.msg,
-              showClose: true,
-            })
+            ErrorMessage(res.msg)
           }
         }).catch(err => {
-          ElMessage({
-            type: "error",
-            message: err,
-            showClose: true,
-          })
+          ErrorMessage(err)
         })
       } catch (err) {
         console.log(err)
@@ -200,7 +198,7 @@ export default {
     }
 
     return {
-      remember,
+      agree,
       registerFormRef,
       registerForm,
       rules,
@@ -246,10 +244,14 @@ export default {
   font-weight: 600;
   font-size: 15px;
   letter-spacing: 2px;
-  height: 60px;
+  height: 3.5rem;
   background: #5a84fd;
-  /*box-shadow: 0 5px 30px rgb(0 66 8);*/
   margin-top: 35px;
+}
+
+.login-form-button:hover {
+  box-shadow: 0 10px 30px #2156f6;
+  transition: 3s;
 }
 
 .login-form-footer {

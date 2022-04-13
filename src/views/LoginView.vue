@@ -41,14 +41,13 @@
         </el-input>
       </el-form-item>
 
-      <div style="padding-top: 10px">
-        <el-checkbox v-model="remember">记住密码</el-checkbox>
-        <div style="float: right">
-          <el-link href="/forget" style="font-weight: bolder;font-size: 14px;color: #91949c;"
-                   :underline="false">
-            忘记密码?
-          </el-link>
-        </div>
+      <div class="scan-and-forget-div">
+        <el-link href="/scanLogin" class="my-font" :underline="false">
+          扫码登录
+        </el-link>
+        <el-link href="/forget" class="my-font" :underline="false">
+          忘记密码?
+        </el-link>
       </div>
 
       <el-form-item>
@@ -57,8 +56,7 @@
     </el-form>
 
     <div class="login-form-footer">
-      <el-link href="/register" style="font-weight: bolder;font-size: 16px;color: #91949c;"
-               :underline="false">
+      <el-link href="/register" class="my-font" style="font-size: 16px" :underline="false">
         还没有账号？去注册
         <i style="font-weight: bolder; font-size: 15px" class="el-icon-right"></i>
       </el-link>
@@ -71,10 +69,9 @@
 <script>
 import {Lock as IconLock, User as IconUser} from "@element-plus/icons";
 import {reactive, ref, unref} from "vue";
-import request from "@/utils/request";
 import {useRouter} from "vue-router";
-import { ElMessage } from 'element-plus'
-import {FormInstance} from "element-plus";
+import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
+import userRequest from "@/api/user";
 
 export default {
   name: 'login',
@@ -83,7 +80,7 @@ export default {
     IconLock,
   },
   setup() {
-    let router = useRouter()
+    const router = useRouter()
     let remember = ref(false)
     const loginFormRef = ref('')
 
@@ -91,7 +88,6 @@ export default {
       username: '',
       password: '',
     })
-
 
     const rules = reactive({
       username: [
@@ -111,30 +107,18 @@ export default {
       }
       try {
         await form.validate()
-        request.post("/user/login", loginForm).then(res => {
+        userRequest.login(loginForm).then(res => {
           if (res.code === 200) {
-            console.log(res.data)
             localStorage.setItem("token", res.data.token)
-            ElMessage({
-              type: "success",
-              message: res.msg,
-              showClose: true,
-            })
+            localStorage.setItem("userInfo", JSON.stringify(res.data.userInfo))
+            SuccessMessage(res.msg)
             // 登录成功之后，进行页面跳转
             router.replace("/")
           } else {
-            ElMessage({
-              type: "error",
-              message: res.msg,
-              showClose: true,
-            })
+            ErrorMessage(res.msg)
           }
         }).catch(err => {
-          ElMessage({
-            type: "error",
-            message: err,
-            showClose: true,
-          })
+          ErrorMessage(err)
         })
       } catch (err) {
         console.log(err)
@@ -152,7 +136,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 
 .login-form {
   width: 28rem;
@@ -188,10 +172,30 @@ export default {
   font-weight: 600;
   font-size: 15px;
   letter-spacing: 2px;
-  height: 60px;
+  height: 3.5rem;
   background: #5a84fd;
-  /*box-shadow: 0 5px 30px rgb(0 66 8);*/
   margin-top: 35px;
+}
+
+.login-form-button:hover {
+  box-shadow: 0 10px 30px #2156f6;
+  transition: 3s;
+}
+
+.scan-and-forget-div {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.my-font {
+  font-weight: bolder;
+  font-size: 14px;
+  color: #91949c;
+}
+
+.my-font:hover {
+  color: #5a84fd;
 }
 
 .login-form-footer {
@@ -201,7 +205,7 @@ export default {
   text-align: center;
 }
 
->>> .el-input__inner {
+ /deep/ .el-input__inner {
   height: 3rem;
 }
 
