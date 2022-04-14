@@ -33,21 +33,23 @@
           <el-dialog v-model="isEditDialogVisible" title="编辑短评" draggable>
             <div>
               <el-rate
-                  v-model="editInfo.score"
+                  v-model="ownComment.score"
                   :texts="['2', '4', '6', '8', '10']"
                   text-color="#008000"
                   show-text
               />
-              <el-input v-model="editInfo.comment" type="textarea" />
+              <el-input v-model="ownComment.comment" type="textarea" />
             </div>
-
             <template #footer>
-
                 <el-button @click="handleEditDialogVisible">取 消</el-button>
                 <el-button type="primary" @click="handleSubmitComment">提 交</el-button>
-
             </template>
           </el-dialog>
+
+          <template v-for="(c, index) in comments" :key="index">
+            <comment-strip class="comment-strip" :comment="c"></comment-strip>
+            <el-divider />
+          </template>
 
         </el-tab-pane>
       </el-tabs>
@@ -60,41 +62,61 @@
 import MovieInfo from "@/components/movie/MovieInfo";
 import MovieComments from "@/components/movie/MovieComments";
 import MovieList from "@/components/home/MovieList";
-import {reactive, ref} from "vue";
+import {nextTick, onMounted, reactive, ref} from "vue";
 import movieRequest from "@/api/movie";
 import {useRouter} from "vue-router";
 import {ErrorMessage, SuccessMessage, WarningMessage} from "@/utils/myMessage";
 import {Edit} from "@element-plus/icons";
+import commentRequest from "@/api/comment";
+import CommentStrip from "@/components/basic/CommentStrip";
 
 export default {
   name: 'MovieInfoView',
-  components: {Edit, MovieInfo, MovieComments, MovieList },
+  components: { CommentStrip, Edit, MovieInfo, MovieComments, MovieList },
   setup() {
     const router = useRouter()
+
     let tag = ref('喜欢这部电影的人也喜欢')
     let movies = reactive([])
-    let editInfo = reactive({
+    let comments = reactive([])
+
+    let movieId = ref(router.currentRoute.value.params.id)
+    let ownComment = reactive({
+      mid: movieId.value,
       score: 0,
       comment: '',
+      time: '',
+      agree: 0,
+      nickname: '',
     })
+
 
     let isEditDialogVisible = ref(false)
     let handleEditDialogVisible = () => {
       isEditDialogVisible.value = !isEditDialogVisible.value
-      console.log(isEditDialogVisible.value)
     }
     let handleSubmitComment = () => {
-      if (editInfo.score === 0) {
+      if (ownComment.score === 0) {
         WarningMessage('不可以给电影打0分 (┬┬﹏┬┬)')
       } else {
         // TODO 向服务器发送提交请求
-
+        ownComment.score *= 2
+        commentRequest.addComment(ownComment).then(res => {
+          if (res.code === 200) {
+            SuccessMessage(res.msg)
+          } else {
+            ErrorMessage(res.msg)
+          }
+        }).catch(err => {
+          console.error(err)
+        })
+        ownComment.score /= 2
         isEditDialogVisible.value = false
       }
     }
 
     movieRequest.getRecommendedMovieByMovieId(
-        router.currentRoute.value.params.id
+        ownComment.mid
     ).then(res => {
       if (res.code === 200) {
         let moviesRes = res.data.movies
@@ -105,15 +127,36 @@ export default {
         ErrorMessage(res.msg)
       }
     }).catch(err => {
-      console.log('MovieInfo err', err)
+      console.error(err)
     })
 
+    commentRequest.getOwnComment(ownComment.mid).then(res => {
+      if (res.code === 200) {
+        let data = res.data
+        ownComment.agree = data.agree
+        ownComment.comment = data.comment
+        ownComment.score = data.score / 2
+        ownComment.nickname = data.nickname
+        ownComment.time = data.time
+      }
+    }).catch(err => {
+      console.error(err )
+    })
 
+    commentRequest.getCommentsByMovieId(ownComment.mid).then(res => {
+      if (res.code === 200) {
+        let newComments = res.data.comments
+        for (let i = 0; i < newComments.length; ++ i) {
+          comments.push(newComments[i])
+        }
+      }
+    })
 
     return {
       tag,
       movies,
-      editInfo,
+      comments,
+      ownComment,
       isEditDialogVisible,
       handleEditDialogVisible,
       handleSubmitComment,
@@ -132,6 +175,10 @@ export default {
 .list-and-comments .list {
   margin-left: 5%;
   margin-right: 5%;
+}
+
+.comment-strip {
+  margin-left: 2rem;
 }
 
 /deep/ .el-dialog {

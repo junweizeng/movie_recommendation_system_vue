@@ -7,18 +7,18 @@
       </el-avatar>
 
       <div class="right">
-        <div class="name">Vanish丶</div>
+        <div class="name">{{ comment.nickname }}</div>
         <div class="score-and-time">
           <span>
             <el-rate v-model="score" disabled/>
           </span>
-          <span>2020/10/10 12:30:30</span>
+          <span>{{ comment.time }}</span>
         </div>
       </div>
     </div>
 
     <div class="comment-middle">
-      <p>这是用来测试的评论</p>
+      <p>{{ comment.comment }}</p>
 
       <slot name="movieInfo"></slot>
     </div>
@@ -27,7 +27,7 @@
       <span>
         <el-icon size="25px" color="red"><caret-top /></el-icon>
       </span>
-      <span class="agree">520</span>
+      <span class="agree">{{ comment.agree }}</span>
     </div>
   </div>
 </template>
@@ -37,8 +37,21 @@ import {ref} from "vue";
 
 export default {
   name: "CommentStrip",
-  setup() {
-    let score = ref(4)
+  props: {
+    comment: {
+      type: Object,
+      default: {
+        avatar: '',
+        nickname: '',
+        score: 0,
+        time: '',
+        comment: '',
+        agree: 0,
+      }
+    }
+  },
+  setup(props) {
+    let score = ref(props.comment.score / 2)
 
     const errorHandler = () => true;
 

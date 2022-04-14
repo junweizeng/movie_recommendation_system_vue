@@ -39,10 +39,15 @@ const movieRequest = {
                 isNeedToken: false
             },
             params: {
-                'id': movieId
+                'id': movieId,
             }
         })
     },
+    /**
+     * 通过电影id获取“喜欢这部电影的人也喜欢...”的推荐电影
+     * @param movieId 待查询的电影id
+     * @returns {*}
+     */
     getRecommendedMovieByMovieId: (movieId) => {
         return request({
             url: '/movie/recommend',

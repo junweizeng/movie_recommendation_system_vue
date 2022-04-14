@@ -1,22 +1,22 @@
 <template>
   <div class="movie-strip-master">
     <div class="image-div">
-      <el-image :src="movie.pic" class="image">
-        <template #error>
-          <picture-rounded class="image-error"></picture-rounded>
-        </template>
-      </el-image>
+      <a :href="`/movie/info/${movie.id}`">
+        <el-image :src="movie.pic" class="image">
+          <template #error>
+            <div class="image-error">
+              <film class="center-image-error"></film>
+              <img class="background-image-error" src="../../assets/default-movie.png"   alt="default"/>
+            </div>
+          </template>
+        </el-image>
+      </a>
     </div>
 
     <div class="info">
-      <router-link :to="{
-        name: 'movieInfo',
-        params: {
-          id: movie.id
-        }
-      }">
+      <a :href="`/movie/info/${movie.id}`">
         <div class="movie-name line-limit-length">{{ movie.name }}</div>
-      </router-link>
+      </a>
 
       <el-rate
           v-model="score"
@@ -118,8 +118,20 @@ export default {
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  width: 2rem;
+  width: 100%;
   height: 100%;
+
+  .center-image-error {
+    position: absolute;
+    justify-content: center;
+    width: 2rem;
+  }
+
+  .background-image-error {
+    width: 100%;
+    height: 100%;
+  }
+
 }
 
 .info {

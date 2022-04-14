@@ -2,9 +2,12 @@
   <div class="card">
     <a :href="`/movie/info/${movie.id}`">
       <div class="image-div">
-        <el-image :src="movie.src" class="image">
+        <el-image :src="pic" class="image">
           <template #error>
-            <picture-rounded class="image-error"></picture-rounded>
+            <div class="image-error">
+              <film class="center-image-error"></film>
+              <img class="background-image-error" src="../../assets/default-movie.png"  alt="default"/>
+            </div>
           </template>
         </el-image>
       </div>
@@ -48,10 +51,12 @@ export default {
   },
   setup(props) {
     let score = ref(props.movie.score / 2.0)
-
+    let pic = ref(props.movie.pic)
+    // pic.value = "https://tse2-mm.cn.bing.net/th/id/OIP-C.13S0WRZ0VJMbxoqYMyidyQHaKX?w=195&h=273&c=7&r=0&o=5&dpr=1.25&pid=1.7"
     return {
       props,
-      score
+      score,
+      pic
     }
   }
 }
@@ -111,8 +116,19 @@ export default {
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  width: 2rem;
   height: 100%;
+  width: 100%;
+
+  .center-image-error {
+    position: absolute;
+    justify-content: center;
+    width: 2rem;
+  }
+
+  .background-image-error {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 /*未访问：蓝色、无下划线*/
