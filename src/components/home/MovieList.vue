@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import {reactive} from 'vue'
 import {PictureFilled, PictureRounded} from "@element-plus/icons-vue";
 import MovieCard from "@/components/basic/MovieCard";
 

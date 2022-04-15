@@ -3,8 +3,6 @@
     <movie-info/>
 
     <div class="list-and-comments my-border">
-
-
       <el-tabs type="border-card" class="demo-tabs">
         <el-tab-pane>
           <template #label>
@@ -33,12 +31,12 @@
           <el-dialog v-model="isEditDialogVisible" title="编辑短评" draggable>
             <div>
               <el-rate
-                  v-model="ownComment.score"
+                  v-model="ownCommentEditInfo.score"
                   :texts="['2', '4', '6', '8', '10']"
                   text-color="#008000"
                   show-text
               />
-              <el-input v-model="ownComment.comment" type="textarea" />
+              <el-input v-model="ownCommentEditInfo.comment" type="textarea" />
             </div>
             <template #footer>
                 <el-button @click="handleEditDialogVisible">取 消</el-button>
@@ -46,10 +44,18 @@
             </template>
           </el-dialog>
 
-          <template v-for="(c, index) in comments" :key="index">
-            <comment-strip class="comment-strip" :comment="c"></comment-strip>
-            <el-divider />
-          </template>
+          <div class="comment-strip" v-show="ownComment.score !== 0">
+            <p class="each-comment-tag">我的短评</p>
+            <comment-strip :comment="ownComment"></comment-strip>
+          </div>
+
+          <div class="comment-strip">
+            <p class="each-comment-tag">所有短评</p>
+            <template v-for="(c, index) in comments" :key="index">
+              <comment-strip :comment="c"></comment-strip>
+              <el-divider />
+            </template>
+          </div>
 
         </el-tab-pane>
       </el-tabs>
@@ -62,7 +68,7 @@
 import MovieInfo from "@/components/movie/MovieInfo";
 import MovieComments from "@/components/movie/MovieComments";
 import MovieList from "@/components/home/MovieList";
-import {nextTick, onMounted, reactive, ref} from "vue";
+import {computed, nextTick, onMounted, reactive, ref, watch} from "vue";
 import movieRequest from "@/api/movie";
 import {useRouter} from "vue-router";
 import {ErrorMessage, SuccessMessage, WarningMessage} from "@/utils/myMessage";
@@ -89,18 +95,22 @@ export default {
       agree: 0,
       nickname: '',
     })
-
+    let ownCommentEditInfo = reactive({
+      score: 0,
+      comment: '',
+    })
 
     let isEditDialogVisible = ref(false)
     let handleEditDialogVisible = () => {
       isEditDialogVisible.value = !isEditDialogVisible.value
     }
-    let handleSubmitComment = () => {
-      if (ownComment.score === 0) {
+    let handleSubmitComment = () => {qq
+      if (ownCommentEditInfo.score === 0) {
         WarningMessage('不可以给电影打0分 (┬┬﹏┬┬)')
       } else {
-        // TODO 向服务器发送提交请求
-        ownComment.score *= 2
+        // 向服务器发送提交请求
+        ownComment.score = ownCommentEditInfo.score * 2
+        ownComment.comment = ownCommentEditInfo.comment
         commentRequest.addComment(ownComment).then(res => {
           if (res.code === 200) {
             SuccessMessage(res.msg)
@@ -110,7 +120,6 @@ export default {
         }).catch(err => {
           console.error(err)
         })
-        ownComment.score /= 2
         isEditDialogVisible.value = false
       }
     }
@@ -135,9 +144,11 @@ export default {
         let data = res.data
         ownComment.agree = data.agree
         ownComment.comment = data.comment
-        ownComment.score = data.score / 2
+        ownComment.score = data.score
         ownComment.nickname = data.nickname
         ownComment.time = data.time
+        ownCommentEditInfo.score = ownComment.score / 2
+        ownCommentEditInfo.comment = ownComment.comment
       }
     }).catch(err => {
       console.error(err )
@@ -157,6 +168,7 @@ export default {
       movies,
       comments,
       ownComment,
+      ownCommentEditInfo,
       isEditDialogVisible,
       handleEditDialogVisible,
       handleSubmitComment,
@@ -165,7 +177,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .list-and-comments {
   margin-left: 20%;
   margin-right: 20%;
@@ -179,6 +191,15 @@ export default {
 
 .comment-strip {
   margin-left: 2rem;
+  margin-right: 2rem;
+}
+
+.each-comment-tag {
+  margin-top: 1rem;
+  font-size: 2rem;
+  color: black;
+  background-color: #73a2e7;
+  border-radius: 0.6rem;
 }
 
 /deep/ .el-dialog {

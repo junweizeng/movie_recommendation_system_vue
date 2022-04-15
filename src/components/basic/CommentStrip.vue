@@ -18,7 +18,7 @@
     </div>
 
     <div class="comment-middle">
-      <p>{{ comment.comment }}</p>
+      <p class="comment-content">{{ comment.comment }}</p>
 
       <slot name="movieInfo"></slot>
     </div>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import {ref} from "vue";
+import {computed, ref} from "vue";
 
 export default {
   name: "CommentStrip",
@@ -51,7 +51,9 @@ export default {
     }
   },
   setup(props) {
-    let score = ref(props.comment.score / 2)
+    let score = computed(() => {
+      return props.comment.score / 2;
+    })
 
     const errorHandler = () => true;
 
@@ -86,6 +88,12 @@ export default {
 
 .comment-middle {
   margin: 1rem;
+
+  .comment-content {
+    // 参考链接：https://blog.csdn.net/iceking66/article/details/78253186
+    // 保留空白符序列，但是正常地进行换行。
+    white-space: pre-wrap;
+  }
 }
 
 .comment-bottom {

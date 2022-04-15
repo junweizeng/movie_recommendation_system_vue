@@ -201,7 +201,9 @@ export default {
 
 .movie-info-top .background {
   height: 33rem;
-  background: #123456;
+  /*background: #123456;*/
+  background-image: url("https://tse2-mm.cn.bing.net/th/id/OIP-C.sKOaIjWJzt5e81WeF3X5TgHaE7?w=261&h=180&c=7&r=0&o=5&dpr=1.25&pid=1.7");
+  background-size: 100% 100%;
 }
 
 .movie-info-top-left, .movie-info-top-right {
