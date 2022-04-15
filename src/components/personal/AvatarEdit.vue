@@ -1,6 +1,6 @@
 <template>
   <div @click="toggleShow" class="avatar-edit-master">
-    <el-avatar class="avatar" shape="square" style="width: 15rem; height: 15rem;" :src="imgDataUrl" alt="头像">
+    <el-avatar class="avatar" shape="square" :style="`width: ${size}rem; height: ${size}rem;`" :src="imgDataUrl" alt="头像">
       <UserFilled class="inner"></UserFilled>
     </el-avatar>
   </div>
@@ -29,6 +29,12 @@ import {reactive, toRefs} from "vue";
 export default {
   name: 'AvatarEdit',
   components: {MyUpload,UserFilled},
+  props: {
+    size: {
+      type: Number,
+      default: 15,
+    }
+  },
   setup() {
     let data = reactive({
       show: false,
@@ -106,6 +112,22 @@ export default {
 .avatar .inner {
   width:100px;
   height: 100px
+}
+
+@media screen and (max-width: 657px) {
+  /deep/ .vicp-wrap {
+    width: 290px;
+  }
+
+  /deep/ .vicp-operate {
+    position: absolute;
+    left: 25px;
+    bottom: 20px;
+  }
+
+  /deep/ .vicp-preview-item {
+    display: none;
+  }
 }
 
 </style>

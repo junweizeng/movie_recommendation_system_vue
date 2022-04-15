@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="personal-div-top">
-      <avatar-edit class="avatar" />
+      <avatar-edit :size="12" class="avatar" />
       <personal-info class="info" />
     </div>
 
@@ -90,7 +90,7 @@ export default {
   flex-wrap: wrap;
   border-radius: 0.5rem;
   background-color: #ffffff;
-  padding-left: 0.5rem;
+  padding-left: 1rem;
   vertical-align: bottom;
 
   .info {
@@ -126,6 +126,7 @@ export default {
   }
 
   .personal-div-top {
+    padding-left: 0rem;
     flex-direction: column;
 
     .avatar {

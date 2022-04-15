@@ -31,6 +31,11 @@ const routes = [
         path: 'personal/info',
         name: 'personalInfo',
         component: () => import('../views/PersonalView.vue')
+      },
+      {
+        path: '/personal/edit',
+        name: 'personalEdit',
+        component: () => import('../views/PersonalInfoEditView.vue')
       }
     ]
   },

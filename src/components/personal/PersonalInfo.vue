@@ -35,7 +35,7 @@
     </div>
 
     <div class="btn">
-      <el-button size="small" icon="Edit">编辑个人资料</el-button>
+      <el-button @click="handleEditInfo" size="small" icon="Edit">编辑个人资料</el-button>
     </div>
   </div>
 </template>
@@ -45,6 +45,7 @@ import {reactive, ref} from "vue";
 import {Edit} from "@element-plus/icons";
 import userRequest from "@/api/user";
 import {ErrorMessage} from "@/utils/myMessage";
+import router from "@/router";
 
 export default {
   name: "PersonalInfo",
@@ -73,7 +74,6 @@ export default {
         userRequest.getTypesAndRegions(
             userInfo.id
         ).then(res => {
-          console.log(res)
           types.value = res.data.types
           regions.value = res.data.regions
         }).catch(err => {
@@ -83,14 +83,20 @@ export default {
         ErrorMessage(res.msg)
       }
     }).catch(err => {
-      console.log(err)
       console.error(err)
     })
+
+    let handleEditInfo = () => {
+      router.push({
+        path: "/personal/edit"
+      })
+    }
 
     return {
       user,
       types,
-      regions
+      regions,
+      handleEditInfo
     }
   }
 }
