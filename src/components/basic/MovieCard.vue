@@ -39,7 +39,7 @@
 
 <script>
 import {PictureFilled, PictureRounded} from "@element-plus/icons-vue";
-import {computed, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 
 export default {
   name: "MovieCard",
@@ -53,8 +53,14 @@ export default {
     let score = computed(() => {
       return props.movie.score / 2;
     })
+    let oss_path = 'https://mrs-zjw.oss-cn-hangzhou.aliyuncs.com/mrs/movie/'
     let pic = ref(props.movie.pic)
+
     // pic.value = "https://tse2-mm.cn.bing.net/th/id/OIP-C.13S0WRZ0VJMbxoqYMyidyQHaKX?w=195&h=273&c=7&r=0&o=5&dpr=1.25&pid=1.7"
+
+    onMounted(() => {
+      console.log(pic.value)
+    })
     return {
       props,
       score,

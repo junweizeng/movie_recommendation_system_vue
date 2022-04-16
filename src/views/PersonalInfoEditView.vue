@@ -1,7 +1,7 @@
 <template>
   <div class="bg">
     <div class="info-edit-master">
-      <span class="back-to-my-home" >返回我的主页></span>
+      <router-link to="/personal/info" class="back-to-my-home" >返回我的主页></router-link>
 
       <div class="edit-top">
         <avatar-edit :size="12" class="avatar"></avatar-edit>
@@ -14,7 +14,13 @@
         </div>
         <!-- 昵称编辑 -->
         <div  v-show="isShowNickname" class="editing">
-          <el-input v-model="newNickname" clearable  class="editing-input"></el-input>
+          <el-input
+              maxlength="10"
+              placeholder="请输入更新后的昵称"
+              show-word-limit
+              v-model="newNickname" clearable
+              class="editing-input">
+          </el-input>
           <el-button type="primary" class="editing-btn">保存</el-button>
           <el-button @click="isShowNickname = !isShowNickname" class="editing-btn">取消</el-button>
         </div>
@@ -149,6 +155,7 @@ export default {
     right: 23%;
     padding-top: 1rem;
     color: rgb(133, 144, 166);
+    text-decoration: none;
   }
 }
 
@@ -195,12 +202,13 @@ export default {
   align-items: center;
   color: rgb(23, 81, 153);
   white-space: nowrap;
+  cursor: pointer;  // 鼠标放上去显示手势
 }
 
 // 编辑状态样式
 .editing {
   padding-left: 0.5rem;
-  max-width: 15rem;
+  max-width: 18rem;
 
   .editing-input {
     margin-left: 1rem;
@@ -217,10 +225,12 @@ export default {
   }
 
   .back-to-my-home {
-    position: absolute;
-    right: 2%;
+    position: relative;
+    left: 77%;
+    white-space: nowrap;
     padding-top: 1rem;
     color: rgb(133, 144, 166);
+    text-decoration: none;
   }
 }
 

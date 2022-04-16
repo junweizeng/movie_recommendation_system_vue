@@ -1,10 +1,10 @@
 <template>
   <div class="tags my-border">
-    <el-button class="btn" @click="refreshSelect" size="small" round>
-      <el-icon style="vertical-align: middle;" >
+    <el-button class="btn" @click="refreshSelect" size="big" round>
+      <el-icon class="btn-icon" style="vertical-align: middle;" >
         <refresh-right />
       </el-icon>
-      <span style="vertical-align: middle;"> 重新加载 </span>
+      <span class="btn-span" style="vertical-align: middle;"> 重新加载 </span>
     </el-button>
     <div>
       <span class="each-tag">类型：</span>
@@ -107,5 +107,16 @@ export default {
   vertical-align: middle;
   margin-left: 1rem;
   margin-top: 1rem;
+}
+
+
+.btn-icon{
+  transform: rotate(360deg);
+  transition: .5s;
+}
+
+.btn:active .btn-icon{
+  transform: rotate(0);
+  transition: 0s;
 }
 </style>

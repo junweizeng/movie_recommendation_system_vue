@@ -104,7 +104,7 @@ export default {
     let handleEditDialogVisible = () => {
       isEditDialogVisible.value = !isEditDialogVisible.value
     }
-    let handleSubmitComment = () => {qq
+    let handleSubmitComment = () => {
       if (ownCommentEditInfo.score === 0) {
         WarningMessage('不可以给电影打0分 (┬┬﹏┬┬)')
       } else {
