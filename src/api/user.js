@@ -58,39 +58,61 @@ const userRequest = {
         })
     },
     /**
-     * 获取用户信息
-     * @param userId 用户id
+     * 获取当前登录用户的基本信息
      * @returns {*}
      */
-    getUserInfo: (userId) => {
+    getUserInfo: () => {
         return request({
             url: '/user/info',
             method: 'get',
             headers: {
                 isNeedToken: true
             },
-            params: {
-                'id': userId
-            }
         })
     },
     /**
-     * 通过用户id获取用户对电影类型和地区的喜好
-     * @param userId
+     * 获取当前登录用户的类型喜好和地区喜好
      * @returns {*}
      */
-    getTypesAndRegions: (userId) => {
+    getTypesAndRegions: () => {
         return request({
             url: '/user/types/and/regions',
             method: 'get',
             headers: {
                 isNeedToken: true,
             },
-            params: {
-                'id': userId
-            }
         })
-    }
+    },
+    /**
+     * 修改当前登录用户的昵称
+     * @param nickname 修改后的昵称
+     * @returns {*}
+     */
+    updateUserNickname: (nickname) => {
+        return request({
+            url: '/user/update/nickname',
+            method: 'put',
+            headers: {
+                isNeedToken: true,
+            },
+            data: nickname
+        })
+    },
+    /**
+     * 修改当前登录用户的性别
+     * @param sex 修改后的性别（0表示女，1表示男，2表示保密）
+     * @returns {*}
+     */
+    updateUserSex: (sex) => {
+        return request({
+            url: '/user/update/sex',
+            method: 'put',
+            headers: {
+                isNeedToken: true,
+            },
+            data: sex
+        })
+    },
 }
 
 export default userRequest

@@ -63,22 +63,22 @@ export default {
     /**
      * 每次初始化界面是判断token是否过期，如果没有过期，则显示登录基本信息
      */
-    userRequest.judge().then(res => {
+    userRequest.getUserInfo().then(res => {
       if (res.code === 200) {
-        let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+        // let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+        let userInfo = res.data
         user.nickname = userInfo.nickname
         user.id  = userInfo.id
         user.avatar = userInfo.avatar
         user.sex = userInfo.sex
 
-        userRequest.getTypesAndRegions(
-            userInfo.id
-        ).then(res => {
-          types.value = res.data.types
-          regions.value = res.data.regions
-        }).catch(err => {
-          console.error(err)
-        })
+        userRequest.getTypesAndRegions()
+            .then(res => {
+              types.value = res.data.types
+              regions.value = res.data.regions
+            }).catch(err => {
+              console.error(err)
+            })
       } else {
         ErrorMessage(res.msg)
       }

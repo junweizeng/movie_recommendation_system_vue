@@ -121,7 +121,7 @@ export default {
     let iconColor = ref('white')
     let user = reactive({
       id: 0,
-      nickname: '123',
+      nickname: '',
       avatar: '',
       sex: '',
     })
@@ -134,10 +134,11 @@ export default {
       isShowMenu.value = false;
     }
 
+    // 控制主菜单显示
     let handleMainMenu = () => {
       isShowMenu.value = !isShowMenu.value;
     }
-
+    // 监测主菜单显示变量，根据展示与否改变图标颜色
     watch(isShowMenu, (newValue, oldValue) => {
       if (newValue === true) {
         iconColor.value = '#a99f9f';
@@ -146,7 +147,7 @@ export default {
       }
     })
 
-    // 登录
+    // 跳转到登录界面
     let handleLogin = () => {
       router.push('/login');
     }
@@ -171,10 +172,10 @@ export default {
     /**
      * 每次初始化界面是判断token是否过期，如果没有过期，则显示登录基本信息
      */
-    userRequest.judge().then(res => {
+    userRequest.getUserInfo().then(res => {
       if (res.code === 200) {
         isLogin.value = true
-        let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+        let userInfo = res.data
         user.nickname = userInfo.nickname
         user.id  = userInfo.id
         user.avatar = userInfo.avatar

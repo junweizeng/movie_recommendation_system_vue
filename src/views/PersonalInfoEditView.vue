@@ -5,48 +5,62 @@
 
       <div class="edit-top">
         <avatar-edit :size="12" class="avatar"></avatar-edit>
-        <!-- 昵称展示 -->
-        <div v-show="!isShowNickname"  class="nickname-div">
-          <span class="nickname">Vanish</span>
-          <span @click="isShowNickname = !isShowNickname" class="edit-btn">
-            <el-icon><edit/></el-icon>修改
-          </span>
-        </div>
-        <!-- 昵称编辑 -->
-        <div  v-show="isShowNickname" class="editing">
-          <el-input
-              maxlength="10"
-              placeholder="请输入更新后的昵称"
-              show-word-limit
-              v-model="newNickname" clearable
-              class="editing-input">
-          </el-input>
-          <el-button type="primary" class="editing-btn">保存</el-button>
-          <el-button @click="isShowNickname = !isShowNickname" class="editing-btn">取消</el-button>
-        </div>
+        <div class="username-div">{{ user.username }}</div>
       </div>
 
       <div class="edit-bottom">
         <el-divider/>
 
+        <div class="nickname-div">
+          <div class="like">昵称</div>
+          <!-- 昵称展示 -->
+          <div v-show="!isShowNickname" class="content">
+            <span class="each">{{ user.nickname }}</span>
+            <span @click="isShowNickname = !isShowNickname" class="edit-btn">
+            <el-icon><edit/></el-icon>修改
+          </span>
+          </div>
+
+          <!-- 昵称编辑 -->
+          <div  v-show="isShowNickname" class="editing">
+            <el-input
+                maxlength="10"
+                placeholder="请输入更新后的昵称"
+                show-word-limit
+                v-model="newNickname" clearable
+                class="editing-input">
+            </el-input>
+            <el-button @click="handleUpdateNickname" type="primary" class="editing-btn">保存</el-button>
+            <el-button @click="isShowNickname = !isShowNickname" class="editing-btn">取消</el-button>
+          </div>
+        </div>
+
+        <el-divider/>
+
         <div class="sex">
           <div class="like">性别</div>
           <!-- 性别展示 -->
-          <div v-show="!isShowSex" class="sex-content">
-            <span class="each-sex">男</span>
+          <div v-show="!isShowSex" class="content">
+            <span class="each">
+              <span v-if="user.sex === '男'">男</span>
+              <span v-else-if="user.sex === '女'">女</span>
+              <span v-else>保密</span>
+            </span>
             <span @click="isShowSex = !isShowSex" class="edit-btn">
               <el-icon><edit/></el-icon>修改
             </span>
           </div>
           <!-- 性别编辑 -->
           <div v-show="isShowSex" class="editing">
-            <el-radio-group class="editing-input" v-model="sexRadio">
-              <el-radio label="man">男</el-radio>
-              <el-radio label="woman">女</el-radio>
-              <el-radio label="secret">保密</el-radio>
+            <el-radio-group class="editing-input" v-model="newSex">
+              <el-radio label="男">男</el-radio>
+              <el-radio label="女">女</el-radio>
+              <el-radio label="保密">保密</el-radio>
             </el-radio-group>
-            <el-button type="primary" class="editing-btn">保存</el-button>
-            <el-button @click="isShowSex = !isShowSex" class="editing-btn">取消</el-button>
+            <div>
+              <el-button @click="handleUpdateSex" type="primary" class="editing-btn">保存</el-button>
+              <el-button @click="isShowSex = !isShowSex" class="editing-btn">取消</el-button>
+            </div>
           </div>
         </div>
 
@@ -57,7 +71,7 @@
           <el-tag
               v-for="(type, index) in types"
               :key="index"
-              class="each-type"
+              class="each"
               type="info"
               effect="dark"
           >
@@ -76,7 +90,7 @@
           <el-tag
               v-for="(region, index) in regions"
               :key="index"
-              class="each-region"
+              class="each"
               type="info"
               effect="dark"
           >
@@ -96,40 +110,108 @@
 
 <script>
 import AvatarEdit from "@/components/personal/AvatarEdit";
-import {reactive, ref} from "vue";
+import {nextTick, reactive, ref} from "vue";
 import {Edit} from "@element-plus/icons";
+import userRequest from "@/api/user";
+import {ErrorMessage, SuccessMessage, WarningMessage} from "@/utils/myMessage";
+import request from "@/utils/request";
 export default {
   name: "PersonalInfoEditView",
   components: {Edit, AvatarEdit},
   setup() {
+    let user = reactive({
+      username: '',
+      nickname: '',
+      avatar: '',
+      sex: '2',
+    })
+
     // 昵称部分
     let isShowNickname = ref(false)
     let newNickname = ref('')
+    let handleUpdateNickname = () => {
+      if (newNickname.value.length === 0) {
+        WarningMessage("昵称不能为空(ˉ﹃ˉ)")
+      } else {
+        userRequest.updateUserNickname(newNickname.value).then(res => {
+          if (res.code === 200) {
+            SuccessMessage(res.msg);
+            user.nickname = newNickname.value
+            isShowNickname.value = false;
+          } else {
+            ErrorMessage(res.msg);
+          }
+        }).catch(err => {
+          console.error(err)
+        })
+      }
+    }
 
     // 性别部分
     let isShowSex = ref(false)
-    let sexRadio = ref('man')
+    let newSex = ref("")
+    let handleUpdateSex = () => {
+      userRequest.updateUserSex(newSex.value).then(res => {
+        if (res.code === 200) {
+          SuccessMessage(res.msg);
+          user.sex = newSex.value
+          isShowSex.value = false;
+        } else {
+          ErrorMessage(res.msg);
+        }
+      }).catch(err => {
+        console.error(err)
+      })
+    }
 
     // 类型部分
-    let types = reactive(['test1', 'test2'])
+    let types = ref([])
     let isShowTypes = ref(false)
     let editTypes = () => {}
 
     // 地区部分
-    let regions = reactive(['test1', 'test2'])
+    let regions = ref([])
     let isShowRegions = ref(false)
     let editRegions = () => {}
 
+    /**
+     * 初始化界面，数据请求
+     */
+    userRequest.getUserInfo().then(res => {
+      if (res.code === 200) {
+        let userInfo = res.data
+        user.username = userInfo.username
+        user.nickname = userInfo.nickname
+        user.avatar = userInfo.avatar
+        user.sex = userInfo.sex
+        newSex.value = userInfo.sex
+      } else {
+        ErrorMessage(res.msg)
+      }
+    }).catch(err => {
+      console.error(err)
+    })
+
+    userRequest.getTypesAndRegions().then(res => {
+          types.value = res.data.types
+          regions.value = res.data.regions
+    }).catch(err => {
+      console.error(err)
+    })
+
     return {
+      user,
       types,
       regions,
       isShowNickname,
       newNickname,
+      handleUpdateNickname,
       isShowSex,
-      sexRadio,
+      newSex,
+      handleUpdateSex,
       isShowTypes,
-      isShowRegions,
       editTypes,
+      isShowRegions,
       editRegions,
     }
   }
@@ -163,28 +245,26 @@ export default {
   display: flex;
   align-items: flex-end;
 
-  .nickname-div {
-    display: flex;
-    .nickname {
+  .username-div {
+      display: flex;
       color: rgb(18, 18, 18);
       font-size: 2.5rem;
       font-weight: bold;
       padding-left: 1rem;
-    }
   }
 }
 
 .edit-bottom {
-  .sex-content {
+  .content {
     display: flex;
   }
 
-  .sex, .types, .regions {
+  .sex, .types, .regions, .nickname-div {
     display: flex;
     flex-wrap: wrap;
   }
 
-  .each-sex, .each-type, .each-region {
+  .each {
     margin-left: 1rem;
   }
 

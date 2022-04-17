@@ -12,7 +12,7 @@
              v-model="show"
              :width="200"
              :height="200"
-             url="/upload"
+             url="/mrs/user/update/avatar"
              :params="params"
              :headers="headers"
              :no-rotate="false"
@@ -24,7 +24,7 @@
 // import 'babel-polyfill'; // es6 shim
 import MyUpload from 'vue-image-crop-upload';
 import { UserFilled } from '@element-plus/icons-vue'
-import {reactive, toRefs} from "vue";
+import {reactive, ref, toRefs} from "vue";
 
 export default {
   name: 'AvatarEdit',
@@ -36,17 +36,16 @@ export default {
     }
   },
   setup() {
+    // 创建图像的 datebase64 url
+    let imgDataUrl =  ref('https://ts1.cn.mm.bing.net/th?id=OIP-C.ZeQ5h5qmFJdYmGKtrR-I9gAAAA&w=204&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.25&pid=3.1&rm=2')
     let data = reactive({
       show: false,
       params: {
-        token: '123456798',
-        name: 'avatar'
+        avatar: imgDataUrl.value
       },
       headers: {
-        smail: '*_~'
+        token: localStorage.getItem('token'),
       },
-      // 创建图像的 datebase64 url
-      imgDataUrl: 'https://ts1.cn.mm.bing.net/th?id=OIP-C.ZeQ5h5qmFJdYmGKtrR-I9gAAAA&w=204&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.25&pid=3.1&rm=2'
     })
 
     let toggleShow = function toggleShow() {
@@ -59,9 +58,9 @@ export default {
      * [param] imgDataUrl
      * [param] field
      */
-    let cropSuccess = function cropSuccess(imgDataUrl, field){
+    let cropSuccess = function cropSuccess(img, field){
       console.log('-------- crop success --------');
-      data.imgDataUrl = imgDataUrl;
+      imgDataUrl.value = img
     }
 
     /**
@@ -89,6 +88,7 @@ export default {
     }
 
     return {
+      imgDataUrl,
       ...toRefs(data),
       toggleShow,
       cropSuccess,
