@@ -1,15 +1,16 @@
 <template>
+  <div class="blur-bg" :style="`background-image: url(${movie.pic})`"></div>
   <div class="movie-info-top">
+    <!--https://tse2-mm.cn.bing.net/th/id/OIP-C.sKOaIjWJzt5e81WeF3X5TgHaE7?w=261&h=180&c=7&r=0&o=5&dpr=1.25&pid=1.7-->
     <div class="background">
       <el-row>
         <el-col :span="8">
           <div class="movie-info-top-left">
-            <img class="image" src="https://th.bing.com/th/id/OIP.XVvUPh0iUBQkkgzg7UhdEwHaKX?w=195&h=273&c=7&r=0&o=5&dpr=1.25&pid=1.7"/>
+            <img class="image" :src="movie.pic"/>
           </div>
         </el-col>
 
         <el-col :span="16">
-          <!--        <el-col :xs="16" :sm="16" :md="16" :lg="16" :xl="16">-->
           <div class="movie-info-top-right">
             <!-- 电影名 -->
             <div class="movie-name">
@@ -68,7 +69,7 @@
                   <div class="introduction">
                     <el-collapse v-model="hello" @change="helloo">
                       <el-collapse-item title="&nbsp;&nbsp;&nbsp;&nbsp;电影简介" name="introduction">
-                        <div>
+                        <div style="margin: 0 1rem">
                           {{ movie.introduction }}
                         </div>
                       </el-collapse-item>
@@ -194,16 +195,22 @@ export default {
 </script>
 
 <style scoped>
+.blur-bg {
+  height: 33rem;
+  width: 100%;
+  filter: blur(2rem);
+  position: absolute;
+  background-size: cover;
+}
+
 .movie-info-top {
   height: 38rem;
   width: 100%;
+  background-size: cover;
 }
 
 .movie-info-top .background {
   height: 33rem;
-  /*background: #123456;*/
-  background-image: url("https://tse2-mm.cn.bing.net/th/id/OIP-C.sKOaIjWJzt5e81WeF3X5TgHaE7?w=261&h=180&c=7&r=0&o=5&dpr=1.25&pid=1.7");
-  background-size: 100% 100%;
 }
 
 .movie-info-top-left, .movie-info-top-right {

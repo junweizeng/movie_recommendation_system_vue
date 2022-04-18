@@ -5,19 +5,29 @@
     </el-avatar>
   </div>
 
-  <my-upload field="img"
-             @crop-success="cropSuccess"
-             @crop-upload-success="cropUploadSuccess"
-             @crop-upload-fail="cropUploadFail"
-             v-model="show"
-             :width="200"
-             :height="200"
-             url="/mrs/user/update/avatar"
-             :params="params"
-             :headers="headers"
-             :no-rotate="false"
-             img-format="png">
-  </my-upload>
+    <my-upload field="img"
+               @crop-success="cropSuccess"
+               v-model="show"
+               :width="200"
+               :height="200"
+               :no-rotate="false"
+               img-format="png">
+    </my-upload>
+
+<!--  <my-upload field="img"-->
+<!--             @crop-success="cropSuccess"-->
+<!--             @crop-upload-success="cropUploadSuccess"-->
+<!--             @crop-upload-fail="cropUploadFail"-->
+<!--             v-model="show"-->
+<!--             :width="200"-->
+<!--             :height="200"-->
+<!--             url="/mrs/user/update/avatar"-->
+<!--             :field="field.avatar"-->
+<!--             :params="params"-->
+<!--             :headers="headers"-->
+<!--             :no-rotate="false"-->
+<!--             img-format="png">-->
+<!--  </my-upload>-->
 </template>
 
 <script>
@@ -25,6 +35,9 @@
 import MyUpload from 'vue-image-crop-upload';
 import { UserFilled } from '@element-plus/icons-vue'
 import {reactive, ref, toRefs} from "vue";
+import request from "@/utils/request";
+import emitter from "@/utils/eventBus";
+import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
 
 export default {
   name: 'AvatarEdit',
@@ -33,19 +46,26 @@ export default {
     size: {
       type: Number,
       default: 15,
+    },
+    avatar: {
+      type: String,
+      default: '',
     }
   },
   setup() {
     // 创建图像的 datebase64 url
-    let imgDataUrl =  ref('https://ts1.cn.mm.bing.net/th?id=OIP-C.ZeQ5h5qmFJdYmGKtrR-I9gAAAA&w=204&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.25&pid=3.1&rm=2')
+    // let imgDataUrl =  ref('https://ts1.cn.mm.bing.net/th?id=OIP-C.ZeQ5h5qmFJdYmGKtrR-I9gAAAA&w=204&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.25&pid=3.1&rm=2')
     let data = reactive({
       show: false,
-      params: {
-        avatar: imgDataUrl.value
+      field: {
+        avatar: ''
       },
+      params: {},
       headers: {
-        token: localStorage.getItem('token'),
+        'token': localStorage.getItem('token'),
+        'Content-Type': 'application/json; charset=utf-8'
       },
+      imgDataUrl: ''
     })
 
     let toggleShow = function toggleShow() {
@@ -58,42 +78,46 @@ export default {
      * [param] imgDataUrl
      * [param] field
      */
-    let cropSuccess = function cropSuccess(img, field){
+    let cropSuccess = function cropSuccess(imgDataUrl, field){
       console.log('-------- crop success --------');
-      imgDataUrl.value = img
+      data.imgDataUrl = imgDataUrl
+      data.field.avatar = imgDataUrl
+
+      // 图片截取完成后，将图片信息上传到服务器
+      request({
+        url: '/user/update/avatar',
+        method: 'post',
+        headers: {
+          isNeedToken: true,
+        },
+        data: imgDataUrl
+      }).then(res => {
+        if (res.code === 200) {
+          SuccessMessage(res.msg)
+
+          emitter.emit('handleHeaderAvatarChange', {
+            avatar: data.imgDataUrl
+          })
+        } else {
+          ErrorMessage(res.msg)
+        }
+      }).catch(err => {
+        console.error(err)
+      })
     }
 
     /**
-     * 上传成功
-     *
-     * [param] jsonData
-     * [param] field
+     * 全局事件总线——监听
+     * 事件触发时，替换头像路径
      */
-    let cropUploadSuccess = function cropUploadSuccess(jsonData, field){
-      console.log('-------- upload success --------');
-      console.log(jsonData);
-      console.log('field: ' + field);
-    }
-
-    /**
-     * 上传失败
-     *
-     * [param] status  api返回错误状态，如 500
-     * [param] field
-     */
-    let cropUploadFail = function cropUploadFail(status, field){
-      console.log('-------- upload fail --------');
-      console.log(status);
-      console.log('field: ' + field);
-    }
+    emitter.on('handleEditAvatarChange', res => {
+      data.imgDataUrl = res.avatar
+    })
 
     return {
-      imgDataUrl,
       ...toRefs(data),
       toggleShow,
       cropSuccess,
-      cropUploadSuccess,
-      cropUploadFail,
     }
   }
 }

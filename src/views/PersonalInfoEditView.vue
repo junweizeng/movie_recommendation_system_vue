@@ -115,6 +115,7 @@ import {Edit} from "@element-plus/icons";
 import userRequest from "@/api/user";
 import {ErrorMessage, SuccessMessage, WarningMessage} from "@/utils/myMessage";
 import request from "@/utils/request";
+import emitter from "@/utils/eventBus";
 export default {
   name: "PersonalInfoEditView",
   components: {Edit, AvatarEdit},
@@ -138,6 +139,10 @@ export default {
             SuccessMessage(res.msg);
             user.nickname = newNickname.value
             isShowNickname.value = false;
+
+            emitter.emit('handleHeaderNicknameChange', {
+              nickname: newNickname.value
+            })
           } else {
             ErrorMessage(res.msg);
           }
@@ -185,6 +190,11 @@ export default {
         user.avatar = userInfo.avatar
         user.sex = userInfo.sex
         newSex.value = userInfo.sex
+
+        // 全局事件总线——触发：从服务器获取到个人信息后，将头像路径传递给Avatar.vue
+        emitter.emit('handleEditAvatarChange', {
+          avatar: user.avatar
+        })
       } else {
         ErrorMessage(res.msg)
       }

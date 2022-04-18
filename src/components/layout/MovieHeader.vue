@@ -107,6 +107,7 @@ import {useRouter} from 'vue-router'
 import {More, MoreFilled, Menu as MenuIcon} from "@element-plus/icons";
 import userRequest from "@/api/user";
 import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
+import emitter from "@/utils/eventBus";
 
 export default {
   name: "MovieHeader",
@@ -190,6 +191,13 @@ export default {
     })
 
     const errorHandler = () => true
+
+    emitter.on('handleHeaderNicknameChange', data => {
+      user.nickname = data.nickname
+    })
+    emitter.on('handleHeaderAvatarChange', data => {
+      user.avatar = data.avatar
+    })
 
     return {
       isLogin,
@@ -292,8 +300,8 @@ export default {
   }
 }
 
-/* 响应式布局 - 当屏幕小于 700 像素宽 */
-@media screen and (max-width: 720px) {
+/* 响应式布局 - 当屏幕小于 740 像素宽 */
+@media screen and (max-width: 740px) {
   .navbar {
     z-index: 999;
     padding: 0 1rem;
@@ -364,8 +372,8 @@ export default {
   }
 }
 
-/* 响应式布局 - 当屏幕为（700px < 屏幕像素 < 1200px)宽 时，系统名消失，并且左右内边距变为0 */
-@media screen and (min-width: 720px) and  (max-width: 1200px) {
+/* 响应式布局 - 当屏幕为（740px < 屏幕像素 < 1200px)宽 时，系统名消失，并且左右内边距变为0 */
+@media screen and (min-width: 740px) and  (max-width: 1200px) {
   /* 左右内边距变为0 */
   .navbar {
     padding-left: 0;
