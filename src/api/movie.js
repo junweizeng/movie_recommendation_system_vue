@@ -59,6 +59,19 @@ const movieRequest = {
                 'id': movieId
             }
         })
+    },
+    /**
+     * 获取用户评价过的所有电影的基本信息
+     * @returns {*}
+     */
+    getAllReviewedMovies: () => {
+        return request({
+            url: '/movie/reviewed',
+            method: 'get',
+            headers: {
+                isNeedToken: true
+            },
+        })
     }
 }
 

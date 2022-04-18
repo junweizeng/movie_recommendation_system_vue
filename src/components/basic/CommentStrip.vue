@@ -1,7 +1,7 @@
 <template>
   <div class="comment-strip-master">
     <div class="comment-header">
-      <el-avatar src="https://ts1.cn.mm.bing.net/th?id=OIP-C.ZeQ5h5qmFJdYmGKtrR-I9gAAAA&w=204&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.25&pid=3.1&rm=2" @error="errorHandler">
+      <el-avatar :src="comment.avatar" @error="errorHandler">
         <!-- 当图片加载错误时，将加载这里面的图片 -->
         <img src="../../assets/default_avatar.png"/>
       </el-avatar>

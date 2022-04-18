@@ -15,11 +15,12 @@
           </span>
         </template>
 
-        <comment-strip>
-          <template v-slot:movieInfo>
-            <movie-strip></movie-strip>
-          </template>
-        </comment-strip>
+<!--        <comment-strip>-->
+<!--          <template v-slot:movieInfo>-->
+<!--            <movie-strip></movie-strip>-->
+<!--          </template>-->
+<!--        </comment-strip>-->
+        <comment-movie-moments></comment-movie-moments>
       </el-tab-pane>
 
       <!-- 我看过的 -->
@@ -29,9 +30,9 @@
             <el-icon><film /></el-icon>
             <span>我看过的</span>
           </span>
-
         </template>
-        <personal-info/>
+
+        <reviewed-movies></reviewed-movies>
       </el-tab-pane>
 
       <!-- 系统推荐 -->
@@ -56,10 +57,14 @@ import PersonalInfo from "@/components/personal/PersonalInfo";
 import MovieCard from "@/components/classification/MovieCards";
 import MovieStrip from "@/components/basic/MovieStrip";
 import CommentStrip from "@/components/basic/CommentStrip";
+import CommentMovieMoments from "@/components/personal/CommentMovieMoments";
+import ReviewedMovies from "@/components/personal/ReviewedMovies";
 
 export default {
   name: "PersonalView",
   components: {
+    ReviewedMovies,
+    CommentMovieMoments,
     MovieCard,
     Avatar,
     AvatarEdit,
@@ -110,6 +115,12 @@ export default {
   vertical-align: middle;
 }
 
+ /deep/ .el-tabs {
+   padding: 0;
+   border-width: 0;
+}
+
+
 
 // 媒体查询
 @media screen and (min-width: 700px) and (max-width: 1200px) {
@@ -126,12 +137,14 @@ export default {
   }
 
   .personal-div-top {
-    padding-left: 0rem;
+    padding-left: 0;
     flex-direction: column;
 
     .avatar {
       margin: 0 auto;
     }
   }
+
+
 }
 </style>

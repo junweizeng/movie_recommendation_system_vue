@@ -46,6 +46,7 @@ import {Edit} from "@element-plus/icons";
 import userRequest from "@/api/user";
 import {ErrorMessage} from "@/utils/myMessage";
 import router from "@/router";
+import emitter from "@/utils/eventBus";
 
 export default {
   name: "PersonalInfo",
@@ -71,6 +72,11 @@ export default {
         user.id  = userInfo.id
         user.avatar = userInfo.avatar
         user.sex = userInfo.sex
+
+        // 全局事件总线——触发：从服务器获取到个人信息后，将头像路径传递给Avatar.vue
+        emitter.emit('handleEditAvatarChange', {
+          avatar: user.avatar
+        })
 
         userRequest.getTypesAndRegions()
             .then(res => {

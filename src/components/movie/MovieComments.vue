@@ -21,7 +21,7 @@
     </template>
   </el-dialog>
 
-  <div class="comment-strip" v-show="ownComment.score !== 0">
+  <div class="comment-strip" v-show="ownComment.nickname !== ''">
     <p class="each-comment-tag">我的短评</p>
     <comment-strip :comment="ownComment"></comment-strip>
   </div>
@@ -64,6 +64,7 @@ export default {
       time: '',
       agree: 0,
       nickname: '',
+      avatar: '',
     })
     let ownCommentEditInfo = reactive({
       score: 0,
@@ -84,6 +85,11 @@ export default {
         commentRequest.addComment(ownComment).then(res => {
           if (res.code === 200) {
             SuccessMessage(res.msg)
+
+            // 如果用户评价成功，且之前没有评价过，那么此时发送请求获取当前评价信息，来更新界面
+            if (ownComment.nickname === '') {
+              handleGetOwnComment()
+            }
           } else {
             ErrorMessage(res.msg)
           }
@@ -94,20 +100,25 @@ export default {
       }
     }
 
-    commentRequest.getOwnComment(ownComment.mid).then(res => {
-      if (res.code === 200) {
-        let data = res.data
-        ownComment.agree = data.agree
-        ownComment.comment = data.comment
-        ownComment.score = data.score
-        ownComment.nickname = data.nickname
-        ownComment.time = data.time
-        ownCommentEditInfo.score = ownComment.score / 2
-        ownCommentEditInfo.comment = ownComment.comment
-      }
-    }).catch(err => {
-      console.error(err )
-    })
+    let handleGetOwnComment = () => {
+      commentRequest.getOwnComment(ownComment.mid).then(res => {
+        if (res.code === 200) {
+          let data = res.data
+          ownComment.agree = data.agree
+          ownComment.comment = data.comment
+          ownComment.score = data.score
+          ownComment.nickname = data.nickname
+          ownComment.time = data.time
+          ownComment.avatar = data.avatar
+
+          ownCommentEditInfo.score = ownComment.score / 2
+          ownCommentEditInfo.comment = ownComment.comment
+        }
+      }).catch(err => {
+        console.error(err )
+      })
+    }
+    handleGetOwnComment()
 
     commentRequest.getCommentsByMovieId(ownComment.mid).then(res => {
       if (res.code === 200) {

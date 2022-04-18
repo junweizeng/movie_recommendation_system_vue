@@ -3,7 +3,7 @@
     <movie-info/>
 
     <div class="list-and-comments my-border">
-      <el-tabs type="border-card" class="demo-tabs">
+      <el-tabs type="border-card">
         <el-tab-pane>
           <template #label>
           <span class="tab-labels">

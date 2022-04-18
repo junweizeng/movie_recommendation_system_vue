@@ -1,58 +1,60 @@
 <template>
   <div class="movie-strip-master">
-    <div class="image-div">
-      <a :href="`/movie/info/${movie.id}`">
-        <el-image :src="movie.pic" class="image">
-          <template #error>
-            <div class="image-error">
-              <film class="center-image-error"></film>
-              <img class="background-image-error" src="../../assets/default-movie.png"   alt="default"/>
+    <div class="image-div-and-info">
+      <!-- 电影海报 -->
+      <div class="image-div">
+        <a :href="`/movie/info/${movie.id}`">
+          <el-image :src="movie.pic" class="image">
+            <template #error>
+              <div class="image-error">
+                <film class="center-image-error"></film>
+                <img class="background-image-error" src="../../assets/default-movie.png"   alt="default"/>
+              </div>
+            </template>
+          </el-image>
+        </a>
+      </div>
+
+      <!-- 电影基本信息 -->
+      <div class="info">
+        <a :href="`/movie/info/${movie.id}`">
+          <div class="movie-name line-limit-length">{{ movie.name }}</div>
+        </a>
+
+        <el-rate
+            v-model="score"
+            disabled
+            show-score
+            disabled-void-color="rgb(226, 226, 226)"
+            :score-template="`${ movie.score }`"
+        />
+
+        <el-row>
+          <el-col :span="1"><el-divider style="height: 100%" direction="vertical" /></el-col>
+
+          <el-col :span="23" style="padding-left: 0.2rem">
+            <div class="line-limit-length">
+              导演：{{ movie.directors }}
             </div>
-          </template>
-        </el-image>
-      </a>
-    </div>
 
-    <div class="info">
-      <a :href="`/movie/info/${movie.id}`">
-        <div class="movie-name line-limit-length">{{ movie.name }}</div>
-      </a>
+            <div class="line-limit-length">
+              主演：{{ movie.actors }}
+            </div>
 
-      <el-rate
-          v-model="score"
-          disabled
-          show-score
-          text-color="#ff9900"
-          :score-template="`${ movie.score }`"
-      />
+            <div class="line-limit-length">
+              地区：{{ movie.regions }}
+            </div>
 
-      <el-row>
-        <el-col :span="1"><el-divider style="height: 100%" direction="vertical" /></el-col>
+            <div class="line-limit-length">
+              类型：{{ movie.types }}
+            </div>
+          </el-col>
 
-        <el-col :span="23" style="padding-left: 0.2rem">
-          <div class="line-limit-length">
-            导演：{{ movie.directors }}
-          </div>
-
-          <div class="line-limit-length">
-            主演：{{ movie.actors }}
-          </div>
-
-          <div class="line-limit-length">
-            地区：{{ movie.regions }}
-          </div>
-
-          <div class="line-limit-length">
-            类型：{{ movie.types }}
-          </div>
-        </el-col>
-
-      </el-row>
-
-      <div style="margin-top: 1rem">
-
+        </el-row>
       </div>
     </div>
+
+    <slot name="footer"></slot>
   </div>
 </template>
 
@@ -89,10 +91,13 @@ export default {
 <style lang="less" scoped>
 .movie-strip-master {
   //background-color: #d6dbe7;
-  display: flex;
   border-width: 0;
   border-radius: 0.5rem;
   border-color: #f2f2f6;
+
+  .image-div-and-info {
+    display: flex;
+  }
 }
 
 .movie-strip-master:hover {
