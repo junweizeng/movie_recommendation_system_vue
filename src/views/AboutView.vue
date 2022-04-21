@@ -1,15 +1,18 @@
 <template>
-    <div class="test-div">
-      <movie-strip></movie-strip>
-    </div>
+  <div class="test-div">
+    <movie-strip></movie-strip>
+  </div>
+
+  <test-infinite-scroll></test-infinite-scroll>
 </template>
 
 <script>
   import MovieStrip from "@/components/basic/MovieStrip";
+  import TestInfiniteScroll from "@/components/personal/TestInfiniteScroll";
 
   export default {
     name: 'AboutView',
-    components: {MovieStrip}
+    components: {TestInfiniteScroll, MovieStrip}
   }
 </script>
 

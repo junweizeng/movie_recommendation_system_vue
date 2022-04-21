@@ -15,11 +15,6 @@
           </span>
         </template>
 
-<!--        <comment-strip>-->
-<!--          <template v-slot:movieInfo>-->
-<!--            <movie-strip></movie-strip>-->
-<!--          </template>-->
-<!--        </comment-strip>-->
         <comment-movie-moments></comment-movie-moments>
       </el-tab-pane>
 
@@ -44,14 +39,14 @@
           </span>
         </template>
 
+        <test-infinite-scroll/>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-import {ref} from "vue";
-import AvatarEdit from "@/components/personal/AvatarEdit";
+import AvatarEdit from "@/components/personal/edit/AvatarEditing";
 import {Avatar} from "@element-plus/icons-vue";
 import PersonalInfo from "@/components/personal/PersonalInfo";
 import MovieCard from "@/components/classification/MovieCards";
@@ -59,10 +54,12 @@ import MovieStrip from "@/components/basic/MovieStrip";
 import CommentStrip from "@/components/basic/CommentStrip";
 import CommentMovieMoments from "@/components/personal/CommentMovieMoments";
 import ReviewedMovies from "@/components/personal/ReviewedMovies";
+import TestInfiniteScroll from "@/components/personal/TestInfiniteScroll";
 
 export default {
   name: "PersonalView",
   components: {
+    TestInfiniteScroll,
     ReviewedMovies,
     CommentMovieMoments,
     MovieCard,
@@ -72,10 +69,6 @@ export default {
     MovieStrip,
     CommentStrip,
   },
-  setup() {
-    let avatarUrl = ref('https://ts1.cn.mm.bing.net/th?id=OIP-C.ZeQ5h5qmFJdYmGKtrR-I9gAAAA&w=204&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.25&pid=3.1&rm=2')
-
-  }
 }
 </script>
 
