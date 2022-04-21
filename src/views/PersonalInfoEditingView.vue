@@ -78,9 +78,8 @@
             {{ type }}
           </el-tag>
 
-          <span @click="editTypes" class="edit-btn">
-            <el-icon><edit/></el-icon>修改
-          </span>
+          <like-editing :opt="1"
+                        :likes="types"/>
         </div>
 
         <el-divider/>
@@ -97,9 +96,8 @@
             {{ region }}
           </el-tag>
 
-          <span @click="editRegions" class="edit-btn">
-            <el-icon><edit/></el-icon>修改
-          </span>
+          <like-editing :opt="2"
+                        :likes="regions"/>
         </div>
 
         <el-divider/>
@@ -109,16 +107,16 @@
 </template>
 
 <script>
-import AvatarEdit from "@/components/personal/AvatarEdit";
-import {nextTick, reactive, ref} from "vue";
+import AvatarEdit from "@/components/personal/edit/AvatarEditing";
+import {reactive, ref} from "vue";
 import {Edit} from "@element-plus/icons";
 import userRequest from "@/api/user";
 import {ErrorMessage, SuccessMessage, WarningMessage} from "@/utils/myMessage";
-import request from "@/utils/request";
 import emitter from "@/utils/eventBus";
+import LikeEditing from "@/components/personal/edit/LikeEditing";
 export default {
   name: "PersonalInfoEditView",
-  components: {Edit, AvatarEdit},
+  components: {LikeEditing, Edit, AvatarEdit},
   setup() {
     let user = reactive({
       username: '',
@@ -171,13 +169,9 @@ export default {
 
     // 类型部分
     let types = ref([])
-    let isShowTypes = ref(false)
-    let editTypes = () => {}
 
     // 地区部分
     let regions = ref([])
-    let isShowRegions = ref(false)
-    let editRegions = () => {}
 
     /**
      * 初始化界面，数据请求
@@ -203,11 +197,14 @@ export default {
     })
 
     userRequest.getTypesAndRegions().then(res => {
-          types.value = res.data.types
-          regions.value = res.data.regions
+      if (res.code === 200) {
+        types.value = res.data.types
+        regions.value = res.data.regions
+      }
     }).catch(err => {
       console.error(err)
     })
+
 
     return {
       user,
@@ -219,10 +216,6 @@ export default {
       isShowSex,
       newSex,
       handleUpdateSex,
-      isShowTypes,
-      editTypes,
-      isShowRegions,
-      editRegions,
     }
   }
 }
