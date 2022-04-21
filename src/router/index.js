@@ -25,7 +25,7 @@ const routes = [
       {
         path: 'classification',
         name: 'classification',
-        component: () => import('../views/ClassificationView.vue')
+        component: () => import('../views/ClassificationView.vue'),
       },
       {
         path: 'personal/info',
@@ -35,7 +35,7 @@ const routes = [
       {
         path: '/personal/edit',
         name: 'personalEdit',
-        component: () => import('../views/PersonalInfoEditView.vue')
+        component: () => import('../views/PersonalInfoEditingView.vue')
       }
     ]
   },

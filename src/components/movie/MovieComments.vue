@@ -13,7 +13,13 @@
           text-color="#008000"
           show-text
       />
-      <el-input v-model="ownCommentEditInfo.comment" type="textarea" />
+      <el-input
+          type="textarea"
+          rows="5"
+          maxlength="200"
+          show-word-limit
+          v-model="ownCommentEditInfo.comment"
+      />
     </div>
     <template #footer>
       <el-button @click="handleEditDialogVisible">取 消</el-button>
@@ -122,7 +128,7 @@ export default {
 
     commentRequest.getCommentsByMovieId(ownComment.mid).then(res => {
       if (res.code === 200) {
-        let newComments = res.data.comments
+        let newComments = res.data
         for (let i = 0; i < newComments.length; ++ i) {
           comments.push(newComments[i])
         }

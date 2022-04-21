@@ -72,6 +72,23 @@ const movieRequest = {
                 isNeedToken: true
             },
         })
+    },
+    /**
+     * 获取搜索关键字模糊匹配的电影名称列表
+     * @param keywords 搜索关键字
+     * @returns {*} 模糊匹配查询到的电影名称列表
+     */
+    getMatchMovieName: (keywords) => {
+        return request({
+            url: '/movie/match/name',
+            method: 'get',
+            headers: {
+                isNeedToken: false
+            },
+            params: {
+                'keywords': keywords
+            }
+        })
     }
 }
 

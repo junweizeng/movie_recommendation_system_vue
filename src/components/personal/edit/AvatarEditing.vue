@@ -13,28 +13,12 @@
                :no-rotate="false"
                img-format="png">
     </my-upload>
-
-<!--  <my-upload field="img"-->
-<!--             @crop-success="cropSuccess"-->
-<!--             @crop-upload-success="cropUploadSuccess"-->
-<!--             @crop-upload-fail="cropUploadFail"-->
-<!--             v-model="show"-->
-<!--             :width="200"-->
-<!--             :height="200"-->
-<!--             url="/mrs/user/update/avatar"-->
-<!--             :field="field.avatar"-->
-<!--             :params="params"-->
-<!--             :headers="headers"-->
-<!--             :no-rotate="false"-->
-<!--             img-format="png">-->
-<!--  </my-upload>-->
 </template>
 
 <script>
-// import 'babel-polyfill'; // es6 shim
 import MyUpload from 'vue-image-crop-upload';
 import { UserFilled } from '@element-plus/icons-vue'
-import {reactive, ref, toRefs} from "vue";
+import {reactive, toRefs} from "vue";
 import request from "@/utils/request";
 import emitter from "@/utils/eventBus";
 import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";

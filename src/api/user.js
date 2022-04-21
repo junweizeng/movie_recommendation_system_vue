@@ -113,6 +113,36 @@ const userRequest = {
             data: sex
         })
     },
+    /**
+     * 更新用户电影类型喜好
+     * @param types
+     * @returns {*}
+     */
+    updateUserTypeLike: (types) => {
+        return request({
+            url: '/user/like/update/types',
+            method: 'post',
+            headers: {
+                isNeedToken: true,
+            },
+            data: types
+        })
+    },
+    /**
+     * 更新用户电影地区喜好
+     * @param regions
+     * @returns {*}
+     */
+    updateUserRegionLike: (regions) => {
+        return request({
+            url: '/user/like/update/regions',
+            method: 'post',
+            headers: {
+                isNeedToken: true,
+            },
+            data: regions
+        })
+    }
 }
 
 export default userRequest

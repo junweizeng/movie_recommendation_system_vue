@@ -57,10 +57,6 @@ export default {
     let pic = ref(props.movie.pic)
 
     // pic.value = "https://tse2-mm.cn.bing.net/th/id/OIP-C.13S0WRZ0VJMbxoqYMyidyQHaKX?w=195&h=273&c=7&r=0&o=5&dpr=1.25&pid=1.7"
-
-    onMounted(() => {
-      console.log(pic.value)
-    })
     return {
       props,
       score,
@@ -82,6 +78,7 @@ export default {
   max-height: 25rem;
   min-height: 25rem;
   width: 13.8rem;
+  margin-bottom: 1rem;
 }
 
 .card:hover {

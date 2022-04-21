@@ -27,10 +27,12 @@
         <span class="search-div">
           <el-autocomplete
               style="border-radius: 30px;"
-              v-model="state"
+              v-model="searchKeywords"
               :fetch-suggestions="querySearchAsync"
               placeholder="请输入电影名"
+              prefix-icon="Search"
               @select="handleSelect"
+              @keydown.enter="handleSearch"
           />
         </span>
       </div>
@@ -45,10 +47,12 @@
       <span class="search-div">
         <el-autocomplete
             style="border-radius: 30px;"
-            v-model="state"
+            v-model="searchKeywords"
             :fetch-suggestions="querySearchAsync"
             placeholder="请输入电影名"
+            prefix-icon="Search"
             @select="handleSelect"
+            @keydown.enter="handleSearch"
         />
       </span>
     </div>
@@ -69,7 +73,7 @@
         </div>
         <el-avatar :src="user.avatar" @error="errorHandler">
           <!-- 当图片加载错误时，将加载这里面的图片 -->
-          <img src="../../assets/default_avatar.png"/>
+          <img src="../../assets/default_avatar.png" alt="default avatar"/>
         </el-avatar>
       </el-button>
 
@@ -108,6 +112,7 @@ import {More, MoreFilled, Menu as MenuIcon} from "@element-plus/icons";
 import userRequest from "@/api/user";
 import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
 import emitter from "@/utils/eventBus";
+import movieRequest from "@/api/movie";
 
 export default {
   name: "MovieHeader",
@@ -190,14 +195,58 @@ export default {
       console.error(err)
     })
 
+    /**
+     * 图片错误句柄
+     * @returns {boolean}
+     */
     const errorHandler = () => true
 
+    /**
+     * 监听nickname和avatar的改变
+     */
     emitter.on('handleHeaderNicknameChange', data => {
       user.nickname = data.nickname
     })
     emitter.on('handleHeaderAvatarChange', data => {
       user.avatar = data.avatar
     })
+
+    // 搜索
+    let searchKeywords = ref('')
+    const querySearchAsync = (queryString, cb) => {
+      movieRequest.getMatchMovieName(searchKeywords.value).then(res => {
+        if (res.code === 200) {
+          const result = []
+          res.data.forEach((name, index) => {
+            result.push({'value': name})
+          })
+          // 调用 callback 返回建议列表的数据
+          cb(result)
+        }
+      }).catch(err => {
+        console.error(err)
+      })
+    }
+    const handleSearch = () => {
+      isShowMenu.value = false
+      router.push({
+        name: 'classification',
+        query: {
+          keywords: searchKeywords.value
+        }
+      })
+      /**
+       * 全局事件总线
+       * 触发MovieCards里面的事件，搜索电影
+       */
+      emitter.emit('handleSearch', {
+        searchKeywords: searchKeywords.value
+      })
+    }
+    const handleSelect = (item) => {
+      searchKeywords.value = item.value
+      handleSearch()
+    }
 
     return {
       isLogin,
@@ -211,7 +260,11 @@ export default {
       handleMainMenu,
       handleLogin,
       handleLogout,
-      errorHandler
+      errorHandler,
+      searchKeywords,
+      querySearchAsync,
+      handleSearch,
+      handleSelect
     }
   }
 }
@@ -220,6 +273,7 @@ export default {
 <style lang="less" scoped>
 /* 设置顶部导航栏样式 */
 .navbar {
+  z-index: 500;
   height: 50px;
   padding-left: 10%;
   padding-right: 10%;

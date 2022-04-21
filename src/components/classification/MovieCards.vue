@@ -67,11 +67,12 @@
 <script>
 import {PictureRounded, Menu as IconMenu, Grid as IconGrid, List as IconList} from "@element-plus/icons-vue";
 import MovieCard from "@/components/basic/MovieCard";
-import {onBeforeUnmount, reactive, ref, watch} from "vue";
+import {onBeforeUnmount, onMounted, reactive, ref, toRaw, watch} from "vue";
 import MovieStrip from "@/components/basic/MovieStrip";
 import emitter from "@/utils/eventBus";
 import movieRequest from "@/api/movie";
 import {ErrorMessage} from "@/utils/myMessage";
+import {useRoute, useRouter} from "vue-router";
 
 export default {
   // 这里用来纪念一下困扰我多天的低级错误，把MovieCard.vue 和 MovieCards.vue的name都写成了MovieCard，导致递归堆栈溢出问题！！！
@@ -85,6 +86,7 @@ export default {
     MovieStrip
   },
   setup() {
+    const router = useRouter()
 
     // 分页结果，电影列表
     let movies = reactive([])
@@ -95,7 +97,7 @@ export default {
     let total = ref(movies.length); // 总电影数
     let type = ref('全部');    // 电影类型
     let region = ref('全部');  // 电影地区
-    let searchWord = ref('');  // 搜索结果
+    let searchWord = ref('');  // 搜索关键字
 
     /**
      * 向服务器请求电影数据
@@ -120,7 +122,17 @@ export default {
     }
 
     // 初始化页面时，获取电影信息列表
-    getMovies()
+    let keywords = ref(router.currentRoute.value.query.keywords)
+    onMounted(() => {
+      if (keywords.value === undefined) {
+        getMovies()
+      } else {
+        console.log(keywords.value)
+        searchWord.value = keywords.value
+        getMovies()
+      }
+    })
+
 
     /**
      * 监听`当前页码`变化
@@ -141,7 +153,7 @@ export default {
      * 若发生变化，重新请求电影数据，随后页面发生变化。
      */
     watch(pageSize, (newValue, oldValue) => {
-      console.log('page-size', newValue)
+      // console.log('page-size', newValue)
     })
 
     /**
@@ -153,6 +165,15 @@ export default {
       region.value = data.region;
       currentPage.value = 1;
       getMovies();
+    })
+
+    /**
+     * 全局事件总线
+     * 监听MovieHeader.vue中的keywords变化
+     */
+    emitter.on('handleSearch', data => {
+      searchWord.value = data.searchKeywords
+      getMovies()
     })
 
     // 电影 卡片 or 长条 开关值，true为卡片，false为长条
@@ -171,6 +192,7 @@ export default {
 
     onBeforeUnmount(() => {
       emitter.off('handleTypeOrRegionChange');
+      emitter.off('handleSearch')
     })
 
     return {
@@ -220,6 +242,7 @@ export default {
 
   .strip {
     margin-top: 0.3rem;
+    margin-bottom: 1rem;
   }
 }
 
