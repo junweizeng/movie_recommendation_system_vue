@@ -1,4 +1,5 @@
 <template>
+  <div class="bg" style="background-image: url('https://api.xygeng.cn/Bing/')"></div>
   <div
       name="animate__bounce"
       class="login-form my-border"
@@ -62,8 +63,6 @@
       </el-link>
     </div>
   </div>
-
-
 </template>
 
 <script>
@@ -137,6 +136,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.bg {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-size: cover;
+}
 
 .login-form {
   width: 28rem;

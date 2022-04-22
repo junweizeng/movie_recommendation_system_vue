@@ -112,7 +112,7 @@ export default {
 
 .btn-icon{
   transform: rotate(360deg);
-  transition: .5s;
+  transition: .7s;
 }
 
 .btn:active .btn-icon{

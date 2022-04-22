@@ -19,6 +19,7 @@
     "vue-cropper": "^0.5.8",
     "vue-image-crop-upload": "^3.0.3",
     "vue-router": "^4.0.3",
+    "vue3-carousel": "^0.1.38",
     "vuex": "^4.0.0"
   },
   "devDependencies": {

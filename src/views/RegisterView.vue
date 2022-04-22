@@ -1,5 +1,5 @@
 <template>
-
+  <div class="bg" style="background-image: url('https://api.xygeng.cn/Bing/')"></div>
   <div class="login-form my-border" @keyup.enter="postRegister">
 
     <div class="login-form-header">
@@ -209,6 +209,12 @@ export default {
 </script>
 
 <style scoped>
+.bg {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-size: cover;
+}
 
 .login-form {
   width: 28rem;

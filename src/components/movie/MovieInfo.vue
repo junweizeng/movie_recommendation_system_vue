@@ -198,7 +198,7 @@ export default {
 .blur-bg {
   height: 33rem;
   width: 100%;
-  filter: blur(2rem);
+  filter: blur(1rem) brightness(85%);
   position: absolute;
   background-size: cover;
 }
@@ -293,6 +293,9 @@ export default {
   .movie-info-top-right .rate {
     width: 60%;
   }
+  .blur-bg {
+    height: 22rem;
+  }
 }
 
 @media screen and (min-width: 800px) and (max-width: 1200px) {
@@ -310,6 +313,9 @@ export default {
   }
   .movie-info-top-right .rate {
     width: 50%;
+  }
+  .blur-bg {
+    height: 22rem;
   }
 }
 
