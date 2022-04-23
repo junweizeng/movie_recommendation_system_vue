@@ -78,13 +78,12 @@ export default {
           avatar: user.avatar
         })
 
-        userRequest.getTypesAndRegions()
-            .then(res => {
-              types.value = res.data.types
-              regions.value = res.data.regions
-            }).catch(err => {
-              console.error(err)
-            })
+        userRequest.getTypesAndRegions().then(res => {
+          types.value = res.data.types
+          regions.value = res.data.regions
+        }).catch(err => {
+          console.error(err)
+        })
       } else {
         ErrorMessage(res.msg)
       }

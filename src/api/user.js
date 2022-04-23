@@ -76,7 +76,7 @@ const userRequest = {
      */
     getTypesAndRegions: () => {
         return request({
-            url: '/user/types/and/regions',
+            url: '/user/like',
             method: 'get',
             headers: {
                 isNeedToken: true,

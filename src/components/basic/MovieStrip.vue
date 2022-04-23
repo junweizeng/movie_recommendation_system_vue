@@ -1,5 +1,7 @@
 <template>
   <div class="movie-strip-master">
+    <slot name="header"></slot>
+
     <div class="image-div-and-info">
       <!-- 电影海报 -->
       <div class="image-div">

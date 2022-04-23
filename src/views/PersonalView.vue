@@ -39,7 +39,7 @@
           </span>
         </template>
 
-        <test-infinite-scroll/>
+        <recommended-movies></recommended-movies>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -54,12 +54,12 @@ import MovieStrip from "@/components/basic/MovieStrip";
 import CommentStrip from "@/components/basic/CommentStrip";
 import CommentMovieMoments from "@/components/personal/CommentMovieMoments";
 import ReviewedMovies from "@/components/personal/ReviewedMovies";
-import TestInfiniteScroll from "@/components/personal/TestInfiniteScroll";
+import RecommendedMovies from "@/components/personal/RecommendedMovies";
 
 export default {
   name: "PersonalView",
   components: {
-    TestInfiniteScroll,
+    RecommendedMovies,
     ReviewedMovies,
     CommentMovieMoments,
     MovieCard,
