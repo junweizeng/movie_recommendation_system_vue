@@ -3,16 +3,22 @@
     <movie-strip></movie-strip>
   </div>
 
-  <test-infinite-scroll></test-infinite-scroll>
+  <score-pie-chart></score-pie-chart>
+
+  <br/>
+  <br/>
+
+  <movie-relations-graph-chart></movie-relations-graph-chart>
 </template>
 
 <script>
   import MovieStrip from "@/components/basic/MovieStrip";
-  import TestInfiniteScroll from "@/components/personal/TestInfiniteScroll";
+  import ScorePieChart from "@/components/charts/ScorePieChart";
+  import MovieRelationsGraphChart from "@/components/charts/MovieRelationsGraphChart";
 
   export default {
     name: 'AboutView',
-    components: {TestInfiniteScroll, MovieStrip}
+    components: {MovieRelationsGraphChart, ScorePieChart, MovieStrip}
   }
 </script>
 
