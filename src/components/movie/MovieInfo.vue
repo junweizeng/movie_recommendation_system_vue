@@ -67,7 +67,7 @@
                 </el-col>
                 <el-col :span="16">
                   <div class="introduction">
-                    <el-collapse v-model="hello" @change="helloo">
+                    <el-collapse>
                       <el-collapse-item title="&nbsp;&nbsp;&nbsp;&nbsp;电影简介" name="introduction">
                         <div style="margin: 0 1rem">
                           {{ movie.introduction }}

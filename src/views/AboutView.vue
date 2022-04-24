@@ -7,18 +7,19 @@
 
   <br/>
   <br/>
-
-  <movie-relations-graph-chart></movie-relations-graph-chart>
+  <svg-icon icon-class="recommendation" style="width: 3rem; height: 3rem; color: red;"></svg-icon>
+<!--  <movie-relations-graph-chart></movie-relations-graph-chart>-->
 </template>
 
 <script>
   import MovieStrip from "@/components/basic/MovieStrip";
   import ScorePieChart from "@/components/charts/ScorePieChart";
   import MovieRelationsGraphChart from "@/components/charts/MovieRelationsGraphChart";
+  import SvgIcon from "@/components/basic/SvgIcon";
 
   export default {
     name: 'AboutView',
-    components: {MovieRelationsGraphChart, ScorePieChart, MovieStrip}
+    components: {SvgIcon, MovieRelationsGraphChart, ScorePieChart, MovieStrip}
   }
 </script>
 

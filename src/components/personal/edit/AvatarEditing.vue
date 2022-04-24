@@ -18,7 +18,7 @@
 <script>
 import MyUpload from 'vue-image-crop-upload';
 import { UserFilled } from '@element-plus/icons-vue'
-import {reactive, toRefs} from "vue";
+import {onBeforeUnmount, reactive, toRefs} from "vue";
 import request from "@/utils/request";
 import emitter from "@/utils/eventBus";
 import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
@@ -37,8 +37,6 @@ export default {
     }
   },
   setup() {
-    // 创建图像的 datebase64 url
-    // let imgDataUrl =  ref('https://ts1.cn.mm.bing.net/th?id=OIP-C.ZeQ5h5qmFJdYmGKtrR-I9gAAAA&w=204&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.25&pid=3.1&rm=2')
     let data = reactive({
       show: false,
       field: {
@@ -96,6 +94,10 @@ export default {
      */
     emitter.on('handleEditAvatarChange', res => {
       data.imgDataUrl = res.avatar
+    })
+
+    onBeforeUnmount(() => {
+      emitter.off('handleEditAvatarChange')
     })
 
     return {

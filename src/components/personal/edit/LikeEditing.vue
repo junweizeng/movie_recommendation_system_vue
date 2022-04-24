@@ -5,7 +5,7 @@
 
   <el-dialog
       v-model="isShow"
-      title="编辑"
+      :title="editDialogTitle"
       width="602px"
       draggable
   >
@@ -18,6 +18,8 @@
         target-order="push"
     >
     </el-transfer>
+
+    <div style="color: red; margin-top: 1rem;">说明：最多选择5项。若多选，则只保留“已选项”中的前5项！</div>
 
     <template #footer>
       <span class="dialog-footer">
@@ -49,6 +51,13 @@ export default {
     }
   },
   setup(props) {
+    let editDialogTitle = ref('')
+    if (props.opt === 1) {
+      editDialogTitle.value = '类型喜好编辑'
+    } else {
+      editDialogTitle.value = '地区喜好编辑'
+    }
+
     const types = [
       '剧情', '喜剧', '动作', '爱情', '科幻',
       '动画', '悬疑', '惊悚', '恐怖', '犯罪',
@@ -62,7 +71,7 @@ export default {
       '西班牙','印度','泰国','俄罗斯','伊朗', '加拿大',
       '澳大利亚','爱尔兰','瑞典','巴西','丹麦'
     ]
-
+    // 生成电影类型map，键值对（类型名称 => 类型编号）
     const generateTypeEnum = () => {
       let typeEnum = {}
       types.forEach((type, index) => {
@@ -71,7 +80,7 @@ export default {
       return typeEnum
     }
     const typeEnum = generateTypeEnum()
-
+    // 生成电影地区map，键值对（地区名称 => 地区编号）
     const generateRegionEnum = () => {
       let regionEnum = {}
       regions.forEach((region, index) => {
@@ -81,6 +90,7 @@ export default {
     }
     const regionEnum = generateRegionEnum()
 
+    // 初始化Transfer 的数据源
     const generateData = _ => {
       const data = [];
       let likes = []
@@ -97,8 +107,9 @@ export default {
       });
       return data;
     };
-
+    // Transfer 的数据源
     const data = ref(generateData())
+    // Transfer 的已选项
     const value = ref([])
 
     let isShow = ref(false)
@@ -107,6 +118,7 @@ export default {
     }
 
     watch(isShow, (newValue, oldValue) => {
+      // 显示编辑窗口时，将用户已选标签加入“以选项”
       if (newValue) {
         value.value = []
         if (props.opt === 1) {
@@ -121,6 +133,7 @@ export default {
       }
     })
 
+    // 提交更新用户喜好
     let handleUpdateLike = () => {
       if (props.opt === 1) {
         userRequest.updateUserTypeLike(value.value).then(res => {
@@ -128,6 +141,7 @@ export default {
             SuccessMessage(res.msg)
             // 更新成功，编辑页面关闭
             isShow.value = false
+            emitter.emit("handleLikeEditingUpdate")
           } else {
             ErrorMessage(res.msg)
           }
@@ -140,6 +154,7 @@ export default {
            SuccessMessage(res.msg)
            // 更新成功，编辑页面关闭
            isShow.value = false
+           emitter.emit("handleLikeEditingUpdate")
          } else {
            ErrorMessage(res.msg)
          }
@@ -151,6 +166,7 @@ export default {
 
     return {
       props,
+      editDialogTitle,
       isShow,
       data,
       value,

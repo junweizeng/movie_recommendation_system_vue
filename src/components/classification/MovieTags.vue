@@ -1,6 +1,6 @@
 <template>
   <div class="tags my-border">
-    <el-button class="btn" @click="refreshSelect" size="big" round>
+    <el-button class="btn" @click="refreshSelect" size="default" round>
       <el-icon class="btn-icon" style="vertical-align: middle;" >
         <refresh-right />
       </el-icon>

@@ -108,7 +108,7 @@
 
 <script>
 import AvatarEdit from "@/components/personal/edit/AvatarEditing";
-import {reactive, ref} from "vue";
+import {nextTick, onBeforeUnmount, reactive, ref} from "vue";
 import {Edit} from "@element-plus/icons";
 import userRequest from "@/api/user";
 import {ErrorMessage, SuccessMessage, WarningMessage} from "@/utils/myMessage";
@@ -196,15 +196,29 @@ export default {
       console.error(err)
     })
 
-    userRequest.getTypesAndRegions().then(res => {
-      if (res.code === 200) {
-        types.value = res.data.types
-        regions.value = res.data.regions
-      }
-    }).catch(err => {
-      console.error(err)
+    const getTypesAndRegions = () => {
+      userRequest.getTypesAndRegions().then(res => {
+        if (res.code === 200) {
+          types.value = res.data.types
+          regions.value = res.data.regions
+        }
+      }).catch(err => {
+        console.error(err)
+      })
+    }
+    // 初始化时，获取用户的电影类型和地区喜好
+    getTypesAndRegions()
+
+    emitter.on('handleLikeEditingUpdate', data => {
+      // 用户触发喜好更新时，重新获取更新后的电影类型和地区喜好
+      setTimeout(() => {
+        getTypesAndRegions()
+      }, 200)
     })
 
+    onBeforeUnmount(() => {
+      emitter.off('handleLikeEditingUpdate')
+    })
 
     return {
       user,
