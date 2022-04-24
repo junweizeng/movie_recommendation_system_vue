@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import {reactive, ref, watch} from "vue";
+import {onBeforeMount, onBeforeUnmount, reactive, ref, watch} from "vue";
 import {useRouter} from 'vue-router'
 import {More, MoreFilled, Menu as MenuIcon} from "@element-plus/icons";
 import userRequest from "@/api/user";
@@ -247,6 +247,11 @@ export default {
       searchKeywords.value = item.value
       handleSearch()
     }
+
+    onBeforeUnmount(() => {
+      emitter.off('handleHeaderNicknameChange')
+      emitter.off('handleEditAvatarChange')
+    })
 
     return {
       isLogin,

@@ -1,5 +1,7 @@
 <template>
   <div class="card">
+    <slot name="header"></slot>
+
     <a :href="`/movie/info/${movie.id}`">
       <div class="image-div">
         <el-image :src="pic" class="image">
@@ -34,6 +36,8 @@
         </div>
       </div>
     </a>
+
+    <slot name="footer"></slot>
   </div>
 </template>
 
@@ -69,14 +73,15 @@ export default {
 <style lang="less" scoped>
 
 .card {
+  position: relative;
   border-radius: 0.5rem;
   border-width: 1px;
   border-style: solid;
   border-color: #eaeaf6;
   /*box-shadow: 10px 10px 20px #888888;*/
+  //max-height: 25rem;
+  //min-height: 25rem;
 
-  max-height: 25rem;
-  min-height: 25rem;
   width: 13.8rem;
   margin-bottom: 1rem;
 }

@@ -8,6 +8,7 @@ import * as ElIcons from '@element-plus/icons-vue'
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 import 'element-plus/dist/index.css'
 import 'animate.css/animate.min.css'
+import SvgIcon from './icons'
 
 const app = createApp(App)
 for (const name in ElIcons){
@@ -17,5 +18,6 @@ for (const name in ElIcons){
 
 app.use(store)
     .use(router)
+    .use(SvgIcon)
     .use(ElementPlus, {locale})
     .mount('#app')

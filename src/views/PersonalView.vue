@@ -6,6 +6,18 @@
     </div>
 
     <el-tabs type="border-card" class="demo-tabs">
+      <!-- 系统推荐 -->
+      <el-tab-pane>
+        <template #label>
+          <span class="tab-labels">
+            <el-icon><document-checked /></el-icon>
+            <span>系统推荐</span>
+          </span>
+        </template>
+
+        <recommended-movies></recommended-movies>
+      </el-tab-pane>
+
       <!-- 动态 -->
       <el-tab-pane>
         <template #label>
@@ -28,18 +40,6 @@
         </template>
 
         <reviewed-movies></reviewed-movies>
-      </el-tab-pane>
-
-      <!-- 系统推荐 -->
-      <el-tab-pane>
-        <template #label>
-          <span class="tab-labels">
-            <el-icon><document-checked /></el-icon>
-            <span>系统推荐</span>
-          </span>
-        </template>
-
-        <recommended-movies></recommended-movies>
       </el-tab-pane>
     </el-tabs>
   </div>

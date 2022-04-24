@@ -42,7 +42,7 @@
           v-model:currentPage="currentPage"
           v-model:page-size="pageSize"
           v-model:total="total"
-          pager-count="5"
+          :pager-count="pagerCountSeven"
           background
           layout="total, prev, pager, next, jumper"
       />
@@ -55,7 +55,7 @@
           v-model:currentPage="currentPage"
           v-model:page-size="pageSize"
           v-model:total="total"
-          pager-count="5"
+          :pager-count="pagerCountFive"
           small
           background
           layout="prev, pager, next, jumper"
@@ -87,6 +87,8 @@ export default {
   },
   setup() {
     const router = useRouter()
+    const pagerCountFive = ref(5)
+    const pagerCountSeven = ref(7)
 
     // 分页结果，电影列表
     let movies = reactive([])
@@ -127,7 +129,6 @@ export default {
       if (keywords.value === undefined) {
         getMovies()
       } else {
-        console.log(keywords.value)
         searchWord.value = keywords.value
         getMovies()
       }
@@ -153,7 +154,7 @@ export default {
      * 若发生变化，重新请求电影数据，随后页面发生变化。
      */
     watch(pageSize, (newValue, oldValue) => {
-      // console.log('page-size', newValue)
+
     })
 
     /**
@@ -196,6 +197,8 @@ export default {
     })
 
     return {
+      pagerCountFive,
+      pagerCountSeven,
       pageSize,
       currentPage,
       total,

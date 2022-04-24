@@ -13,13 +13,27 @@
           text-color="#008000"
           show-text
       />
-      <el-input
-          type="textarea"
-          rows="5"
-          maxlength="200"
-          show-word-limit
-          v-model="ownCommentEditInfo.comment"
-      />
+<!--      <el-input-->
+<!--          type="textarea"-->
+<!--          rows="5"-->
+<!--          maxlength="200"-->
+<!--          show-word-limit-->
+<!--          v-model="ownCommentEditInfo.comment"-->
+<!--      />-->
+<!--      <span @click="isShowEmoji = !isShowEmoji">-->
+<!--        emoji-->
+<!--        <EmojiPicker class="emoji-div" v-show="isShowEmoji" :native="true" @select="onSelectEmoji" />-->
+<!--      </span>-->
+
+      <EmojiPicker
+          picker-type="textarea"
+          @update:text="onChangeText"
+          :text="ownCommentEditInfo.comment"
+          native="true"
+          disable-skin-tones="true"
+          :static-texts="{ placeholder: '搜索表情'}"/>
+
+      <span> {{ ownCommentEditInfo.comment.length }} / 200</span>
     </div>
     <template #footer>
       <el-button @click="handleEditDialogVisible">取 消</el-button>
@@ -45,18 +59,26 @@
 import MovieInfo from "@/components/movie/MovieInfo";
 import MovieComments from "@/components/movie/MovieComments";
 import {reactive, ref} from "vue";
-import {useRouter} from "vue-router";
 import {ErrorMessage, SuccessMessage, WarningMessage} from "@/utils/myMessage";
 import {Edit} from "@element-plus/icons";
 import commentRequest from "@/api/comment";
 import CommentStrip from "@/components/basic/CommentStrip";
 
+import EmojiPicker from 'vue3-emoji-picker'
+import '@/../node_modules/vue3-emoji-picker/dist/style.css'
+
 export default {
   name: 'MovieComments',
-  components: { CommentStrip, Edit, MovieInfo, MovieComments },
+  components: {
+    CommentStrip,
+    Edit,
+    MovieInfo,
+    MovieComments,
+    EmojiPicker,
+  },
   props: {
     mid: {
-      type: String
+      default: ''
     }
   },
   setup(props) {
@@ -78,10 +100,14 @@ export default {
     })
 
     let isEditDialogVisible = ref(false)
-    let handleEditDialogVisible = () => {
+    const handleEditDialogVisible = () => {
       isEditDialogVisible.value = !isEditDialogVisible.value
     }
-    let handleSubmitComment = () => {
+    const onChangeText = (text) => {
+      ownCommentEditInfo.comment = text
+    }
+    let isShowEmoji = ref(false)
+    const handleSubmitComment = () => {
       if (ownCommentEditInfo.score === 0) {
         WarningMessage('不可以给电影打0分 (┬┬﹏┬┬)')
       } else {
@@ -138,10 +164,12 @@ export default {
     return {
       comments,
       ownComment,
+      isShowEmoji,
       ownCommentEditInfo,
       isEditDialogVisible,
       handleEditDialogVisible,
       handleSubmitComment,
+      onChangeText,
     }
   },
 }
@@ -159,6 +187,11 @@ export default {
   color: black;
   background-color: #73a2e7;
   border-radius: 0.6rem;
+}
+
+.emoji-div {
+  z-index: 10;
+  float: bottom;
 }
 
 /deep/ .el-dialog {

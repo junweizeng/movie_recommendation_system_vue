@@ -1,11 +1,39 @@
 <template>
   <div>
-    <p class="panel-title">{{tag}}......</p>
+    <p class="panel-title">{{ tag }}......</p>
 
     <el-scrollbar>
       <div class="scrollbar-flex-content">
-        <template v-for="movie in movies" :key="movie.id">
-          <movie-card :movie="movie" class="movie-card-item"></movie-card>
+        <template v-for="(movie, index) in movies" :key="movie.id">
+          <movie-card :movie="movie" class="movie-card-item">
+            <template v-if="opt === 1" v-slot:header>
+              <svg-icon v-if="index === 0" icon-class="recommendation_1" class="recommendation-svg-one" style="color: rgb(255, 215, 0)"></svg-icon>
+              <svg-icon v-if="index === 1" icon-class="recommendation_1" class="recommendation-svg-one" style="color: rgb(241,241,235)"></svg-icon>
+              <svg-icon v-if="index === 2" icon-class="recommendation_1" class="recommendation-svg-one" style="color: rgb(186, 110, 64)"></svg-icon>
+              <svg-icon v-if="index > 2" icon-class="recommendation" class="recommendation-svg-two" style="color: rgb(48, 208, 186)"></svg-icon>
+            </template>
+
+            <template v-if="opt === 3" v-slot:header>
+              <svg-icon v-if="index === 0" icon-class="first" class="highest-score-svg-one" style="color: rgb(255, 215, 0)"></svg-icon>
+              <svg-icon v-if="index === 1" icon-class="second" class="highest-score-svg-one" style="color: rgb(241,241,235)"></svg-icon>
+              <svg-icon v-if="index === 2" icon-class="third" class="highest-score-svg-one" style="color: rgb(186, 110, 64)"></svg-icon>
+              <svg-icon v-if="index > 2" icon-class="recommendation_3" class="highest-score-svg-one" style="color: rgb(48, 208, 186)"></svg-icon>
+            </template>
+
+            <template v-if="opt === 1" v-slot:footer>
+              <div class="recommendation-index-div">
+                <svg-icon icon-class="recommendation_5"></svg-icon>
+                推荐指数: {{ movie.idx }}%
+              </div>
+            </template>
+
+            <template v-if="opt === 2" v-slot:footer>
+              <div class="watched-num-div">
+                <svg-icon icon-class="watched"></svg-icon>
+                {{ movie.num }}人评价
+              </div>
+            </template>
+          </movie-card>
         </template>
       </div>
     </el-scrollbar>
@@ -15,10 +43,11 @@
 <script>
 import {PictureFilled, PictureRounded} from "@element-plus/icons-vue";
 import MovieCard from "@/components/basic/MovieCard";
+import SvgIcon from "@/components/basic/SvgIcon";
 
 export default {
   name: "MovieList",
-  components: {PictureRounded, PictureFilled, MovieCard},
+  components: {SvgIcon, PictureRounded, PictureFilled, MovieCard},
   props: {
     tag: {
       type: String,
@@ -27,27 +56,28 @@ export default {
     },
     movies: {
       type: Object,
+    },
+    opt: {
+      /**
+       * 0：默认
+       * 1：猜你喜欢
+       * 2：最多人看
+       * 3：评分最高
+       */
+      type: Number,
+      required: true,
+      default: 0,
     }
   },
   setup(props) {
-    // let movies = reactive([
-    //   {id:'001',name:'战狼',src:'https://img0.baidu.com/it/u=2535847271,500295178&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=666',score:3.7},
-    //   {id:'002',name:'中国医生',src:'https://img1.baidu.com/it/u=246487087,4260921059&fm=253&fmt=auto&app=138&f=JPEG?w=357&h=500',score:5},
-    //   {id:'003',name:'我是传奇',src:'https://img1.baidu.com/it/u=556028526,3717333338&fm=253&fmt=auto&app=138&f=JPEG?w=339&h=500',score:4.7},
-    //   {id:'004',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4},
-    //   {id:'005',name:'这个名字很长，用来测试页面11111111111111111',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4},
-    //   {id:'006',name:'八佰',src:'https://img1.baidu.com/it/u83581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4},
-    //   {id:'007',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4},
-    //   {id:'008',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4},
-    //   {id:'009',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4},
-    //   {id:'010',name:'八佰',src:'https://img1.baidu.com/it/u=2211775819,2883581277&fm=253&fmt=auto&app=120&f=JPEG?w=540&h=763',score:4},
-    // ])
-
-    return {
-      props,
-      // movies
-    }
-  },
+    props.movies.forEach((movie, idx) => {
+      if (movie.idx) {
+        movie.idx *= 100
+        // 保留两位小数（四舍五入）
+        movie.idx = movie.idx.toFixed(2)
+      }
+    })
+  }
 }
 </script>
 
@@ -68,4 +98,42 @@ export default {
   margin: 1rem;
 }
 
+.recommendation-svg-one {
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  z-index: 10;
+  width: 2rem;
+  height: 2rem;
+}
+
+.recommendation-svg-two {
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  z-index: 10;
+  width: 3rem;
+  height: 3rem;
+}
+
+.recommendation-index-div {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: rgb(250, 114, 104);
+}
+
+.highest-score-svg-one {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  z-index: 10;
+  width: 2rem;
+  height: 2rem;
+}
+
+.watched-num-div {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: rgb(125, 197, 235);
+}
 </style>

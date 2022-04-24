@@ -89,6 +89,32 @@ const movieRequest = {
                 'keywords': keywords
             }
         })
+    },
+    /**
+     * 获取最多人看过的（评论过的）电影列表
+     * @returns {*}
+     */
+    getMostWatchedMovies: () => {
+        return request({
+            url: '/movie/most/watched',
+            method: 'get',
+            headers: {
+                isNeedToken: false
+            },
+        })
+    },
+    /**
+     * 获得评分最高的前n部电影列表
+     * @returns {*}
+     */
+    getHighestRatedMovies: () => {
+        return request({
+            url: '/movie/highest/score',
+            method: 'get',
+            headers: {
+                isNeedToken: false
+            },
+        })
     }
 }
 
