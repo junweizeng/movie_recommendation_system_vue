@@ -20,7 +20,7 @@
     "vue-cropper": "^0.5.8",
     "vue-image-crop-upload": "^3.0.3",
     "vue-router": "^4.0.3",
-    "vue3-carousel": "^0.1.38",
+    "vue3-emoji-picker": "^1.1.1",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
@@ -32,7 +32,8 @@
     "less-loader": "^10.2.0",
     "sass-loader": "^12.6.0",
     "stylus": "^0.56.0",
-    "stylus-loader": "^6.2.0"
+    "stylus-loader": "^6.2.0",
+    "svg-sprite-loader": "^6.0.11"
   },
   "browserslist": [
     "> 1%",
