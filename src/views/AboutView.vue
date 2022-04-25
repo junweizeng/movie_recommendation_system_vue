@@ -8,7 +8,7 @@
   <br/>
   <br/>
   <svg-icon icon-class="recommendation" style="width: 3rem; height: 3rem; color: red;"></svg-icon>
-<!--  <movie-relations-graph-chart></movie-relations-graph-chart>-->
+  <movie-relations-graph-chart></movie-relations-graph-chart>
 </template>
 
 <script>

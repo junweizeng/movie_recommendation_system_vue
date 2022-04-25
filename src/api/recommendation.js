@@ -14,6 +14,19 @@ const recommendationRequest = {
             },
         })
     },
+    /**
+     * 获取看过的电影和推荐电影之间的联系，用于绘制Echarts关系图
+     * @returns {*}
+     */
+    getLinksBetweenWatchedMoviesAndRecommendedMovies: () => {
+        return request({
+            url: '/recommendation/relations',
+            method: 'get',
+            headers: {
+                isNeedToken: true,
+            },
+        })
+    }
 }
 
 export default recommendationRequest
