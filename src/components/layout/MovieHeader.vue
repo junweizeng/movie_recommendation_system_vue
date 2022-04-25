@@ -85,12 +85,12 @@
             </el-link>
           </el-dropdown-item>
           <el-dropdown-item>
-            <el-link :underline="false" href="/me/order" style="padding-right: 7px">
-              <i style="padding-right: 3px"></i>我的喜欢
+            <el-link :underline="false" @click="show('personalPlanet')" style="padding-right: 7px">
+              <i style="padding-right: 3px"></i>电影星球
             </el-link>
           </el-dropdown-item>
           <el-dropdown-item>
-            <el-link :underline="false" href="/me/setting" style="padding-right: 7px">
+            <el-link :underline="false" @click="show('setting')" style="padding-right: 7px">
               <i style="padding-right: 3px"></i>个人设置
             </el-link>
           </el-dropdown-item>
@@ -283,7 +283,7 @@ export default {
   padding-left: 10%;
   padding-right: 10%;
   display: flex;
-  background-color: #333;
+  background-color: rgb(84, 92, 100);
   //background-color: transparent;
   //border-color:transparent;
 }

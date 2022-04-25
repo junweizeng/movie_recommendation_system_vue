@@ -33,9 +33,32 @@ const routes = [
         component: () => import('../views/PersonalView.vue')
       },
       {
-        path: '/personal/edit',
+        path: 'personal/edit',
         name: 'personalEdit',
         component: () => import('../views/PersonalInfoEditingView.vue')
+      },
+      {
+        path: 'personal/planet',
+        name: 'personalPlanet',
+        component: () => import('../views/MoviePlanetView.vue')
+      },
+      {
+        path: 'setting',
+        name: 'setting',
+        redirect: '/setting/personal/info',
+        component: () => import('../views/PersonalSettingView.vue'),
+        children: [
+          {
+            path: 'personal/info',
+            name: 'settingPersonalInfo',
+            component: () => import('../views/PersonalInfoEditingView.vue'),
+          },
+          {
+            path: 'account',
+            name: 'settingAccount',
+            component: () => import('../views/AccountSettingView.vue')
+          }
+        ]
       }
     ]
   },
@@ -48,7 +71,7 @@ const routes = [
     path: '/register',
     name: 'register',
     component: () => import('../views/RegisterView.vue')
-  }
+  },
 ]
 
 const router = createRouter({

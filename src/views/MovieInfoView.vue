@@ -11,7 +11,7 @@
             <span>推荐</span>
           </span>
           </template>
-          <movie-list v-if="movies.length" class="list" :tag="tag" :movies="movies" />
+          <movie-list v-if="movies.length" class="list" :tag="tag" :movies="movies" :opt="0" />
         </el-tab-pane>
 
         <el-tab-pane>
@@ -35,12 +35,11 @@
 import MovieInfo from "@/components/movie/MovieInfo";
 import MovieComments from "@/components/movie/MovieComments";
 import MovieList from "@/components/home/MovieList";
-import {computed, nextTick, onMounted, reactive, ref, watch} from "vue";
+import {reactive, ref} from "vue";
 import movieRequest from "@/api/movie";
 import {useRouter} from "vue-router";
-import {ErrorMessage, SuccessMessage, WarningMessage} from "@/utils/myMessage";
+import {ErrorMessage} from "@/utils/myMessage";
 import {Edit} from "@element-plus/icons";
-import commentRequest from "@/api/comment";
 import CommentStrip from "@/components/basic/CommentStrip";
 
 export default {
