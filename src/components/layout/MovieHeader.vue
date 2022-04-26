@@ -80,7 +80,7 @@
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item>
-            <el-link :underline="false" @click="show('personalInfo')" style="padding-right: 7px">
+            <el-link :underline="false" @click="show('personal')" style="padding-right: 7px">
               <i style="padding-right: 3px"></i>我的主页
             </el-link>
           </el-dropdown-item>

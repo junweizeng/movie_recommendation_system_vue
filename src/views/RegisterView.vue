@@ -149,7 +149,6 @@ export default {
       }
     }
     const validateAgreeBlur = (rule, value, callback) => {
-      console.log('niahosdifjosjflksjflksjdlkfds')
       if (!agree.value) {
         callback(new Error('您需要同意《注册协议》才能注册'))
       } else {
@@ -193,7 +192,7 @@ export default {
           ErrorMessage(err)
         })
       } catch (err) {
-        console.log(err)
+        console.error(err)
       }
     }
 
