@@ -45,6 +45,20 @@ const userRequest = {
         })
     },
     /**
+     * 修改密码
+     * @param updatePasswordForm
+     */
+    updatePassword: (updatePasswordForm) => {
+        return request({
+            url: '/user/update/password',
+            method: 'post',
+            headers: {
+                isNeedToken: true,
+            },
+            data: updatePasswordForm
+        })
+    },
+    /**
      * 判断token是否过期
      * @returns {*}
      */

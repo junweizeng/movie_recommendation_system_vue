@@ -28,35 +28,53 @@ const routes = [
         component: () => import('../views/ClassificationView.vue'),
       },
       {
-        path: 'personal/info',
-        name: 'personalInfo',
-        component: () => import('../views/PersonalView.vue')
-      },
-      {
         path: 'personal/edit',
         name: 'personalEdit',
-        component: () => import('../views/PersonalInfoEditingView.vue')
+        component: () => import('../views/personal/PersonalInfoEditingView.vue')
       },
       {
         path: 'personal/planet',
         name: 'personalPlanet',
-        component: () => import('../views/MoviePlanetView.vue')
+        component: () => import('../views/personal/MoviePlanetView.vue')
+      },
+      {
+        path: 'personal',
+        name: 'personal',
+        redirect: '/personal/recommendation',
+        component: () => import('../views/personal/PersonalView.vue'),
+        children: [
+          {
+            path: 'recommendation',
+            name: 'personalRecommendation',
+            component: () => import('../views/personal/info/RecommendationView.vue')
+          },
+          {
+            path: 'moments',
+            name: 'personalMoments',
+            component: () => import('../views/personal/info/MomentsView.vue')
+          },
+          {
+            path: 'watched',
+            name: 'personalWatched',
+            component: () => import('../views/personal/info/WatchedMoviesView.vue')
+          },
+        ]
       },
       {
         path: 'setting',
         name: 'setting',
         redirect: '/setting/personal/info',
-        component: () => import('../views/PersonalSettingView.vue'),
+        component: () => import('../views/personal/PersonalSettingView.vue'),
         children: [
           {
             path: 'personal/info',
             name: 'settingPersonalInfo',
-            component: () => import('../views/PersonalInfoEditingView.vue'),
+            component: () => import('../views/personal/PersonalInfoEditingView.vue'),
           },
           {
             path: 'account',
             name: 'settingAccount',
-            component: () => import('../views/AccountSettingView.vue')
+            component: () => import('../views/personal/AccountSettingView.vue')
           }
         ]
       }
