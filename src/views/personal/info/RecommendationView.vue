@@ -20,7 +20,7 @@ import {ref} from "vue";
 import MovieStrip from "@/components/basic/MovieStrip";
 
 export default {
-  name: "RecommendedMovies",
+  name: "RecommendationView",
   components: {MovieStrip},
   setup() {
     let recommendedMovies = ref([])
@@ -46,7 +46,7 @@ export default {
 <style lang="less" scoped>
 .movie-strip-slot-header {
   color: rgb(250, 114, 104);
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: initial;
 }
 </style>

@@ -16,7 +16,7 @@ import {ref} from "vue";
 import MovieStrip from "@/components/basic/MovieStrip";
 
 export default {
-  name: "CommentMovieMoments",
+  name: "MomentsView",
   components: {MovieStrip, CommentStrip},
   setup() {
     let moments = ref([])

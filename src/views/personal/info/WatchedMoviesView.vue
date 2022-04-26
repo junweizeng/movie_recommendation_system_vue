@@ -30,7 +30,7 @@ import {ref} from "vue";
 import movieRequest from "@/api/movie";
 
 export default {
-  name: "ReviewedMovies",
+  name: "WatchedMoviesView",
   components: {MovieStrip},
   setup() {
     let reviewedMovies = ref([])
@@ -51,8 +51,6 @@ export default {
     }
   }
 }
-
-
 </script>
 
 <style lang="less" scoped>

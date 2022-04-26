@@ -1,7 +1,7 @@
 <template>
   <div class="bg">
     <div class="info-edit-master">
-      <router-link to="/personal/info" class="back-to-my-home" >返回我的主页></router-link>
+      <router-link to="/personal" class="back-to-my-home" >返回我的主页></router-link>
 
       <div class="edit-top">
         <avatar-edit :size="12" class="avatar"></avatar-edit>
@@ -169,7 +169,6 @@ export default {
 
     // 类型部分
     let types = ref([])
-
     // 地区部分
     let regions = ref([])
 
