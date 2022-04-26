@@ -284,8 +284,6 @@ export default {
   padding-right: 10%;
   display: flex;
   background-color: rgb(84, 92, 100);
-  //background-color: transparent;
-  //border-color:transparent;
 }
 
 /*系统logo图片和字体样式*/
@@ -329,8 +327,9 @@ export default {
 
 /* 更改鼠标悬停时的颜色 */
 .navbar a:hover {
-  background-color: #ddd;
-  color: black;
+  color: white;
+  animation: bounce;
+  animation-duration: .8s;
 }
 
 /*搜索框样式*/
