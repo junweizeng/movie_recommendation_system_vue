@@ -1,5 +1,5 @@
 <template>
-  <div class="bg" style="background-image: url('https://api.xygeng.cn/Bing/')"></div>
+<!--  <div class="bg" style="background-image: url('https://api.xygeng.cn/Bing/')"></div>-->
   <div
       name="animate__bounce"
       class="login-form my-border"
@@ -42,14 +42,14 @@
         </el-input>
       </el-form-item>
 
-      <div class="scan-and-forget-div">
-        <el-link href="/scanLogin" class="my-font" :underline="false">
-          扫码登录
-        </el-link>
-        <el-link href="/forget" class="my-font" :underline="false">
-          忘记密码?
-        </el-link>
-      </div>
+<!--      <div class="scan-and-forget-div">-->
+<!--        <el-link href="/scanLogin" class="my-font" :underline="false">-->
+<!--          扫码登录-->
+<!--        </el-link>-->
+<!--        <el-link href="/forget" class="my-font" :underline="false">-->
+<!--          忘记密码?-->
+<!--        </el-link>-->
+<!--      </div>-->
 
       <el-form-item>
         <el-button @click="postLogin" class="login-form-button" type="primary">登 录</el-button>

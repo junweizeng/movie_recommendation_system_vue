@@ -1,5 +1,5 @@
 <template>
-  <div class="bg" style="background-image: url('https://api.xygeng.cn/Bing/')"></div>
+<!--  <div class="bg" style="background-image: url('https://api.xygeng.cn/Bing/')"></div>-->
   <div class="login-form my-border" @keyup.enter="postRegister">
 
     <div class="login-form-header">
