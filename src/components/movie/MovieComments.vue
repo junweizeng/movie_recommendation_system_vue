@@ -13,65 +13,73 @@
           text-color="#008000"
           show-text
       />
-<!--      <el-input-->
-<!--          type="textarea"-->
-<!--          rows="5"-->
-<!--          maxlength="200"-->
-<!--          show-word-limit-->
-<!--          v-model="ownCommentEditInfo.comment"-->
-<!--      />-->
-<!--      <span @click="isShowEmoji = !isShowEmoji">-->
-<!--        emoji-->
-<!--        <EmojiPicker class="emoji-div" v-show="isShowEmoji" :native="true" @select="onSelectEmoji" />-->
-<!--      </span>-->
+      <el-input
+          type="textarea"
+          rows="5"
+          maxlength="200"
+          show-word-limit
+          v-model="ownCommentEditInfo.comment"
+      >
+      </el-input>
 
-      <EmojiPicker
-          picker-type="textarea"
-          @update:text="onChangeText"
-          :text="ownCommentEditInfo.comment"
-          native="true"
-          disable-skin-tones="true"
-          :static-texts="{ placeholder: '搜索表情'}"/>
+      <span @click="isShowEmoji = !isShowEmoji">
+        <svg-icon v-if="!isShowEmoji" icon-class="smile-beam"
+                  style="color: rgb(255, 173, 24); width: 20px; height: 20px; margin-top: 0.5rem;"></svg-icon>
+        <svg-icon v-if="isShowEmoji" icon-class="smile-wink"
+                  style="color: rgb(255, 173, 24); width: 20px; height: 20px; margin-top: 0.5rem;"></svg-icon>
+      </span>
+      <EmojiPicker class="dialog-div"
+                   v-show="isShowEmoji"
+                   :native="true"
+                   :disable-skin-tones="true"
+                   @select="onSelectEmoji"
+                   :static-texts="{ placeholder: '搜索表情'}"/>
 
-      <span> {{ ownCommentEditInfo.comment.length }} / 200</span>
     </div>
     <template #footer>
+      <el-button v-if="isHaveOwnComment" type="danger" @click="handleRemoveComment">删除</el-button>
       <el-button @click="handleEditDialogVisible">取 消</el-button>
       <el-button type="primary" @click="handleSubmitComment">提 交</el-button>
     </template>
   </el-dialog>
 
   <div class="comment-strip" v-show="ownComment.nickname !== ''">
-    <p class="each-comment-tag">我的短评</p>
+    <div class="each-comment-tag">我的短评</div>
     <comment-strip :comment="ownComment"></comment-strip>
   </div>
 
   <div class="comment-strip">
-    <p class="each-comment-tag">所有短评</p>
+    <div class="each-comment-tag">所有短评</div>
     <template v-for="(c, index) in comments" :key="index">
       <comment-strip :comment="c"></comment-strip>
       <el-divider />
     </template>
   </div>
+
+  <div v-loading="!isReadyForLoad" style="width: 100%; height: 2rem"></div>
+  <div v-if="isAllComments" style="width: 100%; text-align: center; color: #91949c">评论到底啦(❁´◡`❁)~</div>
 </template>
 
 <script>
 import MovieInfo from "@/components/movie/MovieInfo";
 import MovieComments from "@/components/movie/MovieComments";
-import {reactive, ref} from "vue";
+import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import {ErrorMessage, SuccessMessage, WarningMessage} from "@/utils/myMessage";
-import {Edit} from "@element-plus/icons";
+import {Edit, Search} from "@element-plus/icons";
 import commentRequest from "@/api/comment";
 import CommentStrip from "@/components/basic/CommentStrip";
 
 import EmojiPicker from 'vue3-emoji-picker'
 import '@/../node_modules/vue3-emoji-picker/dist/style.css'
+import SvgIcon from "@/components/basic/SvgIcon";
 
 export default {
   name: 'MovieComments',
   components: {
+    SvgIcon,
     CommentStrip,
     Edit,
+    Search,
     MovieInfo,
     MovieComments,
     EmojiPicker,
@@ -83,7 +91,9 @@ export default {
   },
   setup(props) {
     let movieId = ref(props.mid)
-    let comments = reactive([])
+    // 是否有自己的评论（如果有则显示删除按钮，否则不显示）
+    let isHaveOwnComment = ref(false)
+    let comments = ref([])
 
     let ownComment = reactive({
       mid: movieId.value,
@@ -100,11 +110,17 @@ export default {
     })
 
     let isEditDialogVisible = ref(false)
+    watch(isEditDialogVisible, (newValue, oldValue) => {
+      // 当编辑框关闭的时候，表情选择框也不显示
+      if (!newValue) {
+        isShowEmoji.value = false
+      }
+    })
     const handleEditDialogVisible = () => {
       isEditDialogVisible.value = !isEditDialogVisible.value
     }
-    const onChangeText = (text) => {
-      ownCommentEditInfo.comment = text
+    const onSelectEmoji = (emoji) => {
+      ownCommentEditInfo.comment += emoji.i
     }
     let isShowEmoji = ref(false)
     const handleSubmitComment = () => {
@@ -132,9 +148,31 @@ export default {
       }
     }
 
+    const handleRemoveComment = () => {
+      commentRequest.removeOwnComment(ownComment).then(res => {
+        if (res.code === 200) {
+          SuccessMessage(res.msg)
+          // 将其标记为false，表示有自己的评论已被删除，后面不会显示删除按钮
+          isHaveOwnComment.value = false
+          ownComment.nickname = ''
+          ownComment.comment = ''
+          ownComment.score = 0
+          ownCommentEditInfo.score = 0
+          ownCommentEditInfo.comment = ''
+        } else {
+          ErrorMessage(res.msg)
+        }
+        isEditDialogVisible.value = false
+      }).catch(err => {
+        console.error(err)
+      })
+    }
+
     let handleGetOwnComment = () => {
       commentRequest.getOwnComment(ownComment.mid).then(res => {
         if (res.code === 200) {
+          // 将其标记为true，表示有自己的评论存在，后面会显示删除按钮
+          isHaveOwnComment.value = true
           let data = res.data
           ownComment.agree = data.agree
           ownComment.comment = data.comment
@@ -152,24 +190,64 @@ export default {
     }
     handleGetOwnComment()
 
-    commentRequest.getCommentsByMovieId(ownComment.mid).then(res => {
-      if (res.code === 200) {
-        let newComments = res.data
-        for (let i = 0; i < newComments.length; ++ i) {
-          comments.push(newComments[i])
-        }
+    let isAllComments = ref(false)
+    let currentPage = 0;
+    const pageSize = 10;
+    let isReadyForLoad = ref(true); // 加载锁，首次允许
+    function loadMoreComments() {
+      // 如果加载锁为解锁状态，且未加载所有评论，则继续加载评论
+      if (isReadyForLoad.value && !isAllComments.value) {
+        // 需要加载时锁上，防止重复加载
+        isReadyForLoad.value = false
+        commentRequest.getMoreCommentsByMovieId(ownComment.mid, currentPage, pageSize).then(res => {
+          if (res.code === 200) {
+            if (res.data.length !== 0) {
+              comments.value = [...comments.value, ...res.data]
+            } else {
+              isAllComments.value = true
+            }
+            currentPage ++;
+          }
+          // 加载完成后，解锁
+          isReadyForLoad.value = true;
+        }).catch(err => {
+          console.error(err)
+        })
       }
+    }
+    loadMoreComments()
+
+    const handleInfiniteScroll = (e) => {
+      const scrollHeight = document.body.scrollHeight;
+      const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+      const clientHeight = document.documentElement.clientHeight;
+      const distance = scrollHeight - scrollTop - clientHeight;
+      if (distance <= 50) {
+        loadMoreComments()
+      }
+    }
+
+    onMounted(() => {
+      window.addEventListener('scroll', handleInfiniteScroll, true);
+    })
+    onUnmounted(() => {
+      window.removeEventListener('scroll', handleInfiniteScroll);
     })
 
     return {
+
       comments,
       ownComment,
       isShowEmoji,
+      isAllComments,
+      isReadyForLoad,
+      isHaveOwnComment,
       ownCommentEditInfo,
       isEditDialogVisible,
       handleEditDialogVisible,
       handleSubmitComment,
-      onChangeText,
+      handleRemoveComment,
+      onSelectEmoji,
     }
   },
 }
@@ -183,15 +261,23 @@ export default {
 
 .each-comment-tag {
   margin-top: 1rem;
+  margin-bottom: 1rem;
   font-size: 2rem;
   color: black;
-  background-color: #73a2e7;
+  width: 100%;
+  text-align: center;
+  background-color: rgb(84, 92, 100);
   border-radius: 0.6rem;
 }
 
-.emoji-div {
-  z-index: 10;
-  float: bottom;
+.dialog-div {
+  overflow: hidden;
+  z-index: 9999;
+  position: fixed;
+  text-align: center;
+  width: 300px;
+  height: 300px;
+  border-radius: 1rem;
 }
 
 /deep/ .el-dialog {
