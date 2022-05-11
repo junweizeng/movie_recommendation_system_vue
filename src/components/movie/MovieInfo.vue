@@ -121,10 +121,8 @@
 </template>
 
 <script>
-import {onMounted, ref} from "vue";
-import request from "@/utils/request";
+import {ref} from "vue";
 import {useRouter} from "vue-router";
-import {ElMessage} from "element-plus";
 import movieRequest from "@/api/movie";
 import {ErrorMessage} from "@/utils/myMessage";
 

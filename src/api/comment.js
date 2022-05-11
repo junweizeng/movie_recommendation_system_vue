@@ -38,7 +38,7 @@ const commentRequest = {
      * @param mid
      * @returns {*}
      */
-    getCommentsByMovieId: (mid) => {
+    getMoreCommentsByMovieId: (mid, currentPage, pageSize) => {
         return request({
             url: '/comment/all',
             method: 'get',
@@ -46,7 +46,9 @@ const commentRequest = {
                 isNeedToken: true,
             },
             params: {
-                mid: mid
+                mid: mid,
+                currentPage: currentPage,
+                pageSize: pageSize,
             }
         })
     },
@@ -61,6 +63,21 @@ const commentRequest = {
             headers: {
                 isNeedToken: true,
             },
+        })
+    },
+    /**
+     * 删除用户对于某部电影的评论
+     * @param mid
+     * @returns {*}
+     */
+    removeOwnComment: (mid) => {
+        return request({
+            url: '/comment/remove',
+            method: 'delete',
+            headers: {
+                isNeedToken: true,
+            },
+            data: mid
         })
     }
 }

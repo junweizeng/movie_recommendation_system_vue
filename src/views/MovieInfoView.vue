@@ -93,14 +93,6 @@ export default {
   margin-right: 2rem;
 }
 
-.each-comment-tag {
-  margin-top: 1rem;
-  font-size: 2rem;
-  color: black;
-  background-color: #73a2e7;
-  border-radius: 0.6rem;
-}
-
 /deep/ .el-dialog {
   width: 40%
 }

@@ -3,7 +3,7 @@
     <div class="comment-header">
       <el-avatar :src="comment.avatar" @error="errorHandler">
         <!-- 当图片加载错误时，将加载这里面的图片 -->
-        <img src="../../assets/default_avatar.png"/>
+        <img src="../../assets/default_avatar.png" alt="default_avatar"/>
       </el-avatar>
 
       <div class="right">
@@ -18,8 +18,8 @@
     </div>
 
     <div class="comment-middle">
-      <p class="comment-content">{{ comment.comment }}</p>
-
+      <p v-if="comment.comment" class="comment-content">{{ comment.comment }}</p>
+      <p v-else style="color: #a89e9e">该用户很懒，啥也没写。</p>
       <slot name="movieInfo"></slot>
     </div>
 
