@@ -1,10 +1,8 @@
 import axios from 'axios'
-import {ElMessage} from "element-plus";
-import router from "@/router";
 
 const request = axios.create({
-    // 注意！！ 这里是全局统一加上了 '/mrs' 前缀，也就是说所有接口都会加上'/mrs'前缀在，页面里面写接口的时候就不要加 '/mrs'了，否则会出现2个'/mrs'，类似 '/mrs/mrs/user'这样的报错，切记！！！
-    baseURL: '/mrs',
+    baseURL: 'http://localhost:8888',
+    // baseURL: 'http://121.43.101.121:8888',
     timeout: 5000
 })
 

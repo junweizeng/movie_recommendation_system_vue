@@ -26,14 +26,16 @@
 
         <span class="search-div">
           <el-autocomplete
-              style="border-radius: 30px;"
               v-model="searchKeywords"
               :fetch-suggestions="querySearchAsync"
               placeholder="请输入电影名"
-              prefix-icon="Search"
               @select="handleSelect"
               @keydown.enter="handleSearch"
-          />
+          >
+            <template #suffix>
+              <search @click="handleSearch" width="20px"/>
+            </template>
+          </el-autocomplete>
         </span>
       </div>
     </transition>
@@ -46,14 +48,16 @@
 
       <span class="search-div">
         <el-autocomplete
-            style="border-radius: 30px;"
             v-model="searchKeywords"
             :fetch-suggestions="querySearchAsync"
             placeholder="请输入电影名"
-            prefix-icon="Search"
             @select="handleSelect"
             @keydown.enter="handleSearch"
-        />
+        >
+          <template #suffix>
+            <search @click="handleSearch" width="20px"/>
+          </template>
+        </el-autocomplete>
       </span>
     </div>
 
@@ -113,10 +117,11 @@ import userRequest from "@/api/user";
 import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
 import emitter from "@/utils/eventBus";
 import movieRequest from "@/api/movie";
+import {Search} from "@element-plus/icons-vue";
 
 export default {
   name: "MovieHeader",
-  components: {MoreFilled, More, MenuIcon},
+  components: {Search, MoreFilled, More, MenuIcon},
   setup() {
     const router = useRouter()
     let isLogin = ref(false)
@@ -328,8 +333,8 @@ export default {
 /* 更改鼠标悬停时的颜色 */
 .navbar a:hover {
   color: white;
-  animation: bounce;
-  animation-duration: .8s;
+  animation: heartBeat;
+  animation-duration: .7s;
 }
 
 /*搜索框样式*/
