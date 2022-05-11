@@ -1,4 +1,6 @@
 <template>
+  <el-skeleton :loading="loading" :rows="5" animated />
+
   <template v-for="(movie, index) in reviewedMovies" :key="index">
     <movie-strip :movie="movie" style="margin-bottom: 1rem;">
       <template v-slot:footer>
@@ -18,21 +20,24 @@
               disabled-void-color="rgb(226, 226, 226)"
           />
         </div>
-
       </template>
     </movie-strip>
   </template>
+
+  <blank-page v-if="!loading && !reviewedMovies.length" :page-name="'record'"></blank-page>
 </template>
 
 <script>
 import MovieStrip from "@/components/basic/MovieStrip";
 import {ref} from "vue";
 import movieRequest from "@/api/movie";
+import BlankPage from "@/components/basic/BlankPage";
 
 export default {
   name: "WatchedMoviesView",
-  components: {MovieStrip},
+  components: {BlankPage, MovieStrip},
   setup() {
+    let loading = ref(true)
     let reviewedMovies = ref([])
 
     movieRequest.getAllReviewedMovies().then(res => {
@@ -41,12 +46,14 @@ export default {
         for (let i = 0; i < reviewedMovies.value.length; ++ i) {
           reviewedMovies.value[i].userScore /= 2
         }
+        loading.value = false
       }
     }).catch(err => {
       console.error(err)
     })
 
     return {
+      loading,
       reviewedMovies
     }
   }

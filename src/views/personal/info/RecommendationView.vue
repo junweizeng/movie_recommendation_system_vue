@@ -1,4 +1,6 @@
 <template>
+  <el-skeleton :loading="loading" :rows="5" animated />
+
   <template  v-for="movie in recommendedMovies" :key="movie.id">
     <movie-strip :movie="movie"  style="margin-bottom: 1rem;">
       <template v-slot:header>
@@ -12,17 +14,20 @@
     </movie-strip>
   </template>
 
+  <blank-page v-if="!loading && !recommendedMovies.length" :page-name="'recommendation'"></blank-page>
 </template>
 
 <script>
 import recommendationRequest from "@/api/recommendation";
 import {ref} from "vue";
 import MovieStrip from "@/components/basic/MovieStrip";
+import BlankPage from "@/components/basic/BlankPage";
 
 export default {
   name: "RecommendationView",
-  components: {MovieStrip},
+  components: {MovieStrip, BlankPage},
   setup() {
+    let loading = ref(true)
     let recommendedMovies = ref([])
     recommendationRequest.getRecommendedMoviesByUserId().then(res => {
       if (res.code === 200) {
@@ -33,10 +38,14 @@ export default {
           movie.idx = movie.idx.toFixed(2)
           return movie
         })
+        loading.value = false
       }
+    }).catch(err => {
+      console.error(err)
     })
 
     return {
+      loading,
       recommendedMovies
     }
   }

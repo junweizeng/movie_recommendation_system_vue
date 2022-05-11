@@ -78,6 +78,7 @@ export default {
 <style lang="less" scoped>
 //整体布局
 .main {
+  min-height: 88vh;
   padding-left: 20%;
   padding-right: 20%;
   background-color: #d6dbe7;

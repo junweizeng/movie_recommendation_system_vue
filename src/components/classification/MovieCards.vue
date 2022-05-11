@@ -16,6 +16,8 @@
       <el-icon><icon-grid :color="gridColor" /></el-icon>
     </div>
 
+    <blank-page v-if="!movies.length" page-name="movie"></blank-page>
+
     <!-- 电影卡片显示 -->
     <div v-show="isCard" class="movie-cards">
       <template
@@ -73,11 +75,13 @@ import emitter from "@/utils/eventBus";
 import movieRequest from "@/api/movie";
 import {ErrorMessage} from "@/utils/myMessage";
 import {useRoute, useRouter} from "vue-router";
+import BlankPage from "@/components/basic/BlankPage";
 
 export default {
   // 这里用来纪念一下困扰我多天的低级错误，把MovieCard.vue 和 MovieCards.vue的name都写成了MovieCard，导致递归堆栈溢出问题！！！
   name: "MovieCards",
   components: {
+    BlankPage,
     IconMenu,
     IconGrid,
     IconList,
