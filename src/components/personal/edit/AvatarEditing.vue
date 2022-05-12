@@ -3,16 +3,20 @@
     <el-avatar class="avatar" shape="square" :style="`width: ${size}rem; height: ${size}rem;`" :src="imgDataUrl" alt="头像">
       <UserFilled class="inner"></UserFilled>
     </el-avatar>
+
+    <div class="edit-img">
+      <svg-icon icon-class="avatar_edit" style="width: 5rem; height: 5rem;"></svg-icon>
+    </div>
   </div>
 
-    <my-upload field="img"
-               @crop-success="cropSuccess"
-               v-model="show"
-               :width="200"
-               :height="200"
-               :no-rotate="false"
-               img-format="png">
-    </my-upload>
+  <my-upload field="img"
+             @crop-success="cropSuccess"
+             v-model="show"
+             :width="200"
+             :height="200"
+             :no-rotate="false"
+             img-format="png">
+  </my-upload>
 </template>
 
 <script>
@@ -22,10 +26,12 @@ import {onBeforeUnmount, reactive, toRefs} from "vue";
 import request from "@/utils/request";
 import emitter from "@/utils/eventBus";
 import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
+import {Edit} from "@element-plus/icons";
+import SvgIcon from "@/components/basic/SvgIcon";
 
 export default {
   name: 'AvatarEdit',
-  components: {MyUpload,UserFilled},
+  components: {SvgIcon, Edit, MyUpload,UserFilled},
   props: {
     size: {
       type: Number,
@@ -109,19 +115,40 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .avatar-edit-master {
+  position: relative;
   text-align: center;
+
+  .avatar {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .edit-img {
+    display: none;
+    z-index: 100;
+    position: absolute;
+    left: 3.55rem;
+    top: 3.55rem;
+
+    img {
+      width: 5rem;
+    }
+  }
 }
 
-.avatar {
-  margin-top: 5px;
-  margin-bottom: 5px;
+.avatar-edit-master:hover {
+  filter: brightness(70%);
+
+  .edit-img {
+    display: block;
+  }
 }
 
 .avatar .inner {
   width:100px;
-  height: 100px
+  height: 100px;
 }
 
 @media screen and (max-width: 657px) {
