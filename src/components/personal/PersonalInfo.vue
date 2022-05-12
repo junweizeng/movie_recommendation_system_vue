@@ -126,6 +126,7 @@ export default {
 
 .each-type, .each-region {
   margin-left: 1rem;
+  margin-top: 0.5rem;
 }
 
 .like {

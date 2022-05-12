@@ -236,12 +236,14 @@ export default {
 
 <style lang="less" scoped>
 .bg {
+  min-height: 89.6vh;
   padding-left: 20%;
   padding-right: 20%;
   background-color: #d6dbe7;
 }
 
 .info-edit-master {
+  min-height: 89.5vh;
   border-style: solid;
   border-width: 1px;
   padding: 0 1rem;

@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
-    <p> Copyright 2022 电影推荐系统</p>
-    <p>京公网安备 1101010110110110号 京ICP备123456789号-1</p>
+    <p style="margin: 0; padding-top: 6px">Copyright 2022 电影推荐系统</p>
+    <p style="margin: 0; padding: 6px">京公网安备 1101010110110110号 京ICP备123456789号-1</p>
   </div>
 </template>
 
@@ -13,7 +13,7 @@ export default {
 
 <style scoped>
   .footer {
-    height: 70px;
+    background-color: rgb(84, 92, 100);
     text-align: center;
     letter-spacing: 2px;
     font-size: 13px;

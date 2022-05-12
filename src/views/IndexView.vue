@@ -1,25 +1,25 @@
 <template>
   <el-container>
-    <Header class="header" />
+    <movie-header class="header" />
 
     <el-main  class="content" style="padding: 0">
       <router-view/>
     </el-main>
 
     <el-footer class="footer" style="padding: 0">
-      <Footer/>
+      <movie-footer/>
     </el-footer>
 
   </el-container>
 </template>
 
 <script>
-import Header from "@/components/layout/MovieHeader";
-import Footer from "../components/layout/MovieFooter"
+import MovieHeader from "@/components/layout/MovieHeader";
+import MovieFooter from "@/components/layout/MovieFooter"
 
 export default {
   name: "IndexView",
-  components: { Header, Footer },
+  components: { MovieHeader, MovieFooter },
 }
 </script>
 
@@ -35,9 +35,16 @@ export default {
 
 /* 让footer保持在最下方 */
 .content {
-  min-height: calc(100vh - 120px);
+  min-height: calc(100vh - 105px);
 }
+
 .footer {
-  height: 56px;
+  height: 54px;
+}
+
+@media screen and (max-width: 450px) {
+  .footer {
+    height: 73px;
+  }
 }
 </style>

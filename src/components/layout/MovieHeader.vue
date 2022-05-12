@@ -216,6 +216,31 @@ export default {
       user.avatar = data.avatar
     })
 
+    /**
+     * 将搜索记录存储到localStorage中
+     * @param keyword 搜索关键词
+     */
+    function storeHistorySearchRecords(keyword) {
+      let records = JSON.parse(localStorage.getItem("historySearchRecords"));
+      if (records === null || records.length === 0) {
+        records = []
+      }
+      keyword = keyword.trim()
+      // 将搜索记录中和keyword相同的关键词过滤掉
+      records = records.filter((record) => {
+        return record !== keyword;
+      })
+      // 不将空白搜索关键词插入
+      if (keyword.trim().length !== 0) {
+        // 将keyword插入到搜索记录的开头
+        records.unshift(keyword);
+      }
+      // 最多保留10条搜索记录
+      const len = Math.min(10, records.length);
+      // 将搜索记录保存到localStorage中
+      localStorage.setItem("historySearchRecords", JSON.stringify(records.slice(0, len)));
+    }
+
     // 搜索
     let searchKeywords = ref('')
     const querySearchAsync = (queryString, cb) => {
@@ -225,6 +250,12 @@ export default {
           res.data.forEach((name, index) => {
             result.push({'value': name})
           })
+          if (!result.length) {
+            const historySearchRecords = JSON.parse(localStorage.getItem("historySearchRecords"));
+            historySearchRecords.forEach((name, index) => {
+              result.push({'value': name})
+            })
+          }
           // 调用 callback 返回建议列表的数据
           cb(result)
         }
@@ -247,6 +278,8 @@ export default {
       emitter.emit('handleSearch', {
         searchKeywords: searchKeywords.value
       })
+      // 将搜索关键词保存到localStorage中
+      storeHistorySearchRecords(searchKeywords.value)
     }
     const handleSelect = (item) => {
       searchKeywords.value = item.value

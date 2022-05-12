@@ -13,7 +13,7 @@
     >
       <el-menu-item index="personalRecommendation">
         <el-icon><document-checked /></el-icon>
-        <span>系统推荐</span>
+        <span>推荐</span>
       </el-menu-item>
       <el-menu-item index="personalMoments">
         <el-icon><chat-round /></el-icon>
@@ -21,7 +21,7 @@
       </el-menu-item>
       <el-menu-item index="personalWatched">
         <el-icon><film /></el-icon>
-        <span>我看过的</span>
+        <span>看过</span>
       </el-menu-item>
     </el-menu>
     <div class="content">
@@ -78,7 +78,7 @@ export default {
 <style lang="less" scoped>
 //整体布局
 .main {
-  min-height: 88vh;
+  min-height: 89.6vh;
   padding-left: 20%;
   padding-right: 20%;
   background-color: #d6dbe7;
@@ -89,7 +89,7 @@ export default {
   margin-bottom: .1rem;
   flex: 60%;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   border-radius: 0.5rem;
   background-color: #ffffff;
   padding-left: 1rem;
@@ -120,13 +120,7 @@ export default {
 
   .personal-div-top {
     padding-left: 0;
-    flex-direction: column;
-
-    .avatar {
-      margin: 0 auto;
-    }
+    flex-direction: row;
   }
-
-
 }
 </style>
