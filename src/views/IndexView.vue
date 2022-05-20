@@ -2,7 +2,7 @@
   <el-container>
     <movie-header class="header" />
 
-    <el-main  class="content" style="padding: 0">
+    <el-main class="content" style="padding: 0">
       <router-view/>
     </el-main>
 

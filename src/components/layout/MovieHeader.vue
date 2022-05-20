@@ -172,6 +172,9 @@ export default {
           localStorage.removeItem('token')
           localStorage.removeItem('userInfo')
           isLogin.value = false
+          router.replace({
+            name: 'home'
+          })
         } else {
           ErrorMessage(res.msg)
         }
@@ -193,7 +196,6 @@ export default {
         user.sex = userInfo.sex
       } else {
         isLogin.value = false
-        ErrorMessage(res.msg)
       }
     }).catch(err => {
       console.log(err)

@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
-    <p style="margin: 0; padding-top: 6px">Copyright 2022 电影推荐系统</p>
-    <p style="margin: 0; padding: 6px">京公网安备 1101010110110110号 京ICP备123456789号-1</p>
+    <p style="margin: 0; padding-top: 6px">Copyright &copy; 2022 Zeng Junwei.</p>
+    <p style="margin: 0; padding: 6px">All rights reserved.</p>
   </div>
 </template>
 
