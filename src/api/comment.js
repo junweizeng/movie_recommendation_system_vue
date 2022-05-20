@@ -79,6 +79,23 @@ const commentRequest = {
             },
             data: mid
         })
+    },
+    /**
+     * 获取电影id为mid的电影下，评论词云图绘制所需的数据
+     * @param mid 电影id
+     * @returns {*}
+     */
+    getCommentsWordCloudData: (mid) => {
+        return request({
+            url: '/comment/word/cloud/data',
+            method: 'get',
+            headers: {
+                isNeedToken: true,
+            },
+            params: {
+                mid: mid
+            }
+        })
     }
 }
 

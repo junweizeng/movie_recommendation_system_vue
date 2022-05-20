@@ -16,7 +16,13 @@
 <!--    <el-skeleton :loading="loading" :rows="5" animated />-->
 <!--  </div>-->
 
-  <el-button>暗黑模式</el-button>
+<!--  <el-button>暗黑模式</el-button>-->
+
+  <comments-word-cloud mid="500"></comments-word-cloud>
+
+  <score-pie-chart></score-pie-chart>
+
+<!--  <el-button @click="click">点我显示</el-button>-->
 </template>
 
 <script>
@@ -24,15 +30,34 @@ import MovieStrip from "@/components/basic/MovieStrip";
 import ScorePieChart from "@/components/charts/ScorePieChart";
 import MovieRelationsGraphChart from "@/components/charts/MovieRelationsGraphChart";
 import SvgIcon from "@/components/basic/SvgIcon";
-import {ref} from "vue";
+import {nextTick, onMounted, reactive, ref} from "vue";
+import CommentsWordCloud from "@/components/charts/CommentsWordCloud";
+import commentRequest from "@/api/comment";
 
 export default {
   name: 'AboutView',
-  components: {SvgIcon, MovieRelationsGraphChart, ScorePieChart, MovieStrip},
+  components: {CommentsWordCloud, SvgIcon, MovieRelationsGraphChart, ScorePieChart, MovieStrip},
   setup() {
+    let wordCloudData = reactive([]);
+
+    commentRequest.getCommentsWordCloudData(777).then(res => {
+      if (res.code === 200) {
+        wordCloudData = res.data;
+      }
+    }).catch(err => {
+      console.error(err);
+    })
+
     let loading = ref(true)
+
+    const click = () => {
+      console.log(wordCloudData)
+    }
+
     return {
-      loading
+      wordCloudData,
+      loading,
+      click
     }
   }
 }

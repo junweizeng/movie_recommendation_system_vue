@@ -5,6 +5,8 @@
     </template>
   </el-button>
 
+  <comments-word-cloud :mid="mid"></comments-word-cloud>
+
   <el-dialog v-model="isEditDialogVisible" title="编辑短评" draggable>
     <div>
       <el-rate
@@ -72,10 +74,12 @@ import CommentStrip from "@/components/basic/CommentStrip";
 import EmojiPicker from 'vue3-emoji-picker'
 import '@/../node_modules/vue3-emoji-picker/dist/style.css'
 import SvgIcon from "@/components/basic/SvgIcon";
+import CommentsWordCloud from "@/components/charts/CommentsWordCloud";
 
 export default {
   name: 'MovieComments',
   components: {
+    CommentsWordCloud,
     SvgIcon,
     CommentStrip,
     Edit,
