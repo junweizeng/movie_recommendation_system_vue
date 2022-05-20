@@ -24,9 +24,15 @@
     </div>
 
     <div class="comment-bottom">
-      <span>
-        <el-icon size="25px" color="red"><caret-top /></el-icon>
-      </span>
+      <!-- out-in 当前元素先进行过渡，完成之后新元素过渡进入。 -->
+      <transition
+          name="fade" mode="out-in"
+          enter-active-class="animate__animated animate__fadeIn"
+          leave-active-class="animate__animated animate__fadeOut"
+          :duration="150">
+        <svg-icon v-if="!isLike" @click="isLike = !isLike" icon-class="no_like_1" style="width: 1rem; height: 1rem;"></svg-icon>
+        <svg-icon v-else @click="isLike = !isLike" icon-class="liked_1" style="width: 1rem; height: 1rem;"></svg-icon>
+      </transition>
       <span class="agree">{{ comment.agree }}</span>
     </div>
   </div>
@@ -51,6 +57,8 @@ export default {
     }
   },
   setup(props) {
+    let isLike = ref(false)
+
     let score = computed(() => {
       return props.comment.score / 2;
     })
@@ -58,6 +66,7 @@ export default {
     const errorHandler = () => true;
 
     return {
+      isLike,
       score,
       errorHandler,
     }
@@ -87,7 +96,7 @@ export default {
 }
 
 .comment-middle {
-  margin: 1rem;
+  margin-left: 2rem;
 
   .comment-content {
     // 参考链接：https://blog.csdn.net/iceking66/article/details/78253186
@@ -100,6 +109,7 @@ export default {
   display: flex;
   align-items: center;
   .agree {
+    margin-left: 0.3rem;
     font-size: 0.8rem;
     color: #91949c;
   }
