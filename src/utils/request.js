@@ -2,11 +2,10 @@ import axios from 'axios'
 
 const request = axios.create({
     baseURL: 'http://localhost:8888',
+    // baseURL: 'http://192.168.1.106:8888',
     // baseURL: 'http://121.43.101.121:8888',
     timeout: 5000
 })
-
-const whiteUrls = ['/user/login', '/user/register', '/movie', '/movie/info']
 
 /**
  * request 拦截器
@@ -47,14 +46,6 @@ request.interceptors.response.use(
         if (typeof res === 'string') {
             res = res ? JSON.parse(res) : res
         }
-        // // 验证token
-        // if (res.code === 401) {
-        //     ElMessage({
-        //         type: "error",
-        //         message: "token过期，请重新登录",
-        //         showClose: true
-        //     })
-        // }
         return res;
     },
     error => {

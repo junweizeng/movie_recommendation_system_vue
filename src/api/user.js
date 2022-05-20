@@ -156,6 +156,19 @@ const userRequest = {
             },
             data: regions
         })
+    },
+    /**
+     * 获取用户的邮箱
+     * @returns {*}
+     */
+    getUserMail: () => {
+        return request({
+            url: '/user/get/mail',
+            method: 'get',
+            headers: {
+                isNeedToken: true,
+            }
+        })
     }
 }
 

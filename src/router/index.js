@@ -90,6 +90,11 @@ const routes = [
     name: 'register',
     component: () => import('../views/RegisterView.vue')
   },
+  {
+    path: '/forget',
+    name: 'forget',
+    component: () => import('../views/ForgetView.vue')
+  }
 ]
 
 const router = createRouter({

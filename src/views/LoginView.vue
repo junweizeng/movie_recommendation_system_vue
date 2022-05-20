@@ -1,5 +1,6 @@
 <template>
 <!--  <div class="bg" style="background-image: url('https://api.xygeng.cn/Bing/')"></div>-->
+  <div class="bg"></div>
   <div
       name="animate__bounce"
       class="login-form my-border"
@@ -42,14 +43,14 @@
         </el-input>
       </el-form-item>
 
-<!--      <div class="scan-and-forget-div">-->
-<!--        <el-link href="/scanLogin" class="my-font" :underline="false">-->
-<!--          扫码登录-->
-<!--        </el-link>-->
-<!--        <el-link href="/forget" class="my-font" :underline="false">-->
-<!--          忘记密码?-->
-<!--        </el-link>-->
-<!--      </div>-->
+      <div class="scan-and-forget-div">
+        <el-link href="/scanLogin" class="my-font" :underline="false">
+          扫码登录
+        </el-link>
+        <el-link href="/forget" class="my-font" :underline="false">
+          忘记密码?
+        </el-link>
+      </div>
 
       <el-form-item>
         <el-button @click="postLogin" class="login-form-button" type="primary">登 录</el-button>
@@ -73,7 +74,7 @@ import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
 import userRequest from "@/api/user";
 
 export default {
-  name: 'login',
+  name: 'LoginView',
   components: {
     IconUser,
     IconLock,
@@ -147,8 +148,8 @@ export default {
   width: 28rem;
   position: absolute;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -60%);
+  top: 10rem;
+  transform: translate(-50%, 0);
   padding: 2rem;
   margin-top: 1rem;
   letter-spacing: 2px;
@@ -229,4 +230,27 @@ export default {
   align-items: baseline;
 }
 
+.bg-change {
+  background-color: #e74c3c;
+  animation: bg-color 20s infinite;
+  -webkit-animation: bg-color 20s infinite;
+}
+
+@-webkit-keyframes bg-color {
+  0% { background-color: #f18f87; }
+  20% { background-color: #ead18c; }
+  40% { background-color: #8be1d1; }
+  60% { background-color: #8cbee1; }
+  80% { background-color: #cba2e1; }
+  100% { background-color: #f18f87; }
+}
+
+@keyframes bg-color {
+  0% { background-color: #f18f87; }
+  20% { background-color: #ead18c; }
+  40% { background-color: #8be1d1; }
+  60% { background-color: #8cbee1; }
+  80% { background-color: #cba2e1; }
+  100% { background-color: #f18f87; }
+}
 </style>
