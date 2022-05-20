@@ -19,7 +19,7 @@
 
       <!-- 电影基本信息 -->
       <div class="info">
-        <a :href="`/movie/info/${movie.id}`">
+        <a :href="`/movie/info/${movie.id}`" target="_blank">
           <div class="movie-name line-limit-length">{{ movie.name }}</div>
         </a>
 

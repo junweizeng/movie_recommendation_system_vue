@@ -2,7 +2,7 @@
   <div class="card">
     <slot name="header"></slot>
 
-    <a :href="`/movie/info/${movie.id}`">
+    <a :href="`/movie/info/${movie.id}`" target="_blank">
       <div class="image-div">
         <el-image :src="pic" class="image">
           <template #error>
