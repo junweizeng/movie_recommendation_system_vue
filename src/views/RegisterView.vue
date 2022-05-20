@@ -78,7 +78,7 @@ import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
 import userRequest from "@/api/user";
 
 export default {
-  name: 'login',
+  name: 'RegisterView',
   components: {
     IconUser,
     IconLock,
@@ -219,8 +219,8 @@ export default {
   width: 28rem;
   position: absolute;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -60%);
+  top: 10rem;
+  transform: translate(-50%, 0);
   padding: 2rem;
   margin-top: 1rem;
   letter-spacing: 2px;

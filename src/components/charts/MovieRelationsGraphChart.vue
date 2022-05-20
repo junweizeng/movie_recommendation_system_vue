@@ -15,14 +15,11 @@ export default {
   setup() {
     const echarts = inject('echarts')
 
-    const ROOT_PATH =
-        'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples';
-
     let MovieRelationsGraphChart = ref('MovieRelationsGraphChart')
     let option;
 
     onMounted(() => {
-      const router = useRouter()
+      const router = useRouter();
       let myChart = echarts.init(MovieRelationsGraphChart.value);
 
       // 如果数据还没加载出来，会展示loading的动画
@@ -62,7 +59,6 @@ export default {
             showDelay: 20,             // 显示延迟，添加显示延迟可以避免频繁切换，单位ms
             hideDelay: 200,           // 隐藏延迟，单位ms
             formatter: (param) => {
-              console.log(param)
               //为了保证和原来的效果一样，这里自己实现了一个点的效果
               let htmlStr = ''
               const color = param.color
@@ -78,14 +74,20 @@ export default {
               return htmlStr
             }
           },
-          series: [
-            {
+          series: [{
               type: 'graph',
               layout: 'force',
               animation: false,
               label: {
-                position: 'right',
-                formatter: '{b}'
+                normal: {
+                  show: true,
+                  textStyle:{
+                    fontSize:10,
+                    color:'#B0CEFC'
+                  },
+                  position: 'top',
+                  formatter: '{b}'
+                },
               },
               draggable: true,
               data: res.data.nodes,
@@ -94,9 +96,9 @@ export default {
                 //边的两个节点之间的距离.
                 edgeLength: 50,
                 // 节点之间的斥力因子。支持数组表达斥力范围，值越大斥力越大。
-                repulsion: 150,
+                repulsion: 200,
                 // 节点受到的向中心的引力因子。该值越大节点越往中心点靠拢。
-                gravity: 0.1,
+                gravity: 0.05,
                 // 因为力引导布局会在多次迭代后才会稳定，这个参数决定是否显示布局的迭代动画，在浏览器端节点数据较多（>100）的时候不建议关闭，布局过程会造成浏览器假死。
                 layoutAnimation : true,
               },

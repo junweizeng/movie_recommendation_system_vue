@@ -31,7 +31,6 @@ body {
   box-shadow: 8px 8px 12px #dcdbdb;
 }
 
-
 @media (min-width: 1000px) and (max-width: 1200px) {html {font-size: 16px;}}
 @media (min-width: 960px) and (max-width: 1000px) {html {font-size: 15px;}}
 @media (min-width: 920px) and (max-width: 960px) {html {font-size: 14px;}}
