@@ -18,7 +18,7 @@
 
 <!--  <el-button>暗黑模式</el-button>-->
 
-  <comments-word-cloud mid="500"></comments-word-cloud>
+  <comments-word-cloud mid="100" :wordCloudData="wordCloudData"></comments-word-cloud>
 
   <score-pie-chart></score-pie-chart>
 
@@ -38,11 +38,11 @@ export default {
   name: 'AboutView',
   components: {CommentsWordCloud, SvgIcon, MovieRelationsGraphChart, ScorePieChart, MovieStrip},
   setup() {
-    let wordCloudData = reactive([]);
+    let wordCloudData = ref([]);
 
-    commentRequest.getCommentsWordCloudData(777).then(res => {
+    commentRequest.getCommentsWordCloudData(500).then(res => {
       if (res.code === 200) {
-        wordCloudData = res.data;
+        wordCloudData.value = res.data;
       }
     }).catch(err => {
       console.error(err);

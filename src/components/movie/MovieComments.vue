@@ -5,9 +5,9 @@
     </template>
   </el-button>
 
-  <comments-word-cloud :mid="mid"></comments-word-cloud>
+  <comments-word-cloud :word-cloud-data="wordCloudData"></comments-word-cloud>
 
-  <el-dialog v-model="isEditDialogVisible" title="编辑短评" draggable>
+  <el-dialog v-model="isEditDialogVisible" title="编辑短评" :lock-scroll="false" draggable>
     <div>
       <el-rate
           v-model="ownCommentEditInfo.score"
@@ -58,7 +58,7 @@
     </template>
   </div>
 
-  <div v-loading="!isReadyForLoad" style="width: 100%; height: 2rem"></div>
+  <div v-show="!isReadyForLoad" v-loading="!isReadyForLoad" style="width: 100%; height: 2rem"></div>
   <div v-if="isAllComments" style="width: 100%; text-align: center; color: #91949c">评论到底啦(❁´◡`❁)~</div>
 </template>
 
@@ -221,6 +221,10 @@ export default {
     }
     loadMoreComments()
 
+    /**
+     * 滚动至底部加载更多
+     * @param e
+     */
     const handleInfiniteScroll = (e) => {
       const scrollHeight = document.body.scrollHeight;
       const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
@@ -231,15 +235,25 @@ export default {
       }
     }
 
+    let wordCloudData = ref([])
     onMounted(() => {
       window.addEventListener('scroll', handleInfiniteScroll, true);
+      /**
+       * 请求获取评论词云图数据
+       */
+      commentRequest.getCommentsWordCloudData(props.mid).then(res => {
+        if (res.code === 200) {
+          wordCloudData.value = res.data;
+        }
+      }).catch(err => {
+        console.error(err);
+      })
     })
     onUnmounted(() => {
       window.removeEventListener('scroll', handleInfiniteScroll);
     })
 
     return {
-
       comments,
       ownComment,
       isShowEmoji,
@@ -248,6 +262,7 @@ export default {
       isHaveOwnComment,
       ownCommentEditInfo,
       isEditDialogVisible,
+      wordCloudData,
       handleEditDialogVisible,
       handleSubmitComment,
       handleRemoveComment,
@@ -285,19 +300,19 @@ export default {
 }
 
 /deep/ .el-dialog {
-  width: 40%
+  width: 40%;
 }
 
 /* 响应式布局 - 当屏幕小于 1200 像素宽 */
 @media screen and (max-width: 1200px) {
   /deep/ .el-dialog {
-    width: 60%
+    width: 70%;
   }
 }
 /* 响应式布局 - 当屏幕 小于 800像素 宽 */
 @media screen and (max-width: 800px){
   /deep/ .el-dialog {
-    width: 80%
+    width: 90%;
   }
 }
 </style>
