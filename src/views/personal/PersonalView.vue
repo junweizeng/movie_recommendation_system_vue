@@ -119,7 +119,6 @@ export default {
   }
 
   .personal-div-top {
-    padding-left: 0;
     flex-direction: row;
   }
 }

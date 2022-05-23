@@ -40,7 +40,7 @@ const commentRequest = {
      */
     getMoreCommentsByMovieId: (mid, currentPage, pageSize) => {
         return request({
-            url: '/comment/all',
+            url: '/comment/more',
             method: 'get',
             headers: {
                 isNeedToken: true,
@@ -94,6 +94,25 @@ const commentRequest = {
             },
             params: {
                 mid: mid
+            }
+        })
+    },
+    /**
+     * 点赞（或取消点赞）评论
+     * @param cid 评论id
+     * @param status 点赞状态（1表示点赞，0表示未点赞）
+     * @returns {*}
+     */
+    likeComment: (cid, status) => {
+        return request({
+            url: '/comment/like',
+            method: 'put',
+            headers: {
+                isNeedToken: true,
+            },
+            data: {
+                cid,
+                status
             }
         })
     }

@@ -30,8 +30,8 @@
           enter-active-class="animate__animated animate__fadeIn"
           leave-active-class="animate__animated animate__fadeOut"
           :duration="150">
-        <svg-icon v-if="!isLike" @click="isLike = !isLike" icon-class="no_like_1" style="width: 1rem; height: 1rem;"></svg-icon>
-        <svg-icon v-else @click="isLike = !isLike" icon-class="liked_1" style="width: 1rem; height: 1rem;"></svg-icon>
+        <svg-icon v-if="!status" @click="handleLike" icon-class="no_like_1" style="width: 1rem; height: 1rem;"></svg-icon>
+        <svg-icon v-else @click="handleLike" icon-class="liked_1" style="width: 1rem; height: 1rem;"></svg-icon>
       </transition>
       <span class="agree">{{ comment.agree }}</span>
     </div>
@@ -40,6 +40,7 @@
 
 <script>
 import {computed, ref} from "vue";
+import commentRequest from "@/api/comment";
 
 export default {
   name: "CommentStrip",
@@ -47,17 +48,20 @@ export default {
     comment: {
       type: Object,
       default: {
+        id: '',
         avatar: '',
         nickname: '',
         score: 0,
         time: '',
         comment: '',
         agree: 0,
+        status: 0,
       }
     }
   },
   setup(props) {
-    let isLike = ref(false)
+    const cid = props.comment.id;
+    let status = ref(props.comment.status);
 
     let score = computed(() => {
       return props.comment.score / 2;
@@ -65,9 +69,24 @@ export default {
 
     const errorHandler = () => true;
 
+    const handleLike = () => {
+      status.value = !status.value;
+      if (status.value) {
+        props.comment.agree ++;
+      }
+      else {
+        props.comment.agree --;
+      }
+      const t = status.value === true ? 1 : 0;
+      commentRequest.likeComment(cid, t).catch(err => {
+        console.error(err);
+      });
+    }
+
     return {
-      isLike,
+      status,
       score,
+      handleLike,
       errorHandler,
     }
   }
