@@ -57,7 +57,8 @@
 <script>
 import {ref} from "vue";
 import authRequest from "@/api/authentication";
-import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
+import {ErrorMessage, SuccessMessage} from "@/utils/my-message";
+import {debounce} from "@/utils/debounce-throttle";
 
 export default {
   name: 'ForgetView',
@@ -69,7 +70,6 @@ export default {
     let username = ref('');
     let newPassword = ref('');
 
-
     // 邮箱
     let mail = ref("");
     // 验证码
@@ -80,7 +80,7 @@ export default {
     let sendCodeBtnName = ref('发送验证码');
     // 邮箱输入是否有误
     let isInputError = ref(false)
-    const sendAuthCode = () => {
+    const sendAuthCode = debounce(() => {
       mail.value = mail.value.trim()
       const regex = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
       if (!regex.test(mail.value)) {
@@ -116,9 +116,9 @@ export default {
       }).catch(err => {
         console.error(err)
       })
-    }
+    })
 
-    const checkUsernameExists = () => {
+    const checkUsernameExists = debounce(() => {
       username.value = username.value.trim();
       authRequest.checkUsernameExists(username.value).then(res => {
         if (res.code === 200) {
@@ -128,9 +128,9 @@ export default {
           ErrorMessage(res.msg)
         }
       })
-    }
+    })
 
-    const checkAuthCode = () => {
+    const checkAuthCode = debounce(() => {
       username.value = username.value.trim()
       authCode.value = authCode.value.trim();
       authRequest.checkAuthCode(username.value, authCode.value).then(res => {
@@ -148,7 +148,7 @@ export default {
         }
       }).catch(err => {
         console.error(err)})
-    }
+    })
 
     return {
       active,

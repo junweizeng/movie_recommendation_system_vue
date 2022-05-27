@@ -24,8 +24,8 @@ import MyUpload from 'vue-image-crop-upload';
 import { UserFilled } from '@element-plus/icons-vue'
 import {onBeforeUnmount, reactive, toRefs} from "vue";
 import request from "@/utils/request";
-import emitter from "@/utils/eventBus";
-import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
+import emitter from "@/utils/event-bus";
+import {ErrorMessage, SuccessMessage} from "@/utils/my-message";
 import {Edit} from "@element-plus/icons";
 import SvgIcon from "@/components/basic/SvgIcon";
 

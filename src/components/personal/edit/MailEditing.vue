@@ -41,7 +41,7 @@
 <script>
 import {ref} from "vue";
 import authRequest from "@/api/authentication";
-import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
+import {ErrorMessage, SuccessMessage} from "@/utils/my-message";
 import userRequest from "@/api/user";
 
 export default {
@@ -72,6 +72,8 @@ export default {
 
     const sendAuthCode = () => {
       mail.value = mail.value.trim()
+      // \w+表示多个字母数字下划线等
+      // + 一个或多个，*任意个数
       const regex = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
       if (!regex.test(mail.value)) {
         console.log("邮箱格式有误");
