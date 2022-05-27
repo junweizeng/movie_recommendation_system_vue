@@ -1,5 +1,10 @@
 <template>
-  <el-button @click="handleShow">评论词云图</el-button>
+  <el-button @click="handleShow" type="info">
+    评论词云图
+    <template #icon>
+      <el-icon><MostlyCloudy /></el-icon>
+    </template>
+  </el-button>
   <el-dialog
       v-model="isShow"
       title="评论词云图"

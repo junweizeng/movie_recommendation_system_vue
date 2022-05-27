@@ -23,7 +23,7 @@
       <slot name="movieInfo"></slot>
     </div>
 
-    <div class="comment-bottom">
+    <div v-if="!isOwn" class="comment-bottom">
       <!-- out-in 当前元素先进行过渡，完成之后新元素过渡进入。 -->
       <transition
           name="fade" mode="out-in"
@@ -42,7 +42,7 @@
 <script>
 import {computed, ref, watch} from "vue";
 import commentRequest from "@/api/comment";
-import {debounce, throttle} from "@/utils/debounce-throttle";
+import {throttle} from "@/utils/debounce-throttle";
 
 export default {
   name: "CommentStrip",
@@ -59,17 +59,19 @@ export default {
         agree: 0,
         status: 0,
       }
+    },
+    isOwn: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props) {
     const cid = props.comment.id;
     // 点赞状态
     let status = ref(props.comment.status);
-    let lastStatus = status.value;
     let score = computed(() => {
       return props.comment.score / 2;
     })
-
 
     const handleLike = throttle(() => {
       status.value = !status.value;

@@ -1,9 +1,8 @@
 <template>
-  <el-button @click="handleEditDialogVisible" circle>
+  <el-button @click="handleEditDialogVisible" type="warning" style="margin-left: 2rem">
+    编辑短评
     <template #icon>
-      <el-icon>
-        <edit/>
-      </el-icon>
+      <el-icon><edit/></el-icon>
     </template>
   </el-button>
 
@@ -49,7 +48,7 @@
 
   <div class="comment-strip" v-show="ownComment.nickname !== ''">
     <div class="each-comment-tag">我的短评</div>
-    <comment-strip :comment="ownComment"></comment-strip>
+    <comment-strip :comment="ownComment" :is-own="true"></comment-strip>
   </div>
 
   <div class="comment-strip">
@@ -103,6 +102,7 @@ export default {
 
     let ownComment = reactive({
       mid: movieId.value,
+      id: '',
       score: 0,
       comment: '',
       time: '',
@@ -155,22 +155,23 @@ export default {
     }
 
     const handleRemoveComment = () => {
-      commentRequest.removeOwnComment(ownComment).then(res => {
+      commentRequest.removeOwnComment(ownComment.mid).then(res => {
         if (res.code === 200) {
-          SuccessMessage(res.msg)
+          SuccessMessage(res.msg);
           // 将其标记为false，表示有自己的评论已被删除，后面不会显示删除按钮
-          isHaveOwnComment.value = false
-          ownComment.nickname = ''
-          ownComment.comment = ''
-          ownComment.score = 0
-          ownCommentEditInfo.score = 0
-          ownCommentEditInfo.comment = ''
+          isHaveOwnComment.value = false;
+          ownComment.nickname = '';
+          ownComment.comment = '';
+          ownComment.score = 0;
+
+          ownCommentEditInfo.score = 0;
+          ownCommentEditInfo.comment = '';
         } else {
-          ErrorMessage(res.msg)
+          ErrorMessage(res.msg);
         }
-        isEditDialogVisible.value = false
+        isEditDialogVisible.value = false;
       }).catch(err => {
-        console.error(err)
+        console.error(err);
       })
     }
 
@@ -178,17 +179,18 @@ export default {
       commentRequest.getOwnComment(ownComment.mid).then(res => {
         if (res.code === 200) {
           // 将其标记为true，表示有自己的评论存在，后面会显示删除按钮
-          isHaveOwnComment.value = true
-          let data = res.data
-          ownComment.agree = data.agree
-          ownComment.comment = data.comment
-          ownComment.score = data.score
-          ownComment.nickname = data.nickname
-          ownComment.time = data.time
-          ownComment.avatar = data.avatar
+          isHaveOwnComment.value = true;
+          let data = res.data;
+          ownComment.id = data.id;
+          ownComment.agree = data.agree;
+          ownComment.comment = data.comment;
+          ownComment.score = data.score;
+          ownComment.nickname = data.nickname;
+          ownComment.time = data.time;
+          ownComment.avatar = data.avatar;
 
-          ownCommentEditInfo.score = ownComment.score / 2
-          ownCommentEditInfo.comment = ownComment.comment
+          ownCommentEditInfo.score = ownComment.score / 2;
+          ownCommentEditInfo.comment = ownComment.comment;
         }
       }).catch(err => {
         console.error(err)
@@ -204,13 +206,13 @@ export default {
       // 如果加载锁为解锁状态，且未加载所有评论，则继续加载评论
       if (isReadyForLoad.value && !isAllComments.value) {
         // 需要加载时锁上，防止重复加载
-        isReadyForLoad.value = false
+        isReadyForLoad.value = false;
         commentRequest.getMoreCommentsByMovieId(ownComment.mid, currentPage, pageSize).then(res => {
           if (res.code === 200) {
             if (res.data.length !== 0) {
-              comments.value = [...comments.value, ...res.data]
+              comments.value = [...comments.value, ...res.data];
             } else {
-              isAllComments.value = true
+              isAllComments.value = true;
             }
             currentPage++;
           }
@@ -221,7 +223,7 @@ export default {
         })
       }
     }
-
+    // 初始化时加载一次评论
     loadMoreComments()
 
     /**
@@ -229,9 +231,15 @@ export default {
      * @param e
      */
     const handleInfiniteScroll = (e) => {
+      // 浏览器整个框架的高度 = 滚动条卷去部分 + 可视部分 + 底部隐藏部分的高度。
+      // 浏览器所有内容高度
       const scrollHeight = document.body.scrollHeight;
+      // 浏览器滚动部分高度; || 两边获取的值是一样的，为了兼容个不同浏览器
       const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+      // 浏览器可视部分高度
       const clientHeight = document.documentElement.clientHeight;
+
+      // 计算 底部隐藏部分的高度
       const distance = scrollHeight - scrollTop - clientHeight;
       if (distance <= 50) {
         loadMoreComments()
