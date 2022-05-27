@@ -1,7 +1,7 @@
 <template>
   <div class="comment-strip-master">
     <div class="comment-header">
-      <el-avatar :src="comment.avatar" @error="errorHandler">
+      <el-avatar :src="comment.avatar" @error="true">
         <!-- 当图片加载错误时，将加载这里面的图片 -->
         <img src="../../assets/default_avatar.png" alt="default_avatar"/>
       </el-avatar>
@@ -39,8 +39,9 @@
 </template>
 
 <script>
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import commentRequest from "@/api/comment";
+import {debounce, throttle} from "@/utils/debounce-throttle";
 
 export default {
   name: "CommentStrip",
@@ -61,33 +62,28 @@ export default {
   },
   setup(props) {
     const cid = props.comment.id;
+    // 点赞状态
     let status = ref(props.comment.status);
-
+    let lastStatus = status.value;
     let score = computed(() => {
       return props.comment.score / 2;
     })
 
-    const errorHandler = () => true;
 
-    const handleLike = () => {
+    const handleLike = throttle(() => {
       status.value = !status.value;
-      if (status.value) {
-        props.comment.agree ++;
-      }
-      else {
-        props.comment.agree --;
-      }
+      if (status.value) props.comment.agree ++;
+      else props.comment.agree --;
       const t = status.value === true ? 1 : 0;
       commentRequest.likeComment(cid, t).catch(err => {
         console.error(err);
       });
-    }
+    }, 500)
 
     return {
       status,
       score,
       handleLike,
-      errorHandler,
     }
   }
 }

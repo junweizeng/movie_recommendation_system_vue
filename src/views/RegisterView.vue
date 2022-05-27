@@ -74,8 +74,9 @@
 import {Lock as IconLock, User as IconUser} from "@element-plus/icons";
 import {reactive, ref, unref} from "vue";
 import {useRouter} from "vue-router";
-import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
+import {ErrorMessage, SuccessMessage} from "@/utils/my-message";
 import userRequest from "@/api/user";
+import {debounce} from "@/utils/debounce-throttle";
 
 export default {
   name: 'RegisterView',
@@ -173,7 +174,7 @@ export default {
       ]
     })
 
-    const postRegister = async () => {
+    const postRegister = debounce(async () => {
       const form = unref(registerFormRef)
       if (!form) {
         return
@@ -194,7 +195,7 @@ export default {
       } catch (err) {
         console.error(err)
       }
-    }
+    })
 
     return {
       agree,

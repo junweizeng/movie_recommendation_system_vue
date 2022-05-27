@@ -44,9 +44,9 @@
       </el-form-item>
 
       <div class="scan-and-forget-div">
-        <el-link href="/scanLogin" class="my-font" :underline="false">
-          扫码登录
-        </el-link>
+<!--        <el-link href="/scanLogin" class="my-font" :underline="false">-->
+<!--          扫码登录-->
+<!--        </el-link>-->
         <el-link href="/forget" class="my-font" :underline="false">
           忘记密码?
         </el-link>
@@ -70,8 +70,9 @@
 import {Lock as IconLock, User as IconUser} from "@element-plus/icons";
 import {reactive, ref, unref} from "vue";
 import {useRouter} from "vue-router";
-import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
+import {ErrorMessage, SuccessMessage} from "@/utils/my-message";
 import userRequest from "@/api/user";
+import {debounce} from "@/utils/debounce-throttle";
 
 export default {
   name: 'LoginView',
@@ -100,7 +101,7 @@ export default {
       ],
     })
 
-    let postLogin = async () => {
+    const postLogin = debounce(async () => {
       const form = unref(loginFormRef)
       if (!form) {
         return
@@ -123,7 +124,7 @@ export default {
       } catch (err) {
         console.log(err)
       }
-    }
+    })
 
     return {
       remember,

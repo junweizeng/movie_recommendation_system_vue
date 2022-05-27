@@ -34,9 +34,9 @@
 
 <script>
 import {nextTick, reactive, ref, watch} from "vue";
-import emitter from "@/utils/eventBus";
+import emitter from "@/utils/event-bus";
 import userRequest from "@/api/user";
-import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
+import {ErrorMessage, SuccessMessage} from "@/utils/my-message";
 
 export default {
   name: "LikeEditing",
