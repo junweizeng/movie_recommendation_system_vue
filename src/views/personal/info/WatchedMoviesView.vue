@@ -1,14 +1,14 @@
 <template>
-  <el-skeleton :loading="loading" :rows="5" animated />
+  <el-skeleton :loading="loading" :rows="5" animated/>
 
   <template v-for="(movie, index) in reviewedMovies" :key="index">
     <movie-strip :movie="movie" style="margin-bottom: 1rem;">
       <template v-slot:footer>
-        <div  class="movie-strip-slot">
+        <div class="movie-strip-slot">
           <span v-if="movie.time" class="time">
             {{ movie.time }} 看过
           </span>
-          <el-divider direction="vertical" />
+          <el-divider direction="vertical"/>
           <el-rate
               v-model="movie.userScore"
               disabled
@@ -78,7 +78,7 @@ export default {
       movieRequest.getMoreReviewedMovies(currentPage.value, pageSize.value).then(res => {
         if (res.code === 200) {
           reviewedMovies.value = res.data.records
-          for (let i = 0; i < reviewedMovies.value.length; ++ i) {
+          for (let i = 0; i < reviewedMovies.value.length; ++i) {
             reviewedMovies.value[i].userScore /= 2
           }
           loading.value = false;
@@ -122,7 +122,7 @@ export default {
   width: 100%;
   background-color: rgb(245, 245, 254);
   padding: 0.3rem 0;
-  border-style:solid;
+  border-style: solid;
   border-color: #b0d2e5;
   border-radius: 0.5rem;
   border-width: 1px;
@@ -136,7 +136,7 @@ export default {
 
 /* 分页模块样式 */
 .pagination-style-first, .pagination-style-second {
- margin: 1rem 0;
+  margin: 1rem 0;
 }
 
 .pagination-style-first {
@@ -151,6 +151,7 @@ export default {
   .pagination-style-first {
     display: none;
   }
+
   .pagination-style-second {
     display: block;
   }

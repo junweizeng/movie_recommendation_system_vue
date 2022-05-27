@@ -8,7 +8,7 @@
           <template #error>
             <div class="image-error">
               <film class="center-image-error"></film>
-              <img class="background-image-error" src="../../assets/default-movie.png"  alt="default"/>
+              <img class="background-image-error" src="../../assets/default-movie.png" alt="default"/>
             </div>
           </template>
         </el-image>
@@ -57,10 +57,8 @@ export default {
     let score = computed(() => {
       return props.movie.score / 2;
     })
-    let oss_path = 'https://mrs-zjw.oss-cn-hangzhou.aliyuncs.com/mrs/movie/'
     let pic = ref(props.movie.pic)
 
-    // pic.value = "https://tse2-mm.cn.bing.net/th/id/OIP-C.13S0WRZ0VJMbxoqYMyidyQHaKX?w=195&h=273&c=7&r=0&o=5&dpr=1.25&pid=1.7"
     return {
       props,
       score,
@@ -87,7 +85,7 @@ export default {
 }
 
 .card:hover {
-  border-style:solid;
+  border-style: solid;
   border-color: #f2f2f6;
   border-radius: 0.5rem;
   border-width: 1px;
@@ -113,7 +111,7 @@ export default {
   width: 12rem;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;    /*文本不换行，这样超出一行的部分被截取，显示...*/
+  white-space: nowrap; /*文本不换行，这样超出一行的部分被截取，显示...*/
   text-align: center;
 }
 
@@ -142,12 +140,26 @@ export default {
 }
 
 /*未访问：蓝色、无下划线*/
-a:link {color: black; text-decoration:none;}
+a:link {
+  color: black;
+  text-decoration: none;
+}
+
 /*激活：红色*/
-a:active {color: black; }
+a:active {
+  color: black;
+}
+
 /*已访问：紫色、无下划线*/
-a:visited {color:black;text-decoration:none;}
+a:visited {
+  color: black;
+  text-decoration: none;
+}
+
 /*鼠标移近：红色、下划线*/
-a:hover {color: red; text-decoration:none;}
+a:hover {
+  color: red;
+  text-decoration: none;
+}
 
 </style>

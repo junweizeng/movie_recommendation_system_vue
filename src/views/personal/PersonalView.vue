@@ -1,8 +1,8 @@
 <template>
   <div class="main">
     <div class="personal-div-top">
-      <avatar-edit :size="12" class="avatar" />
-      <personal-info class="info" />
+      <avatar-edit :size="12" class="avatar"/>
+      <personal-info class="info"/>
     </div>
 
     <el-menu
@@ -12,15 +12,21 @@
         class="setting-menu-first"
     >
       <el-menu-item index="personalRecommendation">
-        <el-icon><document-checked /></el-icon>
+        <el-icon>
+          <document-checked/>
+        </el-icon>
         <span>推荐</span>
       </el-menu-item>
       <el-menu-item index="personalMoments">
-        <el-icon><chat-round /></el-icon>
+        <el-icon>
+          <chat-round/>
+        </el-icon>
         <span>动态</span>
       </el-menu-item>
       <el-menu-item index="personalWatched">
-        <el-icon><film /></el-icon>
+        <el-icon>
+          <film/>
+        </el-icon>
         <span>看过</span>
       </el-menu-item>
     </el-menu>
@@ -63,9 +69,9 @@ export default {
      * 监听路由名称的变化，页面刷新时立即生效，用于更新菜单激活单元
      * 解决页面刷新或则回退，菜单激活单元不变的问题
      */
-    watch(() => router.currentRoute.value.name,(newValue,oldValue)=> {
+    watch(() => router.currentRoute.value.name, (newValue, oldValue) => {
       activeIndex.value = newValue
-    },{ immediate: true })
+    }, {immediate: true})
 
     return {
       activeIndex,

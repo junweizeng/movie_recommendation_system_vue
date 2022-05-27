@@ -30,7 +30,8 @@
           enter-active-class="animate__animated animate__fadeIn"
           leave-active-class="animate__animated animate__fadeOut"
           :duration="150">
-        <svg-icon v-if="!status" @click="handleLike" icon-class="no_like_1" style="width: 1rem; height: 1rem;"></svg-icon>
+        <svg-icon v-if="!status" @click="handleLike" icon-class="no_like_1"
+                  style="width: 1rem; height: 1rem;"></svg-icon>
         <svg-icon v-else @click="handleLike" icon-class="liked_1" style="width: 1rem; height: 1rem;"></svg-icon>
       </transition>
       <span class="agree">{{ comment.agree }}</span>
@@ -72,8 +73,8 @@ export default {
 
     const handleLike = throttle(() => {
       status.value = !status.value;
-      if (status.value) props.comment.agree ++;
-      else props.comment.agree --;
+      if (status.value) props.comment.agree++;
+      else props.comment.agree--;
       const t = status.value === true ? 1 : 0;
       commentRequest.likeComment(cid, t).catch(err => {
         console.error(err);
@@ -123,6 +124,7 @@ export default {
 .comment-bottom {
   display: flex;
   align-items: center;
+
   .agree {
     margin-left: 0.3rem;
     font-size: 0.8rem;

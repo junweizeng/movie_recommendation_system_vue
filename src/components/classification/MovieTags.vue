@@ -1,8 +1,8 @@
 <template>
   <div class="tags my-border">
     <el-button class="btn" @click="refreshSelect" size="default" round>
-      <el-icon class="btn-icon" style="vertical-align: middle;" >
-        <refresh-right />
+      <el-icon class="btn-icon" style="vertical-align: middle;">
+        <refresh-right/>
       </el-icon>
       <span class="btn-span" style="vertical-align: middle;"> 重新加载 </span>
     </el-button>
@@ -13,7 +13,7 @@
           :key="index"
           v-model="type"
           size="small">
-        <el-radio-button class="each" :label="t" />
+        <el-radio-button class="each" :label="t"/>
       </el-radio-group>
     </div>
     <div>
@@ -23,7 +23,7 @@
           :key="index"
           v-model="region"
           size="small">
-        <el-radio-button class="each" :label="r" />
+        <el-radio-button class="each" :label="r"/>
       </el-radio-group>
     </div>
   </div>
@@ -31,13 +31,13 @@
 
 <script>
 
-import { RefreshRight } from "@element-plus/icons-vue";
+import {RefreshRight} from "@element-plus/icons-vue";
 import {reactive, ref, watch} from "vue";
 import emitter from "@/utils/event-bus";
 
 export default {
   name: "MovieTags",
-  components: { RefreshRight },
+  components: {RefreshRight},
   setup() {
     let type = ref('全部')
     let region = ref('全部')
@@ -49,10 +49,10 @@ export default {
       '武侠', '其他'
     ])
     const regions = reactive([
-      '全部','中国大陆','美国','中国香港','中国台湾',
-      '日本','韩国','英国','法国','德国','意大利',
-      '西班牙','印度','泰国','俄罗斯','伊朗', '加拿大',
-      '澳大利亚','爱尔兰','瑞典','巴西','丹麦'
+      '全部', '中国大陆', '美国', '中国香港', '中国台湾',
+      '日本', '韩国', '英国', '法国', '德国', '意大利',
+      '西班牙', '印度', '泰国', '俄罗斯', '伊朗', '加拿大',
+      '澳大利亚', '爱尔兰', '瑞典', '巴西', '丹麦'
     ])
 
     /**
@@ -66,7 +66,7 @@ export default {
     /**
      * 监视type和region的变化
      */
-    watch([type,region],(newValue,oldValue)=>{
+    watch([type, region], (newValue, oldValue) => {
       /**
        * 全局事件总线
        * 当type和region发生变化时，事件触发，更新MovieCards的搜索结果。
@@ -89,7 +89,7 @@ export default {
 </script>
 
 <style scoped>
-.tags{
+.tags {
   padding: 1rem;
 }
 
@@ -97,7 +97,7 @@ export default {
   margin-left: 1rem;
 }
 
-.each{
+.each {
   margin-left: 1rem;
   margin-top: 1rem;
 }
@@ -110,12 +110,12 @@ export default {
 }
 
 
-.btn-icon{
+.btn-icon {
   transform: rotate(360deg);
   transition: .7s;
 }
 
-.btn:active .btn-icon{
+.btn:active .btn-icon {
   transform: rotate(0);
   transition: 0s;
 }

@@ -12,11 +12,11 @@ export default {
 </script>
 
 <style scoped>
-  .footer {
-    background-color: rgb(84, 92, 100);
-    text-align: center;
-    letter-spacing: 2px;
-    font-size: 13px;
-    color: darkgray;
-  }
+.footer {
+  background-color: rgb(84, 92, 100);
+  text-align: center;
+  letter-spacing: 2px;
+  font-size: 13px;
+  color: darkgray;
+}
 </style>

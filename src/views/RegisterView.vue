@@ -1,5 +1,5 @@
 <template>
-<!--  <div class="bg" style="background-image: url('https://api.xygeng.cn/Bing/')"></div>-->
+  <!--  <div class="bg" style="background-image: url('https://api.xygeng.cn/Bing/')"></div>-->
   <div class="login-form my-border" @keyup.enter="postRegister">
 
     <div class="login-form-header">
@@ -20,7 +20,9 @@
             autocomplete="off"
         >
           <template #prefix>
-            <el-icon class="el-input__icon"><icon-user/></el-icon>
+            <el-icon class="el-input__icon">
+              <icon-user/>
+            </el-icon>
           </template>
         </el-input>
       </el-form-item>
@@ -33,7 +35,9 @@
             show-password
         >
           <template #prefix>
-            <el-icon class="el-input__icon"><icon-lock/></el-icon>
+            <el-icon class="el-input__icon">
+              <icon-lock/>
+            </el-icon>
           </template>
         </el-input>
       </el-form-item>
@@ -46,7 +50,9 @@
             show-password
         >
           <template #prefix>
-            <el-icon class="el-input__icon"><icon-lock/></el-icon>
+            <el-icon class="el-input__icon">
+              <icon-lock/>
+            </el-icon>
           </template>
         </el-input>
       </el-form-item>
@@ -158,19 +164,19 @@ export default {
     }
     const rules = reactive({
       username: [
-        { required: true, validator: validateUser, trigger: 'blur' },
-        { validator: validateUserChange, trigger: 'change' }
+        {required: true, validator: validateUser, trigger: 'blur'},
+        {validator: validateUserChange, trigger: 'change'}
       ],
       password: [
-        { required: true, validator: validatePassBlur, trigger: 'blur' },
-        { validator: validatePassChange, trigger: 'change' }
+        {required: true, validator: validatePassBlur, trigger: 'blur'},
+        {validator: validatePassChange, trigger: 'change'}
       ],
       checkPass: [
-        { required: true, validator: validatePassAgainBlur, trigger: 'blur' },
-        { validator: validatePassChange, trigger: 'change' }
+        {required: true, validator: validatePassAgainBlur, trigger: 'blur'},
+        {validator: validatePassChange, trigger: 'change'}
       ],
       agree: [
-        { required: true, validator: validateAgreeBlur, trigger: 'blur' }
+        {required: true, validator: validateAgreeBlur, trigger: 'blur'}
       ]
     })
 

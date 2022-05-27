@@ -7,17 +7,17 @@
         <el-tab-pane>
           <template #label>
           <span class="tab-labels">
-            <el-icon><chat-round /></el-icon>
+            <el-icon><chat-round/></el-icon>
             <span>推荐</span>
           </span>
           </template>
-          <movie-list v-if="movies.length" class="list" :tag="tag" :movies="movies" :opt="0" />
+          <movie-list v-if="movies.length" class="list" :tag="tag" :movies="movies" :opt="0"/>
         </el-tab-pane>
 
         <el-tab-pane>
           <template #label>
           <span class="tab-labels">
-            <el-icon><film /></el-icon>
+            <el-icon><film/></el-icon>
             <span>评论</span>
           </span>
           </template>
@@ -44,7 +44,7 @@ import CommentStrip from "@/components/basic/CommentStrip";
 
 export default {
   name: 'MovieInfoView',
-  components: { CommentStrip, Edit, MovieInfo, MovieComments, MovieList },
+  components: {CommentStrip, Edit, MovieInfo, MovieComments, MovieList},
   setup() {
     const router = useRouter()
 
@@ -57,7 +57,7 @@ export default {
     ).then(res => {
       if (res.code === 200) {
         let moviesRes = res.data.movies
-        for (let i = 0; i < moviesRes.length; ++ i) {
+        for (let i = 0; i < moviesRes.length; ++i) {
           movies.push(moviesRes[i])
         }
       } else {
@@ -108,8 +108,9 @@ export default {
     width: 60%
   }
 }
+
 /* 响应式布局 - 当屏幕 小于 800像素 宽 */
-@media screen and (max-width: 800px){
+@media screen and (max-width: 800px) {
   .list-and-comments {
     margin-left: 0;
     margin-right: 0;

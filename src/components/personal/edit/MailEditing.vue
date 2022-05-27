@@ -26,7 +26,7 @@
         </template>
       </el-input>
 
-      <br />
+      <br/>
 
       <el-input v-model="authCode" placeholder="验证码" class="space input"></el-input>
 
@@ -99,7 +99,7 @@ export default {
       let time = 60;
       isDisabled.value = true;
       const interval = setInterval(() => {
-        time --;
+        time--;
         sendCodeBtnName.value = time + "秒后可重发";
         // 60秒时间到后，将定时器清除，用户可以重新发送验证码
         if (time === 0) {
@@ -124,7 +124,8 @@ export default {
         }
         isShowMailEditing.value = false;
       }).catch(err => {
-        console.error(err)})
+        console.error(err)
+      })
     }
 
     return {
@@ -162,6 +163,6 @@ export default {
   align-items: center;
   color: rgb(23, 81, 153);
   white-space: nowrap;
-  cursor: pointer;  // 鼠标放上去显示手势
+  cursor: pointer; // 鼠标放上去显示手势
 }
 </style>

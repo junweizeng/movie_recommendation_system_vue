@@ -1,5 +1,5 @@
 <template>
-<!--  <div class="bg" style="background-image: url('https://api.xygeng.cn/Bing/')"></div>-->
+  <!--  <div class="bg" style="background-image: url('https://api.xygeng.cn/Bing/')"></div>-->
   <div class="bg"></div>
   <div
       name="animate__bounce"
@@ -25,7 +25,9 @@
             autocomplete="off"
         >
           <template #prefix>
-            <el-icon class="el-input__icon"><icon-user/></el-icon>
+            <el-icon class="el-input__icon">
+              <icon-user/>
+            </el-icon>
           </template>
         </el-input>
       </el-form-item>
@@ -38,15 +40,17 @@
             show-password
         >
           <template #prefix>
-            <el-icon class="el-input__icon"><icon-lock/></el-icon>
+            <el-icon class="el-input__icon">
+              <icon-lock/>
+            </el-icon>
           </template>
         </el-input>
       </el-form-item>
 
       <div class="scan-and-forget-div">
-<!--        <el-link href="/scanLogin" class="my-font" :underline="false">-->
-<!--          扫码登录-->
-<!--        </el-link>-->
+        <!--        <el-link href="/scanLogin" class="my-font" :underline="false">-->
+        <!--          扫码登录-->
+        <!--        </el-link>-->
         <el-link href="/forget" class="my-font" :underline="false">
           忘记密码?
         </el-link>
@@ -92,12 +96,12 @@ export default {
 
     const rules = reactive({
       username: [
-        { required: true, message: '请输入账号', trigger: 'blur' },
-        { min: 4, max: 20, message: '长度在4到20个字符', trigger: 'blur'}
+        {required: true, message: '请输入账号', trigger: 'blur'},
+        {min: 4, max: 20, message: '长度在4到20个字符', trigger: 'blur'}
       ],
       password: [
-        { required: true, message: '请输入密码', trigger: 'blur' },
-        { min: 4, max: 20, message: '长度在4到20个字符', trigger: 'blur'}
+        {required: true, message: '请输入密码', trigger: 'blur'},
+        {min: 4, max: 20, message: '长度在4到20个字符', trigger: 'blur'}
       ],
     })
 
@@ -212,7 +216,7 @@ export default {
   text-align: center;
 }
 
- /deep/ .el-input__inner {
+/deep/ .el-input__inner {
   height: 3rem;
 }
 
@@ -238,20 +242,44 @@ export default {
 }
 
 @-webkit-keyframes bg-color {
-  0% { background-color: #f18f87; }
-  20% { background-color: #ead18c; }
-  40% { background-color: #8be1d1; }
-  60% { background-color: #8cbee1; }
-  80% { background-color: #cba2e1; }
-  100% { background-color: #f18f87; }
+  0% {
+    background-color: #f18f87;
+  }
+  20% {
+    background-color: #ead18c;
+  }
+  40% {
+    background-color: #8be1d1;
+  }
+  60% {
+    background-color: #8cbee1;
+  }
+  80% {
+    background-color: #cba2e1;
+  }
+  100% {
+    background-color: #f18f87;
+  }
 }
 
 @keyframes bg-color {
-  0% { background-color: #f18f87; }
-  20% { background-color: #ead18c; }
-  40% { background-color: #8be1d1; }
-  60% { background-color: #8cbee1; }
-  80% { background-color: #cba2e1; }
-  100% { background-color: #f18f87; }
+  0% {
+    background-color: #f18f87;
+  }
+  20% {
+    background-color: #ead18c;
+  }
+  40% {
+    background-color: #8be1d1;
+  }
+  60% {
+    background-color: #8cbee1;
+  }
+  80% {
+    background-color: #cba2e1;
+  }
+  100% {
+    background-color: #f18f87;
+  }
 }
 </style>

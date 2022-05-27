@@ -103,7 +103,7 @@ export default {
       };
 
       // 绘制图表
-      maskImage.onload = function() {
+      maskImage.onload = function () {
         myChart.setOption(option);
       };
       // 自适应，屏幕大小变化时，图像重新渲染

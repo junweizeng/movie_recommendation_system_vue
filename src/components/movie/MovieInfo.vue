@@ -52,7 +52,7 @@
                 <el-row class="rate" v-for="(p,index) in percentages" :key="index">
                   <el-col :span="5" :style="`color: ${p.color}; text-align: center;`">{{ p.text }}</el-col>
                   <el-col :span="19">
-                      <el-progress :percentage="p.percentage" :color="p.color" />
+                    <el-progress :percentage="p.percentage" :color="p.color"/>
                   </el-col>
 
                 </el-row>
@@ -97,7 +97,8 @@
                 </el-col>
 
                 <el-col :span="16">
-                  <el-button class="introduction-second" type="text" @click="introductionDialogVisible = true">电影简介...</el-button>
+                  <el-button class="introduction-second" type="text" @click="introductionDialogVisible = true">电影简介...
+                  </el-button>
                   <el-dialog
                       v-model="introductionDialogVisible"
                       title="电影简介"
@@ -168,11 +169,11 @@ export default {
         movie.value = res.data;
         score.value = movie.value.score / 2.0;
         percentages.value = [
-          { color: '#f56c6c', percentage: movie.value.five, text: '5星' },
-          { color: '#e6a23c', percentage: movie.value.four, text: '4星' },
-          { color: '#5cb87a', percentage: movie.value.three, text: '3星' },
-          { color: '#1989fa', percentage: movie.value.two, text: '2星' },
-          { color: '#6f7ad3', percentage: movie.value.one, text: '1星' },
+          {color: '#f56c6c', percentage: movie.value.five, text: '5星'},
+          {color: '#e6a23c', percentage: movie.value.four, text: '4星'},
+          {color: '#5cb87a', percentage: movie.value.three, text: '3星'},
+          {color: '#1989fa', percentage: movie.value.two, text: '2星'},
+          {color: '#6f7ad3', percentage: movie.value.one, text: '1星'},
         ]
       } else {
         ErrorMessage(res.msg)
@@ -276,21 +277,27 @@ export default {
   .show-first {
     display: none;
   }
+
   .show-second {
     display: block;
   }
+
   .movie-info-top {
     height: 100%;
   }
+
   .movie-info-top .background {
     height: 100%;
   }
+
   .movie-info-top-left .image {
     margin-top: 20%;
   }
+
   .movie-info-top-right .rate {
     width: 60%;
   }
+
   .blur-bg {
     height: 22rem;
   }
@@ -300,18 +307,23 @@ export default {
   .show-first {
     display: none;
   }
+
   .show-second {
     display: block;
   }
+
   .movie-info-top {
     height: 100%;
   }
+
   .movie-info-top .background {
     height: 100%;
   }
+
   .movie-info-top-right .rate {
     width: 50%;
   }
+
   .blur-bg {
     height: 22rem;
   }
@@ -321,6 +333,7 @@ export default {
   .show-first {
     display: block;
   }
+
   .show-second {
     display: none;
   }

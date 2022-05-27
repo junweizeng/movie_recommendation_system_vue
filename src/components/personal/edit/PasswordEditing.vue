@@ -31,7 +31,9 @@
               show-password
           >
             <template v-slot:prefix>
-              <el-icon class="el-input__icon"><icon-lock/></el-icon>
+              <el-icon class="el-input__icon">
+                <icon-lock/>
+              </el-icon>
             </template>
           </el-input>
         </el-form-item>
@@ -44,7 +46,9 @@
               show-password
           >
             <template v-slot:prefix>
-              <el-icon class="el-input__icon"><icon-lock/></el-icon>
+              <el-icon class="el-input__icon">
+                <icon-lock/>
+              </el-icon>
             </template>
           </el-input>
         </el-form-item>
@@ -57,7 +61,9 @@
               show-password
           >
             <template v-slot:prefix>
-              <el-icon class="el-input__icon"><icon-lock/></el-icon>
+              <el-icon class="el-input__icon">
+                <icon-lock/>
+              </el-icon>
             </template>
           </el-input>
         </el-form-item>
@@ -167,16 +173,16 @@ export default {
     }
     const rules = reactive({
       prePassword: [
-        { required: true, validator: validatePassBlur, trigger: 'blur' },
-        { validator: validateUserChange, trigger: 'change' }
+        {required: true, validator: validatePassBlur, trigger: 'blur'},
+        {validator: validateUserChange, trigger: 'change'}
       ],
       newPassword: [
-        { required: true, validator: validatePassBlur, trigger: 'blur' },
-        { validator: validatePassChange, trigger: 'change' }
+        {required: true, validator: validatePassBlur, trigger: 'blur'},
+        {validator: validatePassChange, trigger: 'change'}
       ],
       checkPassword: [
-        { required: true, validator: validatePassAgainBlur, trigger: 'blur' },
-        { validator: validatePassChange, trigger: 'change' }
+        {required: true, validator: validatePassAgainBlur, trigger: 'blur'},
+        {validator: validatePassChange, trigger: 'change'}
       ],
     })
 
@@ -207,6 +213,6 @@ export default {
   align-items: center;
   color: rgb(23, 81, 153);
   white-space: nowrap;
-  cursor: pointer;  // 鼠标放上去显示手势
+  cursor: pointer; // 鼠标放上去显示手势
 }
 </style>

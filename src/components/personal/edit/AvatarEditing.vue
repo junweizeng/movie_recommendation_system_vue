@@ -1,6 +1,7 @@
 <template>
   <div @click="toggleShow" class="avatar-edit-master">
-    <el-avatar class="avatar" shape="square" :style="`width: ${size}rem; height: ${size}rem;`" :src="imgDataUrl" alt="头像">
+    <el-avatar class="avatar" shape="square" :style="`width: ${size}rem; height: ${size}rem;`" :src="imgDataUrl"
+               alt="头像">
       <UserFilled class="inner"></UserFilled>
     </el-avatar>
 
@@ -21,7 +22,7 @@
 
 <script>
 import MyUpload from 'vue-image-crop-upload';
-import { UserFilled } from '@element-plus/icons-vue'
+import {UserFilled} from '@element-plus/icons-vue'
 import {onBeforeUnmount, reactive, toRefs} from "vue";
 import request from "@/utils/request";
 import emitter from "@/utils/event-bus";
@@ -31,7 +32,7 @@ import SvgIcon from "@/components/basic/SvgIcon";
 
 export default {
   name: 'AvatarEdit',
-  components: {SvgIcon, Edit, MyUpload,UserFilled},
+  components: {SvgIcon, Edit, MyUpload, UserFilled},
   props: {
     size: {
       type: Number,
@@ -66,7 +67,7 @@ export default {
      * [param] imgDataUrl
      * [param] field
      */
-    let cropSuccess = function cropSuccess(imgDataUrl, field){
+    let cropSuccess = function cropSuccess(imgDataUrl, field) {
       console.log('-------- crop success --------');
       data.imgDataUrl = imgDataUrl
       data.field.avatar = imgDataUrl
@@ -147,7 +148,7 @@ export default {
 }
 
 .avatar .inner {
-  width:100px;
+  width: 100px;
   height: 100px;
 }
 

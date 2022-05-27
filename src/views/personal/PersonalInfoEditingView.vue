@@ -1,7 +1,7 @@
 <template>
   <div class="bg">
     <div class="info-edit-master">
-      <router-link to="/personal" class="back-to-my-home" >返回我的主页></router-link>
+      <router-link to="/personal" class="back-to-my-home">返回我的主页></router-link>
 
       <div class="edit-top">
         <avatar-edit :size="12" class="avatar"></avatar-edit>
@@ -22,7 +22,7 @@
           </div>
 
           <!-- 昵称编辑 -->
-          <div  v-show="isShowNickname" class="editing">
+          <div v-show="isShowNickname" class="editing">
             <el-input
                 maxlength="10"
                 placeholder="请输入更新后的昵称"
@@ -114,6 +114,7 @@ import userRequest from "@/api/user";
 import {ErrorMessage, SuccessMessage, WarningMessage} from "@/utils/my-message";
 import emitter from "@/utils/event-bus";
 import LikeEditing from "@/components/personal/edit/LikeEditing";
+
 export default {
   name: "PersonalInfoEditView",
   components: {LikeEditing, Edit, AvatarEdit},
@@ -264,11 +265,11 @@ export default {
   align-items: flex-end;
 
   .username-div {
-      display: flex;
-      color: rgb(18, 18, 18);
-      font-size: 2.5rem;
-      font-weight: bold;
-      padding-left: 1rem;
+    display: flex;
+    color: rgb(18, 18, 18);
+    font-size: 2.5rem;
+    font-weight: bold;
+    padding-left: 1rem;
   }
 }
 
@@ -300,7 +301,7 @@ export default {
   align-items: center;
   color: rgb(23, 81, 153);
   white-space: nowrap;
-  cursor: pointer;  // 鼠标放上去显示手势
+  cursor: pointer; // 鼠标放上去显示手势
 }
 
 // 编辑状态样式
@@ -317,6 +318,7 @@ export default {
     margin-left: 1rem;
   }
 }
+
 @media screen and (max-width: 800px) {
   .bg {
     padding: 0 0;

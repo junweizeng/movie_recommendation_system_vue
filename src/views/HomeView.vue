@@ -40,7 +40,7 @@ export default {
     MovieList,
   },
   setup() {
-    const tags = ref(['猜你喜欢', '最多人看', '评分最高', '今日热门','电影Top100',])
+    const tags = ref(['猜你喜欢', '最多人看', '评分最高', '今日热门', '电影Top100',])
     let recommendedMovies = ref([])
     recommendationRequest.getRecommendedMoviesByUserId().then(res => {
       if (res.code === 200) {
@@ -99,6 +99,7 @@ export default {
     margin-left: 5%;
     margin-right: 5%;
   }
+
   .movie-list {
     margin-left: 0;
     margin-right: 0;

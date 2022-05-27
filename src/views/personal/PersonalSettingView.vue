@@ -10,12 +10,16 @@
             class="setting-menu-first"
         >
           <el-menu-item index="settingPersonalInfo">
-            <el-icon><user /></el-icon>
+            <el-icon>
+              <user/>
+            </el-icon>
             <span>个人资料</span>
           </el-menu-item>
 
           <el-menu-item index="settingAccount">
-            <el-icon><setting /></el-icon>
+            <el-icon>
+              <setting/>
+            </el-icon>
             <span>账号设置</span>
           </el-menu-item>
         </el-menu>
@@ -26,11 +30,15 @@
             class="setting-menu-second"
         >
           <el-menu-item index="settingPersonalInfo">
-            <el-icon><user /></el-icon>
+            <el-icon>
+              <user/>
+            </el-icon>
           </el-menu-item>
 
           <el-menu-item index="settingAccount">
-            <el-icon><setting /></el-icon>
+            <el-icon>
+              <setting/>
+            </el-icon>
           </el-menu-item>
         </el-menu>
 
@@ -57,10 +65,10 @@ export default {
     const handleIndexChange = (index) => {
       if (index === 'settingPersonalInfo') {
         activeIndex.value = 'settingPersonalInfo'
-        router.push({ name: 'settingPersonalInfo' })
+        router.push({name: 'settingPersonalInfo'})
       } else {
         activeIndex.value = 'settingAccount'
-        router.push({ name: 'settingAccount' })
+        router.push({name: 'settingAccount'})
       }
     }
 
@@ -68,9 +76,9 @@ export default {
      * 监听路由名称的变化，页面刷新时立即生效，用于更新菜单激活单元
      * 解决页面刷新或则回退，菜单激活单元不变的问题
      */
-    watch(() => router.currentRoute.value.name,(newValue,oldValue)=> {
+    watch(() => router.currentRoute.value.name, (newValue, oldValue) => {
       activeIndex.value = newValue
-    },{ immediate: true })
+    }, {immediate: true})
 
     return {
       activeIndex,
@@ -93,6 +101,7 @@ export default {
 .setting-menu-first {
   display: block;
 }
+
 .setting-menu-second {
   display: none;
 }
@@ -101,6 +110,7 @@ export default {
   .setting-menu-first {
     display: none;
   }
+
   .setting-menu-second {
     display: block;
   }

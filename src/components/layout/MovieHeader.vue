@@ -7,7 +7,9 @@
     </div>
 
     <div @click="handleMainMenu" class="menu-icon">
-      <div ref="moreRef"><menu-icon :color="`${iconColor}`"></menu-icon></div>
+      <div ref="moreRef">
+        <menu-icon :color="`${iconColor}`"></menu-icon>
+      </div>
     </div>
 
     <!-- 小屏时显示这个菜单 -->
@@ -191,7 +193,7 @@ export default {
         isLogin.value = true
         let userInfo = res.data
         user.nickname = userInfo.nickname
-        user.id  = userInfo.id
+        user.id = userInfo.id
         user.avatar = userInfo.avatar
         user.sex = userInfo.sex
       } else {
@@ -337,6 +339,7 @@ export default {
     width: 40px;
     height: 40px;
   }
+
   .title {
     color: #dddddd;
     font-size: 30px;
@@ -381,7 +384,7 @@ export default {
 
 /*登录样式*/
 .login-link {
-  margin-left: auto;  /*右对齐*/
+  margin-left: auto; /*右对齐*/
 }
 
 /*登录成功抽屉样式*/
@@ -391,6 +394,7 @@ export default {
   margin-left: auto;
 
   /*登录用户名样式*/
+
   .login-name {
     font-weight: bolder;
     font-size: 15px;

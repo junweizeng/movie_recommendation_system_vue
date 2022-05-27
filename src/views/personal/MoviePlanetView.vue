@@ -6,6 +6,7 @@
 
 <script>
 import MovieRelationsGraphChart from "@/components/charts/MovieRelationsGraphChart";
+
 export default {
   name: "MoviePlanetView",
   components: {MovieRelationsGraphChart}

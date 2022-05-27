@@ -1,15 +1,15 @@
 <template>
   <router-view/>
-  <el-backtop />
+  <el-backtop/>
 </template>
 
 <script>
 import * as echarts from 'echarts'
-import { provide } from 'vue'
+import {provide} from 'vue'
 
 export default {
-  name:'App',
-  setup(){
+  name: 'App',
+  setup() {
     provide('echarts', echarts) //provide
   },
 }
@@ -24,18 +24,52 @@ body {
 }
 
 .my-border {
-  border-style:solid;
+  border-style: solid;
   border-color: #f2f2f6;
   border-radius: 1rem;
   border-width: 1px;
   box-shadow: 8px 8px 12px #dcdbdb;
 }
 
-@media (min-width: 1000px) and (max-width: 1200px) {html {font-size: 16px;}}
-@media (min-width: 960px) and (max-width: 1000px) {html {font-size: 15px;}}
-@media (min-width: 920px) and (max-width: 960px) {html {font-size: 14px;}}
-@media (min-width: 880px) and (max-width: 920px) {html {font-size: 13px;}}
-@media (min-width: 840px) and (max-width: 880px) {html {font-size: 13px;}}
-@media (min-width: 768px) and (max-width: 840px) {html {font-size: 12px;}}
-@media (max-width: 768px) {html {font-size: 11px;}}
+@media (min-width: 1000px) and (max-width: 1200px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1000px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 920px) and (max-width: 960px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 880px) and (max-width: 920px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 840px) and (max-width: 880px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 840px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 11px;
+  }
+}
 </style>

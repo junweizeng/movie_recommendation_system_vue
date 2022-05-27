@@ -1,5 +1,5 @@
 <template>
-  <el-skeleton :loading="loading" :rows="5" animated />
+  <el-skeleton :loading="loading" :rows="5" animated/>
 
   <template v-for="(moment, index) in moments" :key="index">
     <comment-strip :comment="moment.commentStripVo">
@@ -118,6 +118,7 @@ export default {
   .pagination-style-first {
     display: none;
   }
+
   .pagination-style-second {
     display: block;
   }

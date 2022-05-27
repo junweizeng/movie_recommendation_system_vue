@@ -75,35 +75,35 @@ export default {
             }
           },
           series: [{
-              type: 'graph',
-              layout: 'force',
-              animation: false,
-              label: {
-                normal: {
-                  show: true,
-                  textStyle:{
-                    fontSize:10,
-                    color:'#B0CEFC'
-                  },
-                  position: 'top',
-                  formatter: '{b}'
+            type: 'graph',
+            layout: 'force',
+            animation: false,
+            label: {
+              normal: {
+                show: true,
+                textStyle: {
+                  fontSize: 10,
+                  color: '#B0CEFC'
                 },
+                position: 'top',
+                formatter: '{b}'
               },
-              draggable: true,
-              data: res.data.nodes,
-              categories: res.data.categories,
-              force: {
-                //边的两个节点之间的距离.
-                edgeLength: 50,
-                // 节点之间的斥力因子。支持数组表达斥力范围，值越大斥力越大。
-                repulsion: 300,
-                // 节点受到的向中心的引力因子。该值越大节点越往中心点靠拢。
-                gravity: 0.2,
-                // 因为力引导布局会在多次迭代后才会稳定，这个参数决定是否显示布局的迭代动画，在浏览器端节点数据较多（>100）的时候不建议关闭，布局过程会造成浏览器假死。
-                layoutAnimation : true,
-              },
-              edges: res.data.links,
-            }
+            },
+            draggable: true,
+            data: res.data.nodes,
+            categories: res.data.categories,
+            force: {
+              //边的两个节点之间的距离.
+              edgeLength: 50,
+              // 节点之间的斥力因子。支持数组表达斥力范围，值越大斥力越大。
+              repulsion: 300,
+              // 节点受到的向中心的引力因子。该值越大节点越往中心点靠拢。
+              gravity: 0.2,
+              // 因为力引导布局会在多次迭代后才会稳定，这个参数决定是否显示布局的迭代动画，在浏览器端节点数据较多（>100）的时候不建议关闭，布局过程会造成浏览器假死。
+              layoutAnimation: true,
+            },
+            edges: res.data.links,
+          }
           ]
         };
 

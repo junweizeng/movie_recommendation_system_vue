@@ -13,15 +13,15 @@
 
     <div>
       <el-steps :active="active" finish-status="success">
-        <el-step title="账 号" />
-        <el-step title="邮箱验证" />
-        <el-step title="完成" />
+        <el-step title="账 号"/>
+        <el-step title="邮箱验证"/>
+        <el-step title="完成"/>
       </el-steps>
     </div>
 
     <div v-if="active === 0">
       <el-input v-model="username" placeholder="要找回的账号" class="space"></el-input>
-      <div  class="space btn">
+      <div class="space btn">
         <el-button @click="checkUsernameExists" type="primary">确 定</el-button>
       </div>
     </div>
@@ -36,7 +36,7 @@
           </el-popover>
         </template>
       </el-input>
-      <br />
+      <br/>
       <el-input v-model="authCode" placeholder="验证码" class="space input"></el-input>
       <div class="space btn">
         <el-button @click="active --">上一步</el-button>
@@ -62,9 +62,7 @@ import {debounce} from "@/utils/debounce-throttle";
 
 export default {
   name: 'ForgetView',
-  components: {
-
-  },
+  components: {},
   setup() {
     let active = ref(0);
     let username = ref('');
@@ -101,7 +99,7 @@ export default {
           let time = 60;
           isDisabled.value = true;
           const interval = setInterval(() => {
-            time --;
+            time--;
             sendCodeBtnName.value = time + "秒后可重发";
             // 60秒时间到后，将定时器清除，用户可以重新发送验证码
             if (time === 0) {
@@ -123,7 +121,7 @@ export default {
       authRequest.checkUsernameExists(username.value).then(res => {
         if (res.code === 200) {
           SuccessMessage(res.msg)
-          active.value ++;
+          active.value++;
         } else {
           ErrorMessage(res.msg)
         }
@@ -140,14 +138,15 @@ export default {
           authRequest.judgeAndFindPassword(username.value, authCode.value).then(res => {
             if (res.code === 200) {
               newPassword.value = res.data.password
-              active.value ++;
+              active.value++;
             }
           })
         } else {
           ErrorMessage(res.msg)
         }
       }).catch(err => {
-        console.error(err)})
+        console.error(err)
+      })
     })
 
     return {
@@ -277,20 +276,44 @@ export default {
 }
 
 @-webkit-keyframes bg-color {
-  0% { background-color: #f18f87; }
-  20% { background-color: #ead18c; }
-  40% { background-color: #8be1d1; }
-  60% { background-color: #8cbee1; }
-  80% { background-color: #cba2e1; }
-  100% { background-color: #f18f87; }
+  0% {
+    background-color: #f18f87;
+  }
+  20% {
+    background-color: #ead18c;
+  }
+  40% {
+    background-color: #8be1d1;
+  }
+  60% {
+    background-color: #8cbee1;
+  }
+  80% {
+    background-color: #cba2e1;
+  }
+  100% {
+    background-color: #f18f87;
+  }
 }
 
 @keyframes bg-color {
-  0% { background-color: #f18f87; }
-  20% { background-color: #ead18c; }
-  40% { background-color: #8be1d1; }
-  60% { background-color: #8cbee1; }
-  80% { background-color: #cba2e1; }
-  100% { background-color: #f18f87; }
+  0% {
+    background-color: #f18f87;
+  }
+  20% {
+    background-color: #ead18c;
+  }
+  40% {
+    background-color: #8be1d1;
+  }
+  60% {
+    background-color: #8cbee1;
+  }
+  80% {
+    background-color: #cba2e1;
+  }
+  100% {
+    background-color: #f18f87;
+  }
 }
 </style>

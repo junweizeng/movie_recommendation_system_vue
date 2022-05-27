@@ -66,10 +66,10 @@ export default {
       '其他'
     ]
     const regions = [
-      '中国大陆','美国','中国香港','中国台湾',
-      '日本','韩国','英国','法国','德国','意大利',
-      '西班牙','印度','泰国','俄罗斯','伊朗', '加拿大',
-      '澳大利亚','爱尔兰','瑞典','巴西','丹麦'
+      '中国大陆', '美国', '中国香港', '中国台湾',
+      '日本', '韩国', '英国', '法国', '德国', '意大利',
+      '西班牙', '印度', '泰国', '俄罗斯', '伊朗', '加拿大',
+      '澳大利亚', '爱尔兰', '瑞典', '巴西', '丹麦'
     ]
     // 生成电影类型map，键值对（类型名称 => 类型编号）
     const generateTypeEnum = () => {
@@ -149,18 +149,18 @@ export default {
           console.log(err)
         })
       } else {
-       userRequest.updateUserRegionLike(value.value).then(res => {
-         if (res.code === 200) {
-           SuccessMessage(res.msg)
-           // 更新成功，编辑页面关闭
-           isShow.value = false
-           emitter.emit("handleLikeEditingUpdate")
-         } else {
-           ErrorMessage(res.msg)
-         }
-       }).catch(err => {
-         console.log(err)
-       })
+        userRequest.updateUserRegionLike(value.value).then(res => {
+          if (res.code === 200) {
+            SuccessMessage(res.msg)
+            // 更新成功，编辑页面关闭
+            isShow.value = false
+            emitter.emit("handleLikeEditingUpdate")
+          } else {
+            ErrorMessage(res.msg)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
       }
     }
 
@@ -184,7 +184,7 @@ export default {
   align-items: center;
   color: rgb(23, 81, 153);
   white-space: nowrap;
-  cursor: pointer;  // 鼠标放上去显示手势
+  cursor: pointer; // 鼠标放上去显示手势
 }
 
 ///deep/ .el-transfer-panel {

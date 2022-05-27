@@ -1,13 +1,13 @@
 <template>
-  <el-skeleton :loading="loading" :rows="5" animated />
+  <el-skeleton :loading="loading" :rows="5" animated/>
 
-  <template  v-for="movie in recommendedMovies" :key="movie.id">
-    <movie-strip :movie="movie"  style="margin-bottom: 1rem;">
+  <template v-for="movie in recommendedMovies" :key="movie.id">
+    <movie-strip :movie="movie" style="margin-bottom: 1rem;">
       <template v-slot:header>
-        <div  class="movie-strip-slot-header">
+        <div class="movie-strip-slot-header">
           <svg-icon icon-class="recommendation_5"></svg-icon>
           <span>推荐指数</span>
-          <el-divider direction="vertical" />
+          <el-divider direction="vertical"/>
           <span>{{ movie.idx }}%</span>
         </div>
       </template>

@@ -2,7 +2,9 @@
   <div class="movie-cards-master my-border">
     <!-- 电影 卡片 or 长条 开关 -->
     <div class="card-or-strip-switch">
-      <el-icon><icon-list :color="listColor" /></el-icon>
+      <el-icon>
+        <icon-list :color="listColor"/>
+      </el-icon>
 
       <el-switch
           v-model="isCard"
@@ -13,7 +15,9 @@
           @change="handleSwitch"
       />
 
-      <el-icon><icon-grid :color="gridColor" /></el-icon>
+      <el-icon>
+        <icon-grid :color="gridColor"/>
+      </el-icon>
     </div>
 
     <blank-page v-if="!movies.length" page-name="movie"></blank-page>
@@ -28,7 +32,7 @@
     </div>
 
     <!-- 电影长条显示 -->
-    <div v-show="!isCard"  class="movie-strips">
+    <div v-show="!isCard" class="movie-strips">
       <template
           v-for="movie in movies"
           :key="movie.id">
@@ -51,7 +55,7 @@
     </div>
 
     <!-- 分页 样式2 -->
-    <div v-show="total > 12"  class="pagination-style-second">
+    <div v-show="total > 12" class="pagination-style-second">
       <el-pagination
           style="justify-content: center"
           v-model:currentPage="currentPage"
@@ -74,7 +78,7 @@ import MovieStrip from "@/components/basic/MovieStrip";
 import emitter from "@/utils/event-bus";
 import movieRequest from "@/api/movie";
 import {ErrorMessage} from "@/utils/my-message";
-import {useRoute, useRouter} from "vue-router";
+import {useRouter} from "vue-router";
 import BlankPage from "@/components/basic/BlankPage";
 
 export default {
@@ -115,7 +119,7 @@ export default {
           searchWord.value
       ).then(res => {
         let len = movies.length
-        while (len -- ) {
+        while (len--) {
           movies.pop()
         }
         movies.push(...res.data.records)
@@ -267,9 +271,11 @@ export default {
   .pagination-style-first {
     display: none;
   }
+
   .pagination-style-second {
     display: block;
   }
+
   .movie-strips {
     margin-left: 1rem;
     margin-right: 1rem;

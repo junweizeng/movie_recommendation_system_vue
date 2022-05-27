@@ -11,7 +11,7 @@ import MovieCards from "@/components/classification/MovieCards";
 
 export default {
   name: "ClassificationView",
-  components: { MovieTags, MovieCards }
+  components: {MovieTags, MovieCards}
 }
 </script>
 

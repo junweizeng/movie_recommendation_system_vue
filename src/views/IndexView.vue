@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <movie-header class="header" />
+    <movie-header class="header"/>
 
     <el-main class="content" style="padding: 0">
       <router-view/>
@@ -19,7 +19,7 @@ import MovieFooter from "@/components/layout/MovieFooter"
 
 export default {
   name: "IndexView",
-  components: { MovieHeader, MovieFooter },
+  components: {MovieHeader, MovieFooter},
 }
 </script>
 

@@ -1,7 +1,9 @@
 <template>
   <el-button @click="handleEditDialogVisible" circle>
     <template #icon>
-      <el-icon><edit/></el-icon>
+      <el-icon>
+        <edit/>
+      </el-icon>
     </template>
   </el-button>
 
@@ -54,7 +56,7 @@
     <div class="each-comment-tag">所有短评</div>
     <template v-for="(c, index) in comments" :key="index">
       <comment-strip :comment="c"></comment-strip>
-      <el-divider />
+      <el-divider/>
     </template>
   </div>
 
@@ -189,7 +191,7 @@ export default {
           ownCommentEditInfo.comment = ownComment.comment
         }
       }).catch(err => {
-        console.error(err )
+        console.error(err)
       })
     }
     handleGetOwnComment()
@@ -210,7 +212,7 @@ export default {
             } else {
               isAllComments.value = true
             }
-            currentPage ++;
+            currentPage++;
           }
           // 加载完成后，解锁
           isReadyForLoad.value = true;
@@ -219,6 +221,7 @@ export default {
         })
       }
     }
+
     loadMoreComments()
 
     /**
@@ -309,8 +312,9 @@ export default {
     width: 70%;
   }
 }
+
 /* 响应式布局 - 当屏幕 小于 800像素 宽 */
-@media screen and (max-width: 800px){
+@media screen and (max-width: 800px) {
   /deep/ .el-dialog {
     width: 90%;
   }

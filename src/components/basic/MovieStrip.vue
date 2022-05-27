@@ -10,7 +10,7 @@
             <template #error>
               <div class="image-error">
                 <film class="center-image-error"></film>
-                <img class="background-image-error" src="../../assets/default-movie.png"   alt="default"/>
+                <img class="background-image-error" src="../../assets/default-movie.png" alt="default"/>
               </div>
             </template>
           </el-image>
@@ -32,7 +32,9 @@
         />
 
         <el-row>
-          <el-col :span="1"><el-divider style="height: 100%" direction="vertical" /></el-col>
+          <el-col :span="1">
+            <el-divider style="height: 100%" direction="vertical"/>
+          </el-col>
 
           <el-col :span="23" style="padding-left: 0.2rem">
             <div class="line-limit-length">
@@ -103,7 +105,7 @@ export default {
 }
 
 .movie-strip-master:hover {
-  border-style:solid;
+  border-style: solid;
   border-color: #b0d2e5;
   border-radius: 0.5rem;
   border-width: 1px;
@@ -155,17 +157,31 @@ export default {
   width: 35rem;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;    /*文本不换行，这样超出一行的部分被截取，显示...*/
+  white-space: nowrap; /*文本不换行，这样超出一行的部分被截取，显示...*/
 }
 
 /*未访问：蓝色、无下划线*/
-a:link {color: black; text-decoration:none;}
+a:link {
+  color: black;
+  text-decoration: none;
+}
+
 /*激活：红色*/
-a:active {color: black; }
+a:active {
+  color: black;
+}
+
 /*已访问：紫色、无下划线*/
-a:visited {color:black;text-decoration:none;}
+a:visited {
+  color: black;
+  text-decoration: none;
+}
+
 /*鼠标移近：红色、下划线*/
-a:hover {color: red; text-decoration:none;}
+a:hover {
+  color: red;
+  text-decoration: none;
+}
 
 @media screen and (max-width: 400px) {
   .line-limit-length {

@@ -3,9 +3,9 @@
     <div class="name-sex">
       <!-- 昵称和性别 -->
       <span class="nickname">{{ user.nickname }}</span>
-      <span v-if="user.sex === '男'"><el-icon><male color="#36A4FF" /></el-icon></span>
-      <span v-else-if="user.sex === '女'"><el-icon><female color="pink" /></el-icon></span>
-      <span v-else><el-icon><paperclip color="#92ff9d" /></el-icon></span>
+      <span v-if="user.sex === '男'"><el-icon><male color="#36A4FF"/></el-icon></span>
+      <span v-else-if="user.sex === '女'"><el-icon><female color="pink"/></el-icon></span>
+      <span v-else><el-icon><paperclip color="#92ff9d"/></el-icon></span>
     </div>
 
     <div class="types">
@@ -69,7 +69,7 @@ export default {
         // let userInfo = JSON.parse(localStorage.getItem('userInfo'))
         let userInfo = res.data
         user.nickname = userInfo.nickname
-        user.id  = userInfo.id
+        user.id = userInfo.id
         user.avatar = userInfo.avatar
         user.sex = userInfo.sex
 

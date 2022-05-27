@@ -11,8 +11,14 @@ export default {
         avatar: state => state.avatar,
     },
     mutations: {
-        SET_ID: (state, id) => { state.id = id },
-        SET_NICKNAME: (state, nickname) => { state.nickname = nickname },
-        SET_AVATAR: (state, avatar) => { state.avatar = avatar }
+        SET_ID: (state, id) => {
+            state.id = id
+        },
+        SET_NICKNAME: (state, nickname) => {
+            state.nickname = nickname
+        },
+        SET_AVATAR: (state, avatar) => {
+            state.avatar = avatar
+        }
     }
 }

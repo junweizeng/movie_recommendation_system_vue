@@ -113,4 +113,4 @@ const authRequest = {
     },
 }
 
-export default  authRequest;
+export default authRequest;

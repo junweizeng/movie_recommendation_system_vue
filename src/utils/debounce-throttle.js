@@ -3,7 +3,7 @@
  * @param {*} fn  待包装的事件回调
  * @param {*} delay 每次推迟执行的等待时间
  */
-export function debounce(fn, delay = 500){
+export function debounce(fn, delay = 500) {
     // 利用闭包保存同一个定时器
     let timer = null;
     return () => {
@@ -35,7 +35,7 @@ export function throttle(fn, delay = 500) {
     let last = 0;
     // 利用闭包保存同一个定时器
     let timer = null;
-    return function() {
+    return function () {
         // 取debounce执行作用域的this
         let _self = this;
         // 利用闭包保存参数数组

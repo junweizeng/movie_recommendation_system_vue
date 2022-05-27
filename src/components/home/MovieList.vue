@@ -13,10 +13,14 @@
           <movie-card :movie="movie" class="movie-card-item">
             <!-- 猜你喜欢 -->
             <template v-if="opt === 1" v-slot:header>
-              <svg-icon v-if="index === 0" icon-class="recommendation_1" class="recommendation-svg-first" style="color: rgb(255,215,0)"></svg-icon>
-              <svg-icon v-if="index === 1" icon-class="recommendation_1" class="recommendation-svg-first" style="color: rgb(241,241,235)"></svg-icon>
-              <svg-icon v-if="index === 2" icon-class="recommendation_1" class="recommendation-svg-first" style="color: rgb(186,110,64)"></svg-icon>
-              <svg-icon v-if="index > 2" icon-class="recommendation" class="recommendation-svg-second" style="color: rgb(48,208,186)"></svg-icon>
+              <svg-icon v-if="index === 0" icon-class="recommendation_1" class="recommendation-svg-first"
+                        style="color: rgb(255,215,0)"></svg-icon>
+              <svg-icon v-if="index === 1" icon-class="recommendation_1" class="recommendation-svg-first"
+                        style="color: rgb(241,241,235)"></svg-icon>
+              <svg-icon v-if="index === 2" icon-class="recommendation_1" class="recommendation-svg-first"
+                        style="color: rgb(186,110,64)"></svg-icon>
+              <svg-icon v-if="index > 2" icon-class="recommendation" class="recommendation-svg-second"
+                        style="color: rgb(48,208,186)"></svg-icon>
             </template>
             <!-- 最多人看 -->
             <template v-if="opt === 2" v-slot:header>
@@ -30,7 +34,8 @@
               <svg-icon v-if="index === 0" icon-class="first" class="highest-score-svg-first"></svg-icon>
               <svg-icon v-if="index === 1" icon-class="second" class="highest-score-svg-first"></svg-icon>
               <svg-icon v-if="index === 2" icon-class="third" class="highest-score-svg-first"></svg-icon>
-              <svg-icon v-if="index > 2" icon-class="recommendation_3" class="highest-score-svg-first" style="color: rgb(48,208,186)"></svg-icon>
+              <svg-icon v-if="index > 2" icon-class="recommendation_3" class="highest-score-svg-first"
+                        style="color: rgb(48,208,186)"></svg-icon>
             </template>
 
             <template v-if="opt === 1" v-slot:footer>
