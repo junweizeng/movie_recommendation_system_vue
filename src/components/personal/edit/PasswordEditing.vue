@@ -75,7 +75,7 @@
 import {Lock as IconLock} from "@element-plus/icons";
 import {reactive, ref, unref} from "vue";
 import userRequest from "@/api/user";
-import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
+import {ErrorMessage, SuccessMessage} from "@/utils/my-message";
 import router from "@/router";
 import {useRouter} from "vue-router";
 

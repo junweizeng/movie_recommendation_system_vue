@@ -6,6 +6,7 @@ function resolve(dir) {
 
 module.exports = defineConfig({
   transpileDependencies: true,
+  // publicPath: './',
   // 解决跨域问题
   devServer: {
     port: 9999,              // 设置本地默认端口  选填

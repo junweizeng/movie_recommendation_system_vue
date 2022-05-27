@@ -44,9 +44,9 @@
 import {reactive, ref} from "vue";
 import {Edit} from "@element-plus/icons";
 import userRequest from "@/api/user";
-import {ErrorMessage} from "@/utils/myMessage";
+import {ErrorMessage} from "@/utils/my-message";
 import router from "@/router";
-import emitter from "@/utils/eventBus";
+import emitter from "@/utils/event-bus";
 
 export default {
   name: "PersonalInfo",

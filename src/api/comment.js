@@ -53,16 +53,22 @@ const commentRequest = {
         })
     },
     /**
-     * 获取当前用户的评价动态
+     * 获取当前用户的评价动态（按页数获取）
+     * @param currentPage 当前页数
+     * @param pageSize 每页条数
      * @returns {*}
      */
-    getCommentMovieMoments: () => {
+    getCommentMovieMoments: (currentPage, pageSize) => {
         return request({
             url: '/comment/movie/moments',
             method: 'get',
             headers: {
                 isNeedToken: true,
             },
+            params: {
+                currentPage,
+                pageSize
+            }
         })
     },
     /**

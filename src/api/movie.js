@@ -64,13 +64,17 @@ const movieRequest = {
      * 获取用户评价过的所有电影的基本信息
      * @returns {*}
      */
-    getAllReviewedMovies: () => {
+    getMoreReviewedMovies: (currentPage, pageSize) => {
         return request({
             url: '/movie/reviewed',
             method: 'get',
             headers: {
                 isNeedToken: true
             },
+            params: {
+                currentPage,
+                pageSize
+            }
         })
     },
     /**

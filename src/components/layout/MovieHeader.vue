@@ -114,8 +114,8 @@ import {onBeforeMount, onBeforeUnmount, reactive, ref, watch} from "vue";
 import {useRouter} from 'vue-router'
 import {More, MoreFilled, Menu as MenuIcon} from "@element-plus/icons";
 import userRequest from "@/api/user";
-import {ErrorMessage, SuccessMessage} from "@/utils/myMessage";
-import emitter from "@/utils/eventBus";
+import {ErrorMessage, SuccessMessage} from "@/utils/my-message";
+import emitter from "@/utils/event-bus";
 import movieRequest from "@/api/movie";
 import {Search} from "@element-plus/icons-vue";
 

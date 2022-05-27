@@ -111,8 +111,8 @@ import AvatarEdit from "@/components/personal/edit/AvatarEditing";
 import {nextTick, onBeforeUnmount, reactive, ref} from "vue";
 import {Edit} from "@element-plus/icons";
 import userRequest from "@/api/user";
-import {ErrorMessage, SuccessMessage, WarningMessage} from "@/utils/myMessage";
-import emitter from "@/utils/eventBus";
+import {ErrorMessage, SuccessMessage, WarningMessage} from "@/utils/my-message";
+import emitter from "@/utils/event-bus";
 import LikeEditing from "@/components/personal/edit/LikeEditing";
 export default {
   name: "PersonalInfoEditView",

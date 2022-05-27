@@ -44,7 +44,7 @@
           v-model:currentPage="currentPage"
           v-model:page-size="pageSize"
           v-model:total="total"
-          :pager-count="pagerCountSeven"
+          :pager-count="7"
           background
           layout="total, prev, pager, next, jumper"
       />
@@ -57,7 +57,7 @@
           v-model:currentPage="currentPage"
           v-model:page-size="pageSize"
           v-model:total="total"
-          :pager-count="pagerCountFive"
+          :pager-count="5"
           small
           background
           layout="prev, pager, next, jumper"
@@ -71,9 +71,9 @@ import {PictureRounded, Menu as IconMenu, Grid as IconGrid, List as IconList} fr
 import MovieCard from "@/components/basic/MovieCard";
 import {onBeforeUnmount, onMounted, reactive, ref, toRaw, watch} from "vue";
 import MovieStrip from "@/components/basic/MovieStrip";
-import emitter from "@/utils/eventBus";
+import emitter from "@/utils/event-bus";
 import movieRequest from "@/api/movie";
-import {ErrorMessage} from "@/utils/myMessage";
+import {ErrorMessage} from "@/utils/my-message";
 import {useRoute, useRouter} from "vue-router";
 import BlankPage from "@/components/basic/BlankPage";
 
@@ -91,8 +91,6 @@ export default {
   },
   setup() {
     const router = useRouter()
-    const pagerCountFive = ref(5)
-    const pagerCountSeven = ref(7)
 
     // 分页结果，电影列表
     let movies = reactive([])
@@ -201,8 +199,6 @@ export default {
     })
 
     return {
-      pagerCountFive,
-      pagerCountSeven,
       pageSize,
       currentPage,
       total,

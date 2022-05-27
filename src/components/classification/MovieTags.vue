@@ -33,7 +33,7 @@
 
 import { RefreshRight } from "@element-plus/icons-vue";
 import {reactive, ref, watch} from "vue";
-import emitter from "@/utils/eventBus";
+import emitter from "@/utils/event-bus";
 
 export default {
   name: "MovieTags",

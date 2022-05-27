@@ -66,7 +66,7 @@
 import MovieInfo from "@/components/movie/MovieInfo";
 import MovieComments from "@/components/movie/MovieComments";
 import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
-import {ErrorMessage, SuccessMessage, WarningMessage} from "@/utils/myMessage";
+import {ErrorMessage, SuccessMessage, WarningMessage} from "@/utils/my-message";
 import {Edit, Search} from "@element-plus/icons";
 import commentRequest from "@/api/comment";
 import CommentStrip from "@/components/basic/CommentStrip";
