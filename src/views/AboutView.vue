@@ -30,7 +30,7 @@ import MovieStrip from "@/components/basic/MovieStrip";
 import ScorePieChart from "@/components/charts/ScorePieChart";
 import MovieRelationsGraphChart from "@/components/charts/MovieRelationsGraphChart";
 import SvgIcon from "@/components/basic/SvgIcon";
-import {nextTick, onMounted, reactive, ref} from "vue";
+import {ref} from "vue";
 import CommentsWordCloud from "@/components/charts/CommentsWordCloud";
 import commentRequest from "@/api/comment";
 

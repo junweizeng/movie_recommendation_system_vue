@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import {nextTick, reactive, ref, watch} from "vue";
+import {ref, watch} from "vue";
 import emitter from "@/utils/event-bus";
 import userRequest from "@/api/user";
 import {ErrorMessage, SuccessMessage} from "@/utils/my-message";

@@ -119,6 +119,7 @@ export default {
       if (isShow.value === true && isFirst) {
         // 只需再第一次的时候初始化词云图
         isFirst = false;
+        // 将回调延迟到下次 DOM 更新循环之后执行
         nextTick(() => {
           initChart();
         })

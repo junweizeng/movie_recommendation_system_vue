@@ -43,6 +43,7 @@ import {ref} from "vue";
 import authRequest from "@/api/authentication";
 import {ErrorMessage, SuccessMessage} from "@/utils/my-message";
 import userRequest from "@/api/user";
+import {debounce} from "@/utils/debounce-throttle";
 
 export default {
   name: "MailEditing",
@@ -70,13 +71,13 @@ export default {
       console.error(err)
     })
 
-    const sendAuthCode = () => {
+    const sendAuthCode = debounce(() => {
       mail.value = mail.value.trim()
       // \w+表示多个字母数字下划线等
       // + 一个或多个，*任意个数
       const regex = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
       if (!regex.test(mail.value)) {
-        console.log("邮箱格式有误");
+        // 邮箱格式有误
         isInputError.value = true;
         const showErr = setInterval(() => {
           isInputError.value = false;
@@ -94,7 +95,7 @@ export default {
       })
 
       // 60秒内不能再次发送验证码
-      sendCodeBtnName.value = "60秒";
+      sendCodeBtnName.value = "60秒后可重发";
       let time = 60;
       isDisabled.value = true;
       const interval = setInterval(() => {
@@ -107,7 +108,7 @@ export default {
           isDisabled.value = false;
         }
       }, 1000);
-    }
+    })
 
     const updateMail = () => {
       authCode.value = authCode.value.trim();

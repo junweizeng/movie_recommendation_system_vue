@@ -108,7 +108,7 @@
 
 <script>
 import AvatarEdit from "@/components/personal/edit/AvatarEditing";
-import {nextTick, onBeforeUnmount, reactive, ref} from "vue";
+import {onBeforeUnmount, reactive, ref} from "vue";
 import {Edit} from "@element-plus/icons";
 import userRequest from "@/api/user";
 import {ErrorMessage, SuccessMessage, WarningMessage} from "@/utils/my-message";
