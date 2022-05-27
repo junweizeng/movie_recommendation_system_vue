@@ -38,7 +38,7 @@ import MovieList from "@/components/home/MovieList";
 import {reactive, ref} from "vue";
 import movieRequest from "@/api/movie";
 import {useRouter} from "vue-router";
-import {ErrorMessage} from "@/utils/myMessage";
+import {ErrorMessage} from "@/utils/my-message";
 import {Edit} from "@element-plus/icons";
 import CommentStrip from "@/components/basic/CommentStrip";
 

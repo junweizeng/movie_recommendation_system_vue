@@ -25,11 +25,38 @@
   </template>
 
   <blank-page v-if="!loading && !reviewedMovies.length" :page-name="'record'"></blank-page>
+
+  <!-- 分页 样式1-->
+  <div v-if="total > 10" class="pagination-style-first">
+    <el-pagination
+        style="justify-content: center"
+        v-model:currentPage="currentPage"
+        v-model:page-size="pageSize"
+        v-model:total="total"
+        pager-count="7"
+        background
+        layout="total, prev, pager, next, jumper"
+    />
+  </div>
+
+  <!-- 分页 样式2 -->
+  <div v-if="total > 10" class="pagination-style-second">
+    <el-pagination
+        style="justify-content: center"
+        v-model:currentPage="currentPage"
+        v-model:page-size="pageSize"
+        v-model:total="total"
+        pager-count="5"
+        small
+        background
+        layout="prev, pager, next, jumper"
+    />
+  </div>
 </template>
 
 <script>
 import MovieStrip from "@/components/basic/MovieStrip";
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import movieRequest from "@/api/movie";
 import BlankPage from "@/components/basic/BlankPage";
 
@@ -40,19 +67,47 @@ export default {
     let loading = ref(true)
     let reviewedMovies = ref([])
 
-    movieRequest.getAllReviewedMovies().then(res => {
-      if (res.code === 200) {
-        reviewedMovies.value = res.data
-        for (let i = 0; i < reviewedMovies.value.length; ++ i) {
-          reviewedMovies.value[i].userScore /= 2
+    // 分页查询需要用到的一些数据
+    let currentPage = ref(1); // 当前页码
+    let pageSize = ref(10);   // 每页电影数量
+    let total = ref(0);      // 总电影数
+
+    const getMoreReviewedMovies = () => {
+      reviewedMovies.value = [];
+      loading.value = true;
+      movieRequest.getMoreReviewedMovies(currentPage.value, pageSize.value).then(res => {
+        if (res.code === 200) {
+          reviewedMovies.value = res.data.records
+          for (let i = 0; i < reviewedMovies.value.length; ++ i) {
+            reviewedMovies.value[i].userScore /= 2
+          }
+          loading.value = false;
+          total.value = res.data.total;
         }
-        loading.value = false
-      }
-    }).catch(err => {
-      console.error(err)
-    })
+      }).catch(err => {
+        console.error(err)
+      })
+    }
+    getMoreReviewedMovies();
+
+    /**
+     * 监听`当前页码`变化
+     * 若页码发生变化，重新请求电影数据，随后页面发生变化。
+     */
+    watch(currentPage, (newValue, oldValue) => {
+      // 页面回到顶部
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+      // 兼容IE
+      window.scrollTo(0, 0);
+
+      getMoreReviewedMovies();
+    });
 
     return {
+      currentPage,
+      pageSize,
+      total,
       loading,
       reviewedMovies
     }
@@ -76,6 +131,28 @@ export default {
     font-size: 0.8rem;
     color: #91949c;
     padding-left: 0.3rem;
+  }
+}
+
+/* 分页模块样式 */
+.pagination-style-first, .pagination-style-second {
+ margin: 1rem 0;
+}
+
+.pagination-style-first {
+  display: block;
+}
+
+.pagination-style-second {
+  display: none;
+}
+
+@media screen and (max-width: 1000px) {
+  .pagination-style-first {
+    display: none;
+  }
+  .pagination-style-second {
+    display: block;
   }
 }
 </style>

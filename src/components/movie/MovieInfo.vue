@@ -124,7 +124,7 @@
 import {ref} from "vue";
 import {useRouter} from "vue-router";
 import movieRequest from "@/api/movie";
-import {ErrorMessage} from "@/utils/myMessage";
+import {ErrorMessage} from "@/utils/my-message";
 
 export default {
   name: 'MovieInfo',
