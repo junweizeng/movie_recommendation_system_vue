@@ -62,10 +62,15 @@ export default {
     let isShowMailEditing = ref(false);
     // 邮箱输入是否有误
     let isInputError = ref(false)
+    // \w+表示多个字母数字下划线等，+一个或多个
+    const regex = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
 
     userRequest.getUserMail().then(res => {
       if (res.code === 200) {
         userMail.value = res.data
+        if (!regex.test(userMail.value)) {
+          userMail.value = "未设置";
+        }
       }
     }).catch(err => {
       console.error(err)
@@ -73,9 +78,6 @@ export default {
 
     const sendAuthCode = debounce(() => {
       mail.value = mail.value.trim()
-      // \w+表示多个字母数字下划线等
-      // + 一个或多个，*任意个数
-      const regex = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
       if (!regex.test(mail.value)) {
         // 邮箱格式有误
         isInputError.value = true;

@@ -20,7 +20,24 @@
       </el-icon>
     </div>
 
-    <blank-page v-if="!movies.length" page-name="movie"></blank-page>
+    <el-skeleton :loading="loading && isCard" style="width: 25rem; margin-left: 1rem" animated>
+      <template #template>
+        <el-skeleton-item variant="image" style="width: 13.8rem; height: 19.8rem" />
+        <div style="padding-top: 1rem; padding-bottom: 1rem;">
+          <el-skeleton-item variant="p" style="width: 8rem; text-align: center" />
+          <br/>
+          <el-skeleton-item variant="p" style="width: 13.8rem" />
+        </div>
+      </template>
+    </el-skeleton>
+
+    <el-skeleton
+        style="width: 94%; padding-left: 3%"
+        :loading="loading && !isCard"
+        :rows="5"
+        animated/>
+
+    <blank-page v-if="!movies.length && !loading" page-name="movie"></blank-page>
 
     <!-- 电影卡片显示 -->
     <div v-show="isCard" class="movie-cards">
@@ -96,13 +113,15 @@ export default {
   setup() {
     const router = useRouter()
 
+    let loading = ref(false);
+
     // 分页结果，电影列表
-    let movies = reactive([])
+    let movies = ref([]);
 
     // 分页查询需要用到的一些数据
     let currentPage = ref(1); // 当前页码
     let pageSize = ref(12);   // 每页电影数量
-    let total = ref(movies.length); // 总电影数
+    let total = ref(movies.value.length); // 总电影数
     let type = ref('全部');    // 电影类型
     let region = ref('全部');  // 电影地区
     let searchWord = ref('');  // 搜索关键字
@@ -111,6 +130,8 @@ export default {
      * 向服务器请求电影数据
      */
     let getMovies = () => {
+      loading.value = true;
+      movies.value = []
       movieRequest.getMovies(
           currentPage.value,
           pageSize.value,
@@ -118,12 +139,11 @@ export default {
           region.value,
           searchWord.value
       ).then(res => {
-        let len = movies.length
-        while (len--) {
-          movies.pop()
+        if (res.code === 200) {
+          movies.value = res.data.records;
+          total.value = res.data.total;
         }
-        movies.push(...res.data.records)
-        total.value = res.data.total
+        loading.value = false;
       }).catch(err => {
         ErrorMessage(err)
       })
@@ -146,17 +166,16 @@ export default {
      * 若页码发生变化，重新请求电影数据，随后页面发生变化。
      */
     watch(currentPage, (newValue, oldValue) => {
-      // 页面回到顶部
+      // 页面回到顶部（兼容不同浏览器）
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
-      // 兼容IE
       window.scrollTo(0, 0);
 
       getMovies()
     });
 
     /**
-     * 监听`每页电影数量`变化
+     * 监听`每页电影数量`变化（可扩展）
      * 若发生变化，重新请求电影数据，随后页面发生变化。
      */
     watch(pageSize, (newValue, oldValue) => {
@@ -203,6 +222,7 @@ export default {
     })
 
     return {
+      loading,
       pageSize,
       currentPage,
       total,

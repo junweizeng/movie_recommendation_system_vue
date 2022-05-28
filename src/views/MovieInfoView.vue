@@ -3,31 +3,10 @@
     <movie-info/>
 
     <div class="list-and-comments my-border">
-      <el-tabs type="border-card">
-        <el-tab-pane>
-          <template #label>
-          <span class="tab-labels">
-            <el-icon><chat-round/></el-icon>
-            <span>推荐</span>
-          </span>
-          </template>
-          <movie-list v-if="movies.length" class="list" :tag="tag" :movies="movies" :opt="0"/>
-        </el-tab-pane>
+      <movie-list v-if="movies.length" class="list" :tag="tag" :movies="movies" :opt="0"/>
 
-        <el-tab-pane>
-          <template #label>
-          <span class="tab-labels">
-            <el-icon><film/></el-icon>
-            <span>评论</span>
-          </span>
-          </template>
-
-          <movie-comments :mid="mid"></movie-comments>
-
-        </el-tab-pane>
-      </el-tabs>
+      <movie-comments :mid="mid" style="margin-top: 1.5rem;"></movie-comments>
     </div>
-
   </div>
 </template>
 
@@ -78,19 +57,12 @@ export default {
 
 <style lang="less" scoped>
 .list-and-comments {
-  margin-left: 20%;
-  margin-right: 20%;
-  margin-bottom: 2rem;
-}
+  margin: 2rem 20%;
 
-.list-and-comments .list {
-  margin-left: 5%;
-  margin-right: 5%;
-}
-
-.comment-strip {
-  margin-left: 2rem;
-  margin-right: 2rem;
+  .list {
+    margin-left: 2rem;
+    margin-right: 2rem;
+  }
 }
 
 /deep/ .el-dialog {

@@ -23,8 +23,7 @@
           ref="mainMenuRef"
           class="menu">
         <el-link @click="show('home')" :underline="false">首页</el-link>
-        <el-link @click="show('classification')" :underline="false">电影</el-link>
-        <el-link @click="show('about')" :underline="false">关于</el-link>
+        <el-link @click="show('classification')" :underline="false">分类</el-link>
 
         <span class="search-div">
           <el-autocomplete
@@ -45,8 +44,7 @@
     <!-- 大屏时显示这个菜单 -->
     <div class="big-menu">
       <el-link @click="show('home')" :underline="false">首页</el-link>
-      <el-link @click="show('classification')" :underline="false">电影</el-link>
-      <el-link @click="show('about')" :underline="false">关于</el-link>
+      <el-link @click="show('classification')" :underline="false">分类</el-link>
 
       <span class="search-div">
         <el-autocomplete

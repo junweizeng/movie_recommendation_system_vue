@@ -1,7 +1,6 @@
 <template>
   <div class="blur-bg" :style="`background-image: url(${movie.pic})`"></div>
   <div class="movie-info-top">
-    <!--https://tse2-mm.cn.bing.net/th/id/OIP-C.sKOaIjWJzt5e81WeF3X5TgHaE7?w=261&h=180&c=7&r=0&o=5&dpr=1.25&pid=1.7-->
     <div class="background">
       <el-row>
         <el-col :span="8">
@@ -86,7 +85,8 @@
                   <el-dialog
                       v-model="actorsDialogVisible"
                       title="主演"
-                      width="25rem">
+                      width="25rem"
+                      :lock-scroll="false">
                     <span>{{ movie.actors }}</span>
                     <template #footer>
                     <span class="dialog-footer">
@@ -102,7 +102,8 @@
                   <el-dialog
                       v-model="introductionDialogVisible"
                       title="电影简介"
-                      width="25rem">
+                      width="25rem"
+                      :lock-scroll="false">
                     <span>{{ movie.introduction }}</span>
                     <template #footer>
                     <span class="dialog-footer">
@@ -195,7 +196,7 @@ export default {
 
 <style scoped>
 .blur-bg {
-  height: 33rem;
+  height: 36rem;
   width: 100%;
   filter: blur(1rem) brightness(85%);
   position: absolute;
@@ -209,7 +210,7 @@ export default {
 }
 
 .movie-info-top .background {
-  height: 33rem;
+  height: 36rem;
 }
 
 .movie-info-top-left, .movie-info-top-right {
@@ -226,11 +227,8 @@ export default {
 }
 
 /************** top right **************/
-.movie-info-top-right {
-  padding-top: 2.5%;
-}
-
 .movie-info-top-right .movie-name {
+  padding-top: 2rem;
   color: white;
   width: 80%;
   font-size: 2rem;
@@ -273,7 +271,7 @@ export default {
   margin-left: 2rem;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1200px) {
   .show-first {
     display: none;
   }
@@ -297,36 +295,6 @@ export default {
   .movie-info-top-right .rate {
     width: 60%;
   }
-
-  .blur-bg {
-    height: 22rem;
-  }
-}
-
-@media screen and (min-width: 800px) and (max-width: 1200px) {
-  .show-first {
-    display: none;
-  }
-
-  .show-second {
-    display: block;
-  }
-
-  .movie-info-top {
-    height: 100%;
-  }
-
-  .movie-info-top .background {
-    height: 100%;
-  }
-
-  .movie-info-top-right .rate {
-    width: 50%;
-  }
-
-  .blur-bg {
-    height: 22rem;
-  }
 }
 
 @media screen and (min-width: 1200px) and (max-width: 4000px) {
@@ -336,6 +304,36 @@ export default {
 
   .show-second {
     display: none;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .blur-bg {
+    height: 26rem;
+  }
+}
+
+@media screen and (min-width: 450px) and (max-width: 501px) {
+  .blur-bg {
+    height: 25rem;
+  }
+}
+
+@media screen and (min-width: 501px) and (max-width: 700px) {
+  .blur-bg {
+    height: 23rem;
+  }
+}
+
+@media screen and (min-width: 700px) and (max-width: 800px) {
+  .blur-bg {
+    height: 24rem;
+  }
+}
+
+@media screen and (min-width: 800px) and (max-width: 1200px) {
+  .blur-bg {
+    height: 22rem;
   }
 }
 </style>

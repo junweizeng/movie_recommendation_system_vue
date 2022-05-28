@@ -1,66 +1,70 @@
 <template>
-  <el-button @click="handleEditDialogVisible" type="warning" style="margin-left: 2rem">
-    编辑短评
-    <template #icon>
-      <el-icon><edit/></el-icon>
-    </template>
-  </el-button>
+  <div>
+    <el-button @click="handleEditDialogVisible" type="warning" style="margin-left: 2rem">
+      编辑短评
+      <template #icon>
+        <el-icon><edit/></el-icon>
+      </template>
+    </el-button>
 
-  <comments-word-cloud :word-cloud-data="wordCloudData"></comments-word-cloud>
+    <comments-word-cloud :word-cloud-data="wordCloudData"></comments-word-cloud>
 
-  <el-dialog v-model="isEditDialogVisible" title="编辑短评" :lock-scroll="false" draggable>
-    <div>
-      <el-rate
-          v-model="ownCommentEditInfo.score"
-          :texts="['2', '4', '6', '8', '10']"
-          text-color="#008000"
-          show-text
-      />
-      <el-input
-          type="textarea"
-          rows="5"
-          maxlength="200"
-          show-word-limit
-          v-model="ownCommentEditInfo.comment"
-      >
-      </el-input>
+    <el-dialog v-model="isEditDialogVisible" title="编辑短评" :lock-scroll="false" draggable>
+      <div>
+        <el-rate
+            v-model="ownCommentEditInfo.score"
+            :texts="['2', '4', '6', '8', '10']"
+            text-color="#008000"
+            show-text
+        />
+        <el-input
+            type="textarea"
+            rows="5"
+            maxlength="200"
+            show-word-limit
+            v-model="ownCommentEditInfo.comment"
+        >
+        </el-input>
 
-      <span @click="isShowEmoji = !isShowEmoji">
+        <span @click="isShowEmoji = !isShowEmoji">
         <svg-icon v-if="!isShowEmoji" icon-class="smile-beam"
                   style="color: rgb(255, 173, 24); width: 20px; height: 20px; margin-top: 0.5rem;"></svg-icon>
         <svg-icon v-if="isShowEmoji" icon-class="smile-wink"
                   style="color: rgb(255, 173, 24); width: 20px; height: 20px; margin-top: 0.5rem;"></svg-icon>
       </span>
-      <EmojiPicker class="dialog-div"
-                   v-show="isShowEmoji"
-                   :native="true"
-                   :disable-skin-tones="true"
-                   @select="onSelectEmoji"
-                   :static-texts="{ placeholder: '搜索表情'}"/>
+        <EmojiPicker class="dialog-div"
+                     v-show="isShowEmoji"
+                     :native="true"
+                     :disable-skin-tones="true"
+                     @select="onSelectEmoji"
+                     :static-texts="{ placeholder: '搜索表情'}"/>
 
+      </div>
+      <template #footer>
+        <el-button v-if="isHaveOwnComment" type="danger" @click="handleRemoveComment">删除</el-button>
+        <el-button @click="handleEditDialogVisible">取 消</el-button>
+        <el-button type="primary" @click="handleSubmitComment">提 交</el-button>
+      </template>
+    </el-dialog>
+
+    <div class="comment-strip" v-show="ownComment.nickname !== ''">
+      <div class="each-comment-tag">我的短评</div>
+      <comment-strip :comment="ownComment" :is-own="true"></comment-strip>
     </div>
-    <template #footer>
-      <el-button v-if="isHaveOwnComment" type="danger" @click="handleRemoveComment">删除</el-button>
-      <el-button @click="handleEditDialogVisible">取 消</el-button>
-      <el-button type="primary" @click="handleSubmitComment">提 交</el-button>
-    </template>
-  </el-dialog>
 
-  <div class="comment-strip" v-show="ownComment.nickname !== ''">
-    <div class="each-comment-tag">我的短评</div>
-    <comment-strip :comment="ownComment" :is-own="true"></comment-strip>
+    <div class="comment-strip">
+      <div class="each-comment-tag">所有短评</div>
+      <template v-for="(c, index) in comments" :key="index">
+        <comment-strip :comment="c"></comment-strip>
+        <el-divider/>
+      </template>
+    </div>
+
+    <div style="margin: 1rem 0;">
+      <div v-if="!isReadyForLoad" v-loading="!isReadyForLoad" style="width: 100%; height: 2rem"></div>
+      <div v-if="isAllComments" style="width: 100%; text-align: center; color: #91949c">评论到底啦(❁´◡`❁)~</div>
+    </div>
   </div>
-
-  <div class="comment-strip">
-    <div class="each-comment-tag">所有短评</div>
-    <template v-for="(c, index) in comments" :key="index">
-      <comment-strip :comment="c"></comment-strip>
-      <el-divider/>
-    </template>
-  </div>
-
-  <div v-show="!isReadyForLoad" v-loading="!isReadyForLoad" style="width: 100%; height: 2rem"></div>
-  <div v-if="isAllComments" style="width: 100%; text-align: center; color: #91949c">评论到底啦(❁´◡`❁)~</div>
 </template>
 
 <script>
