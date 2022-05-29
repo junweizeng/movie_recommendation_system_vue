@@ -1,3 +1,6 @@
+
+[TOC]
+
 # movie_recommendation_system_vue
 
 ## 项目启动和编译
