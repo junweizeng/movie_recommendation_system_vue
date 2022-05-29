@@ -1,7 +1,4 @@
-
-[TOC]
-
-# movie_recommendation_system_vue
+# 电影推荐系统（前端）
 
 ## 项目启动和编译
 
