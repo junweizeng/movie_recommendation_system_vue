@@ -1,7 +1,8 @@
+# 电影推荐系统（前端）
 
-[TOC]
+## 电影推荐系统后端
 
-# movie_recommendation_system_vue
+后端地址：[movie_recommendation_system_server](https://github.com/Vanish-Zeng/movie_recommendation_system_server)
 
 ## 项目启动和编译
 
