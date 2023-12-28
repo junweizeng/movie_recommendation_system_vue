@@ -1,18 +1,39 @@
 # 电影推荐系统（前端）
 
-## 电影推荐系统后端
+## 前言
 
-后端地址：[movie_recommendation_system_server](https://github.com/Vanish-Zeng/movie_recommendation_system_server)
+总项目名称：`电影推荐系统`
+
+项目采用`前后端分离`：
+
+1. 前端：
+   - 仓库地址：[movie_recommendation_system_vue](https://github.com/jun-wei-zeng/movie_recommendation_system_vue)
+   - 技术栈：`Vue3` + `Element Plus` + `axios`等
+2. 后端：
+   - 仓库地址：[movie_recommendation_system_server](https://github.com/jun-wei-zeng/movie_recommendation_system_server)
+   - 技术栈：`Spring Boot` + `Spring Security` + `Redis` + `MyBatis-Plus`等
+3. 数据爬虫：
+   - 简介：爬取项目所需的电影基本信息数据和用户评价数据等并存储。
+   - 仓库地址：正在路上...
+   - 技术栈：正在路上...
+
+系统功能模块总览：
+
+![系统功能模块.png](README_IMG/系统功能模块.png)
 
 ## 项目启动和编译
 
-### Compiles and hot-reloads for development
+### 项目启动
+
+Compiles and hot-reloads for development: 
 
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### 项目编译
+
+Compiles and minifies for production: 
 
 ```
 npm run build
@@ -26,12 +47,6 @@ npm run build
 - Echarts库（一个基于 JavaScript 的开源可视化图表库）
 - vue-copper库（基于vue的优雅图片裁剪插件）
 - ...
-
-## 系统功能模块
-
-系统功能模块总览：
-
-![系统功能模块.png](README_IMG/系统功能模块.png)
 
 ## 功能模块前端界面展示
 
