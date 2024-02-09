@@ -14,8 +14,8 @@
    - 技术栈：`Spring Boot` + `Spring Security` + `Redis` + `MyBatis-Plus`等
 3. 数据爬虫：
    - 简介：爬取项目所需的电影基本信息数据和用户评价数据等并存储。
-   - 仓库地址：正在路上...
-   - 技术栈：正在路上...
+   - 仓库地址：[douban_movie_spider_mrs](https://github.com/jun-wei-zeng/douban_movie_spider_mrs/tree/master)
+   - 技术栈：`requests` + `lxml`
 
 系统功能模块总览：
 
