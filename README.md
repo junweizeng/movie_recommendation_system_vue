@@ -1,5 +1,9 @@
 # 电影推荐系统（前端）
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=junweizeng/movie_recommendation_system_vue&type=Date)](https://www.star-history.com/#junweizeng/movie_recommendation_system_vue&Date)
+
 ## 前言
 
 总项目名称：`电影推荐系统`
